@@ -7,7 +7,7 @@ requirements
 ------------
 
 * cb-common
-    * cb-system
     * cb-utils
+    * cb-game
 * flex framework ~> 4.6
 * starling ~> 1.1
