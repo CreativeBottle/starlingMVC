@@ -1,0 +1,22 @@
+<ivy-module version="2.0">
+  <info organisation="com.creativebottle.starling-mvc" module="starlingMVC"/> 
+ 
+  <publications>
+    <artifact name="starlingMVC" ext="swc" type="swc"/>
+  </publications>
+
+  <dependencies>
+      <dependency org="com.adobe.flex.framework" name="framework" rev="4.6.b.23201" transitive="false">
+        <artifact name="framework" type="swc" />
+      </dependency>
+      <dependency org="com.gamua.starling-framework" name="starling" rev="1.1" transitive="false">
+        <artifact name="starling" type="swc" /> 
+      </dependency>
+      <dependency org="com.creativebottle.cb-common" name="cb-utils" rev="0.1-SNAPSHOT" transitive="false">
+        <artifact name="cb-utils" type="swc"/>
+      </dependency>
+      <dependency org="com.creativebottle.cb-common" name="cb-game" rev="0.1-SNAPSHOT" transitive="true">
+        <artifact name="cb-game" type="swc"/>
+      </dependency>
+  </dependencies>
+</ivy-module>

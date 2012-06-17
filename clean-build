@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+cat<<EOF
+  Cleaning lib and target files...
+EOF
+rm -r lib/ target/
+
+cat<<EOF
+  Retrieving libs from cache...
+EOF
+bin/retrieve
+
+cat <<EOF
+  Compiling...
+EOF
+bin/compc

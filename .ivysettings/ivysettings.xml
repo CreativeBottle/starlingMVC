@@ -1,0 +1,47 @@
+<ivysettings>
+  <properties environment="env"/>
+  <property name="ivy.checksums" value=""/> <!-- skip sha1, md5 -->
+  <property name="sonatype.flex.root" value="https://repository.sonatype.org/service/local/repositories/flex/content"/>
+  <property name="my-nexus.root" value="http://${env.NEXUS_HOST}/nexus/content/repositories"/>
+  <property name="my-nexus.thirdparty" value="${my-nexus.root}/thirdparty"/>
+  <property name="my-nexus.snapshots" value="${my-nexus.root}/snapshots"/>
+  <property name="my-nexus.releases" value="${my-nexus.root}/releases"/>
+  <property name="nexus.realm" value="Sonatype Nexus Repository Manager" override="false"/> 
+  <property name="pattern.cache.artifact" value="[organisation]/[module]/[artifact]-[revision].[ext]"/>
+  <property name="pattern.cache.ivy" value="[organisation]/[module]/ivy-[revision].xml"/>
+  <property name="pattern.artifact" value="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+  <property name="pattern.ivy" value="[organisation]/[module]/ivy-[revision].xml"/>
+
+  <settings defaultResolver="my-chain"/>
+
+  <credentials host="${env.NEXUS_HOST}" realm="${nexus.realm}" username="${env.NEXUS_USER}" passwd="${env.NEXUS_PASSWORD}"/>
+
+  <resolvers>
+    <chain name="my-chain">
+      <filesystem name="local">
+        <ivy pattern="${env.HOME}/.ivy2/cache/${pattern.cache.ivy}" />
+        <artifact pattern="${env.HOME}/.ivy2/cache/${pattern.cache.artifact}" />
+      </filesystem>
+
+      <url name="my-nexus.thirdparty">
+        <ivy pattern="${my-nexus.thirdparty}/${pattern.ivy}"/>
+        <artifact pattern="${my-nexus.thirdparty}/${pattern.artifact}"/>
+      </url>
+
+      <url name="my-nexus.snapshots">
+        <ivy pattern="${my-nexus.snapshots}/${pattern.ivy}"/>
+        <artifact pattern="${my-nexus.snapshots}/${pattern.artifact}"/>
+      </url>
+
+      <url name="my-nexus.releases">
+        <ivy pattern="${my-nexus.releases}/${pattern.ivy}"/>
+        <artifact pattern="${my-nexus.releases}/${pattern.artifact}"/>
+      </url>
+ 
+      <url name="sonatype-flex" m2compatible="true">
+        <artifact pattern="${sonatype.flex.root}/${pattern.artifact}"/>
+      </url>
+    </chain>
+  </resolvers>
+
+</ivysettings>

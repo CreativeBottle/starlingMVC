@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Usage: 
+#   Define an IVY environment variable, e.g.
+#   ~/.bash_profile
+#   export IVY=/usr/share/java/ivy.jar 
+   
+TARGET=target
+VER=0.1-SNAPSHOT  # snapshot versions must have -SNAPSHOT appended
+REPO=snapshots  # thirdparty | snapshots | releases
+RESOLVER=my-nexus.${REPO}  # defined in $SETTINGS
+STATUS=integration  # release | milestone | integration
+
+SETTINGS="-settings .ivysettings/ivysettings.xml"
+DEPENDS="-ivy ivy.xml"
+PUBLISH="-publish ${RESOLVER}"
+PATTERN="-publishpattern ${TARGET}/[artifact].[ext]"
+REVISION="-revision $VER"
+STATUS="-status $STATUS"
+
+cat << EOF
+  Nexus configuration: 
+    $NEXUS_USER@$NEXUS_HOST $REPO -> $RESOLVER
+
+EOF
+
+java -jar $IVY $SETTINGS $DEPENDS -overwrite $PUBLISH $PATTERN $REVISION $STATUS
