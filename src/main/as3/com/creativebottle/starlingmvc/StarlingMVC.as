@@ -2,10 +2,14 @@ package com.creativebottle.starlingmvc
 {
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
+	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.processors.DispatcherProcessor;
 	import com.creativebottle.starlingmvc.processors.EventHandlerProcessor;
+	import com.creativebottle.starlingmvc.processors.IProcessor;
 	import com.creativebottle.starlingmvc.processors.InjectProcessor;
 	import com.creativebottle.starlingmvc.processors.PostConstructProcessor;
+	import com.creativebottle.starlingmvc.processors.PreDestroyProcessor;
+	import com.creativebottle.starlingmvc.processors.Processors;
 	import com.creativebottle.starlingmvc.processors.ViewAddedProcessor;
 	import com.creativebottle.starlingmvc.processors.ViewRemovedProcessor;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
@@ -17,83 +21,105 @@ package com.creativebottle.starlingmvc
 
 	public class StarlingMVC
 	{
-		private var _config:StarlingMVCConfig;
+		private const beans:Beans = new Beans();
+		private const eventMap:EventMap = new EventMap();
+		private const classCache:MetaClassCache = new MetaClassCache();
+		private const dispatcher:EventDispatcher = new EventDispatcher();
+
+		private var config:StarlingMVCConfig;
 		private var rootLayer:DisplayObjectContainer;
-		private var eventMap:EventMap = new EventMap();
-		private var classCache:MetaClassCache = new MetaClassCache();
-		private var dispatcher:EventDispatcher = new EventDispatcher();
-		private var injectProcessor:InjectProcessor;
-		private var dispatcherProcessor:DispatcherProcessor;
-		private var eventHandlerProcessor:EventHandlerProcessor;
-		private var postConstructProcessor:PostConstructProcessor;
+		private var processors:Processors;
 
-		public function set config(value:StarlingMVCConfig):void
+		public function set beanProviders(value:Array):void
 		{
-			_config = value;
-
-			createDefaultProcessors();
-			refreshInjections(config.beans);
+			beans.addBeans(value);
+			setUpProcessors();
 		}
 
-		public function get config():StarlingMVCConfig
+		public function set customProcessors(value:Array):void
 		{
-			return _config;
+			if (!value) return;
+
+			for (var i:int = 0; i < value.length; i++)
+			{
+				var processor:IProcessor = value[i] as IProcessor;
+
+				if (processor)
+				{
+					processors.addProcessor(processor);
+				}
+				else
+				{
+					throw new Error("Invalid Processor: Custom processors must implement IProcessor.");
+				}
+			}
+			setUpProcessors();
 		}
 
-		public function StarlingMVC(rootLayer:DisplayObjectContainer)
+		public function StarlingMVC(rootLayer:DisplayObjectContainer, config:StarlingMVCConfig, beanProviders:Array = null, customProcessors:Array = null)
 		{
 			this.rootLayer = rootLayer;
+			this.config = config;
 
-			eventMap.addMap(rootLayer, Event.ADDED, displayObjectAdded);
-			eventMap.addMap(rootLayer, Event.REMOVED, displayObjectRemoved);
-		}
+			setUpEventHandlers();
 
-		private function refreshInjections(beans:Beans):void
-		{
-			injectProcessor.process(beans, classCache);
-			dispatcherProcessor.process(beans, classCache);
-			eventHandlerProcessor.process(beans, classCache);
-			postConstructProcessor.process(beans, classCache);
-
-			// Run a second time for any prototypes created during injection
-			// TODO Refactor to make this cleaner
-			if (beans == config.beans || beans.beans.length < injectProcessor.prototypeInstances)
-			{
-				var prototypes:Beans = new Beans();
-				prototypes.addBeans(injectProcessor.prototypeInstances);
-
-				refreshInjections(prototypes);
-			}
+			this.customProcessors = customProcessors;
+			this.beanProviders = beanProviders;
 		}
 
 		private function displayObjectAdded(event:Event):void
 		{
-			injectProcessor.processOn(event.target, config.beans, classCache);
-			postConstructProcessor.processOn(event.target, config.beans, classCache);
+			processors.processOn(event.target, beans);
 
 			var viewAddedProcessor:ViewAddedProcessor = new ViewAddedProcessor();
-			viewAddedProcessor.view = event.target;
-			viewAddedProcessor.process(config.beans, classCache);
+			viewAddedProcessor.cache = classCache;
+			viewAddedProcessor.process(event.target, beans);
 		}
 
 		private function displayObjectRemoved(event:Event):void
 		{
 			var viewRemovedProcessor:ViewRemovedProcessor = new ViewRemovedProcessor();
-			viewRemovedProcessor.view = event.target;
-			viewRemovedProcessor.process(config.beans, classCache);
+			viewRemovedProcessor.cache = classCache;
+			viewRemovedProcessor.process(event.target, beans);
 		}
 
-		private function createDefaultProcessors():void
+		private function setUpProcessors():void
 		{
-			injectProcessor = new InjectProcessor();
-			postConstructProcessor = new PostConstructProcessor();
+			processors = new Processors(classCache, beans);
+			processors.addProcessor(new InjectProcessor());
+			processors.addProcessor(new PostConstructProcessor());
+			processors.addProcessor(new DispatcherProcessor(dispatcher));
+			processors.addProcessor(new EventHandlerProcessor([dispatcher, rootLayer], config.eventPackages));
+			processors.processAll();
+		}
 
-			dispatcherProcessor = new DispatcherProcessor();
-			dispatcherProcessor.dispatcher = dispatcher;
+		private function beanAdded(event:BeanEvent):void
+		{
+			// TODO Verify that this works with ViewMediation
+			beans.addBean(event.bean);
 
-			eventHandlerProcessor = new EventHandlerProcessor();
-			eventHandlerProcessor.dispatchers = [dispatcher, rootLayer];
-			eventHandlerProcessor.eventPackages = config.eventPackages;
+			processors.processOn(event.bean, beans);
+		}
+
+		private function beanRemoved(event:BeanEvent):void
+		{
+			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
+			preDestroyProcessor.cache = classCache;
+			// TODO Need to write pre destroy processor
+
+			beans.removeBean(event.bean);
+		}
+
+		private function setUpEventHandlers():void
+		{
+			eventMap.addMap(rootLayer, Event.ADDED, displayObjectAdded);
+			eventMap.addMap(rootLayer, Event.REMOVED, displayObjectRemoved);
+
+			// Bean events
+			eventMap.addMap(rootLayer, BeanEvent.ADD_BEAN, beanAdded);
+			eventMap.addMap(dispatcher, BeanEvent.ADD_BEAN, beanAdded);
+			eventMap.addMap(rootLayer, BeanEvent.REMOVE_BEAN, beanRemoved);
+			eventMap.addMap(dispatcher, BeanEvent.REMOVE_BEAN, beanRemoved);
 		}
 	}
 }

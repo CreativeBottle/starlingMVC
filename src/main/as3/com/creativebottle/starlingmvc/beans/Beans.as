@@ -30,6 +30,20 @@ package com.creativebottle.starlingmvc.beans
 			}
 		}
 
+		public function removeBean(beanIn:Bean):void
+		{
+			for (var key:Object in beans)
+			{
+				var bean:Bean = beans[key];
+
+				if (bean == beanIn)
+				{
+					beans[key] = null;
+					key = null;
+				}
+			}
+		}
+
 		public function addBeans(beanProviders:Array):void
 		{
 			for each(var provider:Object in beanProviders)

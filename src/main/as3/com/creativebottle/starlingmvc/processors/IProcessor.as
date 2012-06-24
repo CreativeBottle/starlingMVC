@@ -5,6 +5,8 @@ package com.creativebottle.starlingmvc.processors
 
 	public interface IProcessor
 	{
-		function process(beans:Beans, cache:MetaClassCache):void;
+		function set cache(value:MetaClassCache):void;
+
+		function process(object:Object, beans:Beans):void;
 	}
 }

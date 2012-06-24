@@ -3,7 +3,6 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.events.EventHandler;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
 	import com.creativebottle.system.meta.MetaClassMember;
@@ -14,12 +13,18 @@ package com.creativebottle.starlingmvc.processors
 
 	import starling.events.EventDispatcher;
 
-	public class EventHandlerProcessor implements IProcessor
+	public class EventHandlerProcessor extends BaseProcessor
 	{
 		public var dispatchers:Array;
 		public var eventPackages:Array;
 
-		public function processOn(object:Object, beans:Beans, cache:MetaClassCache):void
+		public function EventHandlerProcessor(dispatchers:Array, eventPackages:Array):void
+		{
+			this.dispatchers = dispatchers;
+			this.eventPackages = eventPackages;
+		}
+
+		override public function process(object:Object, beans:Beans):void
 		{
 			var bean:Bean = !(object is Bean) ? new Bean(object) : object as Bean;
 
@@ -90,17 +95,6 @@ package com.creativebottle.starlingmvc.processors
 			}
 
 			return null;
-		}
-
-		public function process(beans:Beans, cache:MetaClassCache):void
-		{
-			if (!dispatchers && dispatchers.length)
-				return;
-
-			for each(var bean:Bean in beans.beans)
-			{
-				processOn(bean, beans, cache);
-			}
 		}
 
 		public function addToDispatchers(event:String, handler:Function, tag:MetaTag):void

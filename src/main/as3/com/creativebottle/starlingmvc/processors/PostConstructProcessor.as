@@ -2,15 +2,14 @@ package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
 	import com.creativebottle.system.meta.MetaClassMember;
 	import com.creativebottle.system.meta.MetaMethod;
 
-	public class PostConstructProcessor implements IProcessor
+	public class PostConstructProcessor extends BaseProcessor
 	{
-		public function processOn(object:Object, beans:Beans, cache:MetaClassCache):void
+		override public function process(object:Object, beans:Beans):void
 		{
 			var bean:Bean = !(object is Bean) ? new Bean(object) : object as Bean;
 
@@ -27,14 +26,6 @@ package com.creativebottle.starlingmvc.processors
 				{
 					bean.instance[ method.name ]();
 				}
-			}
-		}
-
-		public function process(beans:Beans, cache:MetaClassCache):void
-		{
-			for each(var bean:Bean in beans.beans)
-			{
-				processOn(bean, beans, cache);
 			}
 		}
 	}

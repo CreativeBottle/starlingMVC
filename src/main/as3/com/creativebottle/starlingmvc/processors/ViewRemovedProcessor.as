@@ -1,18 +1,15 @@
 package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 
-	public class ViewRemovedProcessor extends BaseMediatorProcessor implements IProcessor
+	public class ViewRemovedProcessor extends BaseMediatorProcessor
 	{
-		public var view:Object;
-
-		public function process(beans:Beans, cache:MetaClassCache):void
+		override public function process(object:Object, beans:Beans):void
 		{
 			this.cache = cache;
 
-			announceToMediators(view, beans, InjectionTag.VIEW_REMOVED);
+			announceToMediators(object, beans, InjectionTag.VIEW_REMOVED);
 		}
 
 	}

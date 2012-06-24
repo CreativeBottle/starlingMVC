@@ -3,7 +3,6 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.beans.Prototype;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
 	import com.creativebottle.system.meta.MetaClassMember;
@@ -11,11 +10,11 @@ package com.creativebottle.starlingmvc.processors
 
 	import flash.utils.getDefinitionByName;
 
-	public class InjectProcessor implements IProcessor
+	public class InjectProcessor extends BaseProcessor
 	{
 		public var prototypeInstances:Array = new Array();
 
-		public function processOn(object:Object, beans:Beans, cache:MetaClassCache):void
+		override public function process(object:Object, beans:Beans):void
 		{
 			var bean:Bean = !(object is Bean) ? new Bean(object) : object as Bean;
 
@@ -62,14 +61,6 @@ package com.creativebottle.starlingmvc.processors
 				}
 
 				bean.instance[member.name] = instance;
-			}
-		}
-
-		public function process(beans:Beans, cache:MetaClassCache):void
-		{
-			for each(var bean:Bean in beans.beans)
-			{
-				processOn(bean, beans, cache);
 			}
 		}
 	}
