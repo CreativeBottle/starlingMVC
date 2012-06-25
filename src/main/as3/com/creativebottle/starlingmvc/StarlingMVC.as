@@ -1,5 +1,6 @@
 package com.creativebottle.starlingmvc
 {
+	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
@@ -21,10 +22,10 @@ package com.creativebottle.starlingmvc
 
 	public class StarlingMVC
 	{
-		private const beans:Beans = new Beans();
 		private const eventMap:EventMap = new EventMap();
 		private const classCache:MetaClassCache = new MetaClassCache();
 		private const dispatcher:EventDispatcher = new EventDispatcher();
+		private const beans:Beans = new Beans(classCache);
 
 		private var config:StarlingMVCConfig;
 		private var rootLayer:DisplayObjectContainer;
@@ -81,30 +82,36 @@ package com.creativebottle.starlingmvc
 			var viewRemovedProcessor:ViewRemovedProcessor = new ViewRemovedProcessor();
 			viewRemovedProcessor.cache = classCache;
 			viewRemovedProcessor.process(event.target, beans);
+
+			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
+			preDestroyProcessor.cache = classCache;
+			preDestroyProcessor.process(event.target, beans);
 		}
 
 		private function setUpProcessors():void
 		{
 			processors = new Processors(classCache, beans);
-			processors.addProcessor(new InjectProcessor());
-			processors.addProcessor(new PostConstructProcessor());
 			processors.addProcessor(new DispatcherProcessor(dispatcher));
+			processors.addProcessor(new InjectProcessor(dispatcher));
+			processors.addProcessor(new PostConstructProcessor());
 			processors.addProcessor(new EventHandlerProcessor([dispatcher, rootLayer], config.eventPackages));
 			processors.processAll();
 		}
 
 		private function beanAdded(event:BeanEvent):void
 		{
-			// TODO Verify that this works with ViewMediation
-			beans.addBean(event.bean);
+			var bean:Bean = event.bean;
 
-			processors.processOn(event.bean, beans);
+			beans.addBean(bean);
+
+			processors.processOn(bean, beans);
 		}
 
 		private function beanRemoved(event:BeanEvent):void
 		{
 			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
 			preDestroyProcessor.cache = classCache;
+			preDestroyProcessor.process(event.bean, beans);
 			// TODO Need to write pre destroy processor
 
 			beans.removeBean(event.bean);

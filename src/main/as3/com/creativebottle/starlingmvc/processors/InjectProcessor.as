@@ -3,6 +3,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.beans.Prototype;
+	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
 	import com.creativebottle.system.meta.MetaClassMember;
@@ -10,9 +11,16 @@ package com.creativebottle.starlingmvc.processors
 
 	import flash.utils.getDefinitionByName;
 
+	import starling.events.EventDispatcher;
+
 	public class InjectProcessor extends BaseProcessor
 	{
-		public var prototypeInstances:Array = new Array();
+		private var dispatcher:EventDispatcher;
+
+		public function InjectProcessor(dispatcher:EventDispatcher)
+		{
+			this.dispatcher = dispatcher;
+		}
 
 		override public function process(object:Object, beans:Beans):void
 		{
@@ -44,9 +52,9 @@ package com.creativebottle.starlingmvc.processors
 
 					if (mapping is Prototype)
 					{
-						instance = new (mapping as Prototype).ClassType();
+						instance = new (mapping as Prototype).classType();
 
-						prototypeInstances.push(instance);
+						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, instance));
 					}
 					else
 					{

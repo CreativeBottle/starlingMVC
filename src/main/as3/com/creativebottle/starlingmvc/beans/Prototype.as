@@ -2,13 +2,18 @@ package com.creativebottle.starlingmvc.beans
 {
 	public class Prototype extends Bean
 	{
-		public var ClassType:Class;
+		public function get classType():Class
+		{
+			return _classType;
+		}
 
-		public function Prototype(ClassType:Class, id:String)
+		private var _classType:Class;
+
+		public function Prototype(classType:Class, id:String)
 		{
 			super(null, id);
 
-			this.ClassType = ClassType;
+			_classType = classType;
 		}
 	}
 }

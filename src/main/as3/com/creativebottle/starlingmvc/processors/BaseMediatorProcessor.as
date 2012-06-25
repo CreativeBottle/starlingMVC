@@ -17,7 +17,7 @@ package com.creativebottle.starlingmvc.processors
 
 			for each(var bean:Bean in beans.beans)
 			{
-				if (!bean.instance) return;
+				if (!bean.instance) continue;
 
 				var metaClass:MetaClass = cache.getMetaClassForInstance(bean.instance);
 

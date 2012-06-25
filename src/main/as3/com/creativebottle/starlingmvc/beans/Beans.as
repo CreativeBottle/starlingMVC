@@ -1,5 +1,10 @@
 package com.creativebottle.starlingmvc.beans
 {
+	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.system.injection.InjectionTag;
+	import com.creativebottle.system.meta.MetaClass;
+	import com.creativebottle.system.meta.MetaClassMember;
+
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -8,9 +13,11 @@ package com.creativebottle.starlingmvc.beans
 	{
 		public const beans:Dictionary = new Dictionary(true);
 
-		public function Beans()
-		{
+		private var cache:MetaClassCache;
 
+		public function Beans(cache:MetaClassCache)
+		{
+			this.cache = cache;
 		}
 
 		public function addBean(beanIn:*):void
@@ -19,7 +26,7 @@ package com.creativebottle.starlingmvc.beans
 
 			if (bean is Prototype)
 			{
-				createMap(Prototype(bean).ClassType, bean);
+				createMap(Prototype(bean).classType, bean);
 			}
 			else
 			{
@@ -32,14 +39,31 @@ package com.creativebottle.starlingmvc.beans
 
 		public function removeBean(beanIn:Bean):void
 		{
+			var bean:Bean;
+
+			for each(bean in beans)
+			{
+				if (!bean.instance) continue;
+
+				var metaClass:MetaClass = cache.getMetaClassForInstance(bean.instance);
+
+				var injections:Array = metaClass.membersByMetaTag(InjectionTag.INJECT);
+
+				for each(var member:MetaClassMember in injections)
+				{
+					if (bean.instance[member.name] == beanIn.instance)
+						bean.instance[member.name] = null;
+				}
+			}
+
 			for (var key:Object in beans)
 			{
-				var bean:Bean = beans[key];
+				bean = beans[key];
 
-				if (bean == beanIn)
+				if (bean.instance == beanIn.instance)
 				{
 					beans[key] = null;
-					key = null;
+					delete beans[key];
 				}
 			}
 		}
