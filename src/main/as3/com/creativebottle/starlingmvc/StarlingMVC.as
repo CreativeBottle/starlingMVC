@@ -13,8 +13,8 @@ package com.creativebottle.starlingmvc
 	import com.creativebottle.starlingmvc.processors.Processors;
 	import com.creativebottle.starlingmvc.processors.ViewAddedProcessor;
 	import com.creativebottle.starlingmvc.processors.ViewRemovedProcessor;
+	import com.creativebottle.starlingmvc.utils.EventMap;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
-	import com.creativebottle.utils.EventMap;
 
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;

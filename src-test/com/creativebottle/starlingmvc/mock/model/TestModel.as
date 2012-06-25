@@ -13,7 +13,7 @@ package com.creativebottle.starlingmvc.mock.model
 		[PreDestroy]
 		public function preDestroy():void
 		{
-			trace("kill myself!");
+
 		}
 	}
 }
