@@ -112,7 +112,6 @@ package com.creativebottle.starlingmvc
 			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
 			preDestroyProcessor.cache = classCache;
 			preDestroyProcessor.process(event.bean, beans);
-			// TODO Need to write pre destroy processor
 
 			beans.removeBean(event.bean);
 		}
