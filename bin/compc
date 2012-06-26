@@ -1,4 +1,0 @@
-#!/bin/sh
-FILE=starlingMVC
-TARGET=target/$FILE.swc
-compc -is=src/main/as3 -external-library-path+=lib -o=$TARGET

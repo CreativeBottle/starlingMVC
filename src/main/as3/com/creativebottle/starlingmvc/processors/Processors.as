@@ -1,25 +1,27 @@
 package com.creativebottle.starlingmvc.processors
 {
+	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 
 	public class Processors
 	{
 		private var processors:Array = new Array();
-
-		private var cache:MetaClassCache;
 		private var beans:Beans;
+		private var starlingMVC:StarlingMVC;
 
-		public function Processors(classCache:MetaClassCache, beans:Beans)
+		public function Processors(starlingMVC:StarlingMVC)
 		{
-			this.cache = classCache;
-			this.beans = beans;
+			this.starlingMVC = starlingMVC;
+			beans = starlingMVC.beans;
+
+			setUpDefaultProcessors();
 		}
 
 		public function addProcessor(processor:IProcessor):void
 		{
-			processor.cache = cache;
+			processor.config(starlingMVC);
+
 			processors.push(processor);
 		}
 
@@ -37,6 +39,15 @@ package com.creativebottle.starlingmvc.processors
 			{
 				processor.process(object, beans);
 			}
+		}
+
+		private function setUpDefaultProcessors():void
+		{
+			addProcessor(new DispatcherProcessor());
+			addProcessor(new InjectProcessor());
+			addProcessor(new PostConstructProcessor());
+			addProcessor(new EventHandlerProcessor());
+			processAll();
 		}
 	}
 }

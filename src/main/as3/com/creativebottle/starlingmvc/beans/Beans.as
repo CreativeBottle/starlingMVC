@@ -13,13 +13,6 @@ package com.creativebottle.starlingmvc.beans
 	{
 		public const beans:Dictionary = new Dictionary(true);
 
-		private var cache:MetaClassCache;
-
-		public function Beans(cache:MetaClassCache)
-		{
-			this.cache = cache;
-		}
-
 		public function addBean(beanIn:*):void
 		{
 			var bean:Bean = normalizeBean(beanIn);
@@ -45,7 +38,7 @@ package com.creativebottle.starlingmvc.beans
 			{
 				if (!bean.instance) continue;
 
-				var metaClass:MetaClass = cache.getMetaClassForInstance(bean.instance);
+				var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
 
 				var injections:Array = metaClass.membersByMetaTag(InjectionTag.INJECT);
 

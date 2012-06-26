@@ -5,10 +5,8 @@ package com.creativebottle.starlingmvc.processors
 
 	public class ViewAddedProcessor extends BaseMediatorProcessor
 	{
-		override public function process(object:Object, beans:Beans):void
+		public function process(object:Object, beans:Beans):void
 		{
-			this.cache = cache;
-
 			announceToMediators(object, beans, InjectionTag.VIEW_ADDED);
 		}
 	}

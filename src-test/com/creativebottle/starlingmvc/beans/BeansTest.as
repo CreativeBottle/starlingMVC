@@ -2,7 +2,6 @@ package com.creativebottle.starlingmvc.beans
 {
 	import com.creativebottle.starlingmvc.mock.model.TestModel;
 	import com.creativebottle.starlingmvc.mock.model.TestModel2;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertNull;
@@ -14,7 +13,7 @@ package com.creativebottle.starlingmvc.beans
 		[Before]
 		public function setup():void
 		{
-			beans = new Beans(new MetaClassCache());
+			beans = new Beans();
 		}
 
 		[After]

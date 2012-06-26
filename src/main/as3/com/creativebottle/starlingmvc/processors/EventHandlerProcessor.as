@@ -1,8 +1,10 @@
 package com.creativebottle.starlingmvc.processors
 {
+	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.events.EventHandler;
+	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
 	import com.creativebottle.system.meta.MetaClassMember;
@@ -13,24 +15,29 @@ package com.creativebottle.starlingmvc.processors
 
 	import starling.events.EventDispatcher;
 
-	public class EventHandlerProcessor extends BaseProcessor
+	public class EventHandlerProcessor implements IProcessor
 	{
 		public var dispatchers:Array;
 		public var eventPackages:Array;
 
-		public function EventHandlerProcessor(dispatchers:Array, eventPackages:Array):void
+		public function EventHandlerProcessor():void
 		{
-			this.dispatchers = dispatchers;
-			this.eventPackages = eventPackages;
+
 		}
 
-		override public function process(object:Object, beans:Beans):void
+		public function config(starlingMVC:StarlingMVC):void
+		{
+			this.dispatchers = [starlingMVC.rootLayer, starlingMVC.dispatcher];
+			this.eventPackages = starlingMVC.config.eventPackages;
+		}
+
+		public function process(object:Object, beans:Beans):void
 		{
 			var bean:Bean = !(object is Bean) ? new Bean(object) : object as Bean;
 
 			if (!bean.instance) return;
 
-			var metaClass:MetaClass = cache.getMetaClassForInstance(bean.instance);
+			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
 
 			var eventHandlers:Array = metaClass.membersByMetaTag(InjectionTag.EVENT_HANDLER);
 

@@ -1,6 +1,0 @@
-#!/bin/sh
-CACHE=$HOME/.ivy2/cache
-ORG_ADOBE=com.adobe.flex.framework
-ORG_GAMUA=com.gamua.starling-framework
-
-rm -r $CACHE/$ORG_ADOBE $CACHE/$ORG_GAMUA

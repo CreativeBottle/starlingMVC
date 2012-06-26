@@ -6,14 +6,14 @@ package com.creativebottle.starlingmvc.utils
 
 	public class MetaClassCache
 	{
-		private const metaClassCache:Dictionary = new Dictionary();
+		private static const metaClassCache:Dictionary = new Dictionary();
 
 		public function MetaClassCache()
 		{
 
 		}
 
-		public function getMetaClassForInstance(object:Object):MetaClass
+		public static function getMetaClassForInstance(object:Object):MetaClass
 		{
 			var metaClass:MetaClass;
 
