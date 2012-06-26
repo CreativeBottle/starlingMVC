@@ -30,11 +30,6 @@ package com.creativebottle.starlingmvc.processors
 	{
 		private var dispatcher:EventDispatcher;
 
-		public function DispatcherProcessor():void
-		{
-
-		}
-
 		public function config(starlingMVC:StarlingMVC):void
 		{
 			this.dispatcher = starlingMVC.dispatcher;

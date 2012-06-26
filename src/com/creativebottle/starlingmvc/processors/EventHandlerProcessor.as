@@ -18,7 +18,6 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.events.EventHandler;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
@@ -35,11 +34,6 @@ package com.creativebottle.starlingmvc.processors
 	{
 		public var dispatchers:Array;
 		public var eventPackages:Array;
-
-		public function EventHandlerProcessor():void
-		{
-
-		}
 
 		public function config(starlingMVC:StarlingMVC):void
 		{
@@ -128,6 +122,53 @@ package com.creativebottle.starlingmvc.processors
 			{
 				dispatcher.addEventListener(event, eventHandler.handleEvent);
 			}
+		}
+	}
+}
+
+import com.creativebottle.system.meta.MetaTag;
+import com.creativebottle.system.meta.MetaTagArg;
+
+import starling.events.Event;
+
+class EventHandler
+{
+	private var handler:Function;
+	private var args:Array;
+
+	public function EventHandler(handler:Function, tag:MetaTag)
+	{
+		this.handler = handler;
+
+		var arg:MetaTagArg = tag.argByName("properties");
+
+		if (arg)
+			args = String(arg.value).split(",");
+	}
+
+	public function handleEvent(event:Event):void
+	{
+		var handlerArgs:Array = new Array();
+
+		for each(var arg:String in args)
+		{
+			if (event[arg])
+			{
+				handlerArgs.push(event[arg]);
+			}
+			else
+			{
+				throw new Error("Property " + arg + " doesn't exit on event type " + typeof event);
+			}
+		}
+
+		if (handlerArgs.length > 0)
+		{
+			handler.apply(null, handlerArgs);
+		}
+		else
+		{
+			handler(event);
 		}
 	}
 }

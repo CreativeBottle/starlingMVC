@@ -35,11 +35,6 @@ package com.creativebottle.starlingmvc.processors
 	{
 		private var dispatcher:EventDispatcher;
 
-		public function InjectProcessor()
-		{
-
-		}
-
 		public function config(starlingMVC:StarlingMVC):void
 		{
 			this.dispatcher = starlingMVC.dispatcher;
