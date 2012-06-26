@@ -29,16 +29,6 @@ package com.creativebottle.starlingmvc.processors
 			{
 				processOn(bean, beans);
 			}
-
-			// Run a second time for any prototypes created during injection
-			// TODO Refactor to make this cleaner
-			/*if (beans == config.beans || beans.beans.length < injectProcessor.prototypeInstances)
-			 {
-			 var prototypes:Beans = new Beans();
-			 prototypes.addBeans(injectProcessor.prototypeInstances);
-
-			 refreshInjections(prototypes);
-			 }*/
 		}
 
 		public function processOn(object:Object, beans:Beans):void
