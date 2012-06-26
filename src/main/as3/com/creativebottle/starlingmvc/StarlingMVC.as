@@ -4,6 +4,7 @@ package com.creativebottle.starlingmvc
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
+	import com.creativebottle.starlingmvc.events.EventMap;
 	import com.creativebottle.starlingmvc.processors.DispatcherProcessor;
 	import com.creativebottle.starlingmvc.processors.EventHandlerProcessor;
 	import com.creativebottle.starlingmvc.processors.IProcessor;
@@ -13,7 +14,6 @@ package com.creativebottle.starlingmvc
 	import com.creativebottle.starlingmvc.processors.Processors;
 	import com.creativebottle.starlingmvc.processors.ViewAddedProcessor;
 	import com.creativebottle.starlingmvc.processors.ViewRemovedProcessor;
-	import com.creativebottle.starlingmvc.utils.EventMap;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 
 	import starling.display.DisplayObjectContainer;

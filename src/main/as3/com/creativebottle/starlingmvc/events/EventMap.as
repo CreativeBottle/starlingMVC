@@ -1,4 +1,4 @@
-package com.creativebottle.starlingmvc.utils
+package com.creativebottle.starlingmvc.events
 {
 	import starling.events.EventDispatcher;
 
