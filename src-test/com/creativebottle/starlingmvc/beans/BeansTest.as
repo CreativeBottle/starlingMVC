@@ -120,5 +120,31 @@ package com.creativebottle.starlingmvc.beans
 			assertNull("Bean should be null.", beanOut);
 		}
 
+		[Test]
+		public function addBeanProvider_mixedBeans_retrieveByType_returnsBean():void
+		{
+			var beanProvider:BeanProvider = new BeanProvider();
+			beanProvider.beans = [new TestModel(), new Bean(new TestModel2(), "testModel2")];
+
+			beans.addBeanProvider(beanProvider);
+
+			var beanOut:Bean = beans.getBeanByClass(TestModel);
+
+			assertEquals("Method should return first bean in the provider.", beanProvider.beans[0], beanOut.instance);
+		}
+
+		[Test]
+		public function addBeanProvider_mixedBeans_retrieveById_returnsBean():void
+		{
+			var beanProvider:BeanProvider = new BeanProvider();
+			beanProvider.beans = [new TestModel(), new Bean(new TestModel2(), "testModel2")];
+
+			beans.addBeanProvider(beanProvider);
+
+			var beanOut:Bean = beans.getBeanById("testModel2");
+
+			assertEquals("Method should return first bean in the provider.", beanProvider.beans[1], beanOut);
+		}
+
 	}
 }

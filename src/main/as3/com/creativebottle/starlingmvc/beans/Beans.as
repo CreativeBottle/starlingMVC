@@ -92,7 +92,7 @@ package com.creativebottle.starlingmvc.beans
 			}
 		}
 
-		public function createMap(MapClass:Class, bean:Bean):void
+		private function createMap(MapClass:Class, bean:Bean):void
 		{
 			if (bean.id)
 			{
