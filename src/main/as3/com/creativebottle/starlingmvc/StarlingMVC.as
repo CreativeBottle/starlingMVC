@@ -3,7 +3,6 @@ package com.creativebottle.starlingmvc
 	import com.creativebottle.starlingmvc.beans.BeanFactory;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
-	import com.creativebottle.starlingmvc.processors.IProcessor;
 	import com.creativebottle.starlingmvc.processors.Processors;
 
 	import starling.display.DisplayObjectContainer;
@@ -48,17 +47,9 @@ package com.creativebottle.starlingmvc
 
 			for (var i:int = 0; i < value.length; i++)
 			{
-				var processor:IProcessor = value[i] as IProcessor;
-
-				if (processor)
-				{
-					processors.addProcessor(processor);
-				}
-				else
-				{
-					throw new Error("Invalid Processor: Custom processors must implement IProcessor.");
-				}
+				processors.addProcessor(value[i]);
 			}
+
 			processors.processAll();
 		}
 
