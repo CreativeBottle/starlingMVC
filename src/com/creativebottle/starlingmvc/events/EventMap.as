@@ -19,7 +19,7 @@ package com.creativebottle.starlingmvc.events
 
 	public class EventMap
 	{
-		private var map:Array = new Array();
+		private var map:Array = [];
 
 		public function EventMap()
 		{
