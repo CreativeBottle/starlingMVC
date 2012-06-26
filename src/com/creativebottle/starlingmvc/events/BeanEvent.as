@@ -16,6 +16,7 @@
 package com.creativebottle.starlingmvc.events
 {
 	import com.creativebottle.starlingmvc.beans.Bean;
+	import com.creativebottle.starlingmvc.utils.BeanUtils;
 
 	import starling.events.Event;
 
@@ -35,7 +36,7 @@ package com.creativebottle.starlingmvc.events
 		{
 			super(type, true);
 
-			_bean = !(beanIn is Bean) ? new Bean(beanIn) : beanIn as Bean;
+			_bean = BeanUtils.normalizeBean(beanIn);
 		}
 	}
 }

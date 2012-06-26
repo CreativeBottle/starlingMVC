@@ -18,6 +18,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
+	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
@@ -33,7 +34,7 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = !(object is Bean) ? new Bean(object) : object as Bean;
+			var bean:Bean = BeanUtils.normalizeBean(object);
 
 			if (!bean.instance) return;
 

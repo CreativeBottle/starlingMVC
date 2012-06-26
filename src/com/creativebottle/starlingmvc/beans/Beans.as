@@ -15,6 +15,7 @@
  */
 package com.creativebottle.starlingmvc.beans
 {
+	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
@@ -30,7 +31,7 @@ package com.creativebottle.starlingmvc.beans
 
 		public function addBean(beanIn:*):void
 		{
-			var bean:Bean = normalizeBean(beanIn);
+			var bean:Bean = BeanUtils.normalizeBean(beanIn);
 
 			if (bean is Prototype)
 			{
@@ -39,7 +40,7 @@ package com.creativebottle.starlingmvc.beans
 			else
 			{
 				var className:String = getQualifiedClassName(bean.instance);
-				var myClass:Class = getDefinitionByName(className) as Class;
+				var myClass:Class = Class(getDefinitionByName(className));
 
 				createMap(myClass, bean);
 			}
@@ -82,7 +83,7 @@ package com.creativebottle.starlingmvc.beans
 			{
 				if (provider is BeanProvider)
 				{
-					addBeanProvider(provider as BeanProvider);
+					addBeanProvider(BeanProvider(provider));
 				}
 				else
 				{
@@ -120,18 +121,6 @@ package com.creativebottle.starlingmvc.beans
 		public function getBeanById(id:String):Bean
 		{
 			return beans[id];
-		}
-
-		private function normalizeBean(bean:Object):Bean
-		{
-			if (bean is Bean)
-			{
-				return bean as Bean;
-			}
-			else
-			{
-				return new Bean(bean);
-			}
 		}
 	}
 }

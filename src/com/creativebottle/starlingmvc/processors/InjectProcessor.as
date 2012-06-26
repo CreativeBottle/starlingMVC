@@ -20,6 +20,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.beans.Prototype;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
+	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
 	import com.creativebottle.system.injection.InjectionTag;
 	import com.creativebottle.system.meta.MetaClass;
@@ -46,7 +47,7 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = !(object is Bean) ? new Bean(object) : object as Bean;
+			var bean:Bean = BeanUtils.normalizeBean(object);
 
 			if (!bean.instance) return;
 
@@ -56,7 +57,7 @@ package com.creativebottle.starlingmvc.processors
 
 			for each(var member:MetaClassMember in injections)
 			{
-				var TempClass:Class = getDefinitionByName(member.type) as Class;
+				var TempClass:Class = Class(getDefinitionByName(member.type));
 
 				var arg:MetaTagArg = member.tagByName(InjectionTag.INJECT).argByName("source");
 
@@ -74,7 +75,8 @@ package com.creativebottle.starlingmvc.processors
 
 					if (mapping is Prototype)
 					{
-						instance = new (mapping as Prototype).classType();
+						var prototype:Prototype = Prototype(mapping);
+						instance = new prototype.classType();
 
 						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, instance));
 					}

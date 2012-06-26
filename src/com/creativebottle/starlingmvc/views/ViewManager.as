@@ -37,7 +37,7 @@ package com.creativebottle.starlingmvc.views
 			{
 				stack.push(view);
 
-				srcClip.addChild(view as DisplayObject);
+				srcClip.addChild(view);
 			}
 
 			return view;
@@ -49,7 +49,7 @@ package com.creativebottle.starlingmvc.views
 
 			if (idx != -1)
 			{
-				srcClip.removeChild(view as DisplayObject);
+				srcClip.removeChild(view);
 
 				stack.splice(idx, 1);
 			}
@@ -72,17 +72,11 @@ package com.creativebottle.starlingmvc.views
 		{
 			removeExistingView();
 
-			view = new ViewClass() as DisplayObject;
-
-			if (!view)
-				throw new Error("Provided view is not of type DisplayObject.");
+			view = DisplayObject(new ViewClass());
 
 			removeAll();
 
-			if (view)
-			{
-				srcClip.addChild(view as DisplayObject);
-			}
+			srcClip.addChild(view);
 
 			return view;
 		}
@@ -91,7 +85,7 @@ package com.creativebottle.starlingmvc.views
 		{
 			if (view)
 			{
-				srcClip.removeChild(view as DisplayObject);
+				srcClip.removeChild(view);
 			}
 		}
 	}

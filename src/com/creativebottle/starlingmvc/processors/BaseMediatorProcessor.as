@@ -29,7 +29,7 @@ package com.creativebottle.starlingmvc.processors
 		protected function announceToMediators(view:Object, beans:Beans, tag:String):void
 		{
 			var className:String = getQualifiedClassName(view);
-			var ViewClass:Class = getDefinitionByName(className) as Class;
+			var ViewClass:Class = Class(getDefinitionByName(className));
 
 			for each(var bean:Bean in beans.beans)
 			{
