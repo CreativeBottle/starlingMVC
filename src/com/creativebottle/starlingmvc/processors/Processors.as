@@ -21,7 +21,7 @@ package com.creativebottle.starlingmvc.processors
 
 	public class Processors
 	{
-		private var processors:Array = new Array();
+		private var processors:Array = [];
 		private var beans:Beans;
 		private var starlingMVC:StarlingMVC;
 

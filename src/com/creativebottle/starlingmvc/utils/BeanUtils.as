@@ -6,14 +6,7 @@ package com.creativebottle.starlingmvc.utils
 	{
 		public static function normalizeBean(bean:Object):Bean
 		{
-			if (bean is Bean)
-			{
-				return Bean(bean);
-			}
-			else
-			{
-				return new Bean(bean);
-			}
+			return bean is Bean ? Bean(bean) : new Bean(bean);
 		}
 	}
 }
