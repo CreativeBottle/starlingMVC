@@ -22,13 +22,11 @@ package com.creativebottle.starlingmvc.views
 	{
 		private var srcClip:Sprite;
 		private var view:DisplayObject;
-		private var stack:Array;
+		private var stack:Array = [];
 
 		public function ViewManager(srcClip:Sprite)
 		{
 			this.srcClip = srcClip;
-
-			stack = new Array();
 		}
 
 		public function addView(view:DisplayObject):DisplayObject
