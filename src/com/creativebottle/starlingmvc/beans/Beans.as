@@ -15,11 +15,11 @@
  */
 package com.creativebottle.starlingmvc.beans
 {
+	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.meta.MetaClass;
+	import com.creativebottle.starlingmvc.meta.MetaClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
-	import com.creativebottle.system.injection.InjectionTag;
-	import com.creativebottle.system.meta.MetaClass;
-	import com.creativebottle.system.meta.MetaClassMember;
 
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
