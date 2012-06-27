@@ -33,9 +33,9 @@ package com.creativebottle.starlingmvc.beans
 		{
 			var bean:Bean = BeanUtils.normalizeBean(beanIn);
 
-			if (bean is Prototype)
+			if (bean is ProtoBean)
 			{
-				createMap(Prototype(bean).classType, bean);
+				createMap(ProtoBean(bean).classType, bean);
 			}
 			else
 			{

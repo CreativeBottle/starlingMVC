@@ -18,7 +18,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.beans.Prototype;
+	import com.creativebottle.starlingmvc.beans.ProtoBean;
 	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.meta.MetaClass;
@@ -61,10 +61,10 @@ package com.creativebottle.starlingmvc.processors
 				{
 					mapping = beans.getBeanById(arg.value);
 
-					if (mapping is Prototype)
+					if (mapping is ProtoBean)
 					{
-						var prototype:Prototype = Prototype(mapping);
-						instance = new prototype.classType();
+						var ProtoBean:ProtoBean = ProtoBean(mapping);
+						instance = new ProtoBean.classType();
 
 						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, instance));
 					}
