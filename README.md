@@ -72,4 +72,25 @@ var beans:Array = [new Bean(new GameModel(),"gameModelEasy"),new Bean(new GameMo
 ```
 
 ###BeanProvider instances
-A BeanProvider is a collection of Beans. The beans within the provider, like with a simple array, can be of any type. 
+A BeanProvider is a collection of Beans. The beans within the provider, like with a simple array, can be of any type, including BeanProvider.
+```as3
+package com.mygame.config
+{
+	import com.creativebottle.starlingmvc.beans.BeanProvider;
+	import com.mygame.assets.AssetModel;
+	import com.mygame.models.AudioModel;
+	import com.mygame.models.GameModel;
+
+	public class Models extends BeanProvider
+	{
+		public function Models()
+		{
+			beans = [new GameModel(), new Bean(new AudioModel(),"audioModel"), new AssetModel()];
+		}
+	}
+}
+```
+Once you have your BeanProvider set up, you can pass that as a part of your original beans array.  
+```as3
+var beans:Array = [new Models(), new ViewManager(this), Starling.juggler];
+```
