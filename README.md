@@ -106,7 +106,7 @@ Dependency Injection
 ------------
 Dependency injection occurs on all beans and all Starling display objects. Injection can be done by type:
 ```as3
-package com.popem.models
+package com.mygame.models
 {
 	public class GameController
 	{
@@ -122,7 +122,7 @@ package com.popem.models
 ```
 or by id, if an id was specified when the bean was created:
 ```as3
-package com.popem.models
+package com.mygame.models
 {
 	public class GameController
 	{
