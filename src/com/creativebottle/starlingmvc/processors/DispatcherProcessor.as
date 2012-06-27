@@ -18,7 +18,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.meta.MetaClass;
 	import com.creativebottle.starlingmvc.meta.MetaClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
@@ -43,7 +43,7 @@ package com.creativebottle.starlingmvc.processors
 
 			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
 
-			var injections:Array = metaClass.membersByMetaTag(InjectionTag.DISPATCHER);
+			var injections:Array = metaClass.membersByMetaTag(Tags.DISPATCHER);
 
 			for each(var member:MetaClassMember in injections)
 			{

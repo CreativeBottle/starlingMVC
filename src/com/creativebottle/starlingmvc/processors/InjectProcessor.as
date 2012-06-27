@@ -19,7 +19,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.beans.Prototype;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.meta.MetaClass;
 	import com.creativebottle.starlingmvc.meta.MetaClassMember;
@@ -48,13 +48,11 @@ package com.creativebottle.starlingmvc.processors
 
 			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
 
-			var injections:Array = metaClass.membersByMetaTag(InjectionTag.INJECT);
+			var injections:Array = metaClass.membersByMetaTag(Tags.INJECT);
 
 			for each(var member:MetaClassMember in injections)
 			{
-				var TempClass:Class = Class(getDefinitionByName(member.type));
-
-				var arg:MetaTagArg = member.tagByName(InjectionTag.INJECT).argByKey("source");
+				var arg:MetaTagArg = member.tagByName(Tags.INJECT).argByKey("source");
 
 				var mapping:Bean;
 				var instance:Object;
@@ -77,6 +75,7 @@ package com.creativebottle.starlingmvc.processors
 				}
 				else
 				{
+					var TempClass:Class = Class(getDefinitionByName(member.type));
 					mapping = beans.getBeanByClass(TempClass);
 
 					instance = mapping.instance;

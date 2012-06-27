@@ -18,7 +18,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.meta.MetaClass;
 	import com.creativebottle.starlingmvc.meta.MetaClassMember;
 	import com.creativebottle.starlingmvc.meta.MetaTag;
@@ -49,11 +49,11 @@ package com.creativebottle.starlingmvc.processors
 
 			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
 
-			var eventHandlers:Array = metaClass.membersByMetaTag(InjectionTag.EVENT_HANDLER);
+			var eventHandlers:Array = metaClass.membersByMetaTag(Tags.EVENT_HANDLER);
 
 			for each(var member:MetaClassMember in eventHandlers)
 			{
-				var metaTag:MetaTag = member.tagByName(InjectionTag.EVENT_HANDLER);
+				var metaTag:MetaTag = member.tagByName(Tags.EVENT_HANDLER);
 				var arg:MetaTagArg = metaTag.argByKey("event");
 
 				var eventName:String = getEventName(arg);
