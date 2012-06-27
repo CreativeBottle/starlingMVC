@@ -24,7 +24,10 @@ package com.creativebottle.starlingmvc.meta
 		{
 			this.name = name;
 
-			parseArgs(xml);
+			for each(var argXml:XML in xml)
+			{
+				args.push(new MetaTagArg(argXml.@key, argXml.@value));
+			}
 		}
 
 		/**
@@ -41,14 +44,6 @@ package com.creativebottle.starlingmvc.meta
 			}
 
 			return null;
-		}
-
-		private function parseArgs(xml:XMLList):void
-		{
-			for each(var argXml:XML in xml)
-			{
-				args.push(new MetaTagArg(argXml.@key, argXml.@value));
-			}
 		}
 
 		/**
