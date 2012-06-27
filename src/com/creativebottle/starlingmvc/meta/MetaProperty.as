@@ -20,7 +20,7 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function toString():String
 		{
-			return "MetaProperty{ name:" + name + ",type:" + type + ",tags:" + tags + " }";
+			return "MetaProperty{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
 		}
 	}
 }

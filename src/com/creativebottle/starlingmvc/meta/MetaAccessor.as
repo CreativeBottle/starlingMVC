@@ -20,7 +20,7 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function toString():String
 		{
-			return "MetaAccessor{ name:" + name + ",type:" + type + ",tags:" + tags + " }";
+			return "MetaAccessor{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
 		}
 	}
 }

@@ -15,9 +15,9 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public var name:String;
 		/**
-		 * The member type.
+		 * The member classname.
 		 */
-		public var type:String;
+		public var classname:String;
 
 		/**
 		 * Constructor
@@ -64,7 +64,7 @@ package com.creativebottle.starlingmvc.meta
 		protected function parse(xml:XML):void
 		{
 			name = xml.@name;
-			type = xml.@type;
+			classname = xml.@type;
 
 			for each(var metaDataXml:XML in xml.metadata)
 			{
