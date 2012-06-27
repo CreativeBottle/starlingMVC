@@ -63,11 +63,6 @@ package com.creativebottle.starlingmvc.processors
 				{
 					mapping = beans.getBeanById(arg.value);
 
-					if (!mapping)
-					{
-						throw new Error("No bean found with id: " + arg.value);
-					}
-
 					if (mapping is Prototype)
 					{
 						var prototype:Prototype = Prototype(mapping);

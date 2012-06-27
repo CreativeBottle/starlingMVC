@@ -120,7 +120,12 @@ package com.creativebottle.starlingmvc.beans
 
 		public function getBeanById(id:String):Bean
 		{
-			return beans[id];
+			var output:Bean = beans[id];
+                        if (!output)
+			{
+				throw new Error("No bean found with id: " + id);
+			}
+			return output;
 		}
 	}
 }
