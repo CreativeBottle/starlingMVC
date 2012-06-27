@@ -43,11 +43,11 @@ package com.creativebottle.starlingmvc.processors
 
 			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
 
-			var injections:Array = metaClass.membersByMetaTag(Tags.DISPATCHER);
+			var dispatchers:Array = metaClass.membersByMetaTag(Tags.DISPATCHER);
 
-			for each(var member:MetaClassMember in injections)
+			for each(var taggedDispatcher:MetaClassMember in dispatchers)
 			{
-				bean.instance[ member.name ] = dispatcher;
+				bean.instance[ taggedDispatcher.name ] = this.dispatcher;
 			}
 		}
 	}

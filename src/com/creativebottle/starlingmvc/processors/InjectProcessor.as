@@ -50,9 +50,9 @@ package com.creativebottle.starlingmvc.processors
 
 			var injections:Array = metaClass.membersByMetaTag(Tags.INJECT);
 
-			for each(var member:MetaClassMember in injections)
+			for each(var property:MetaClassMember in injections)
 			{
-				var arg:MetaTagArg = member.tagByName(Tags.INJECT).argByKey("source");
+				var arg:MetaTagArg = property.tagByName(Tags.INJECT).argByKey("source");
 
 				var mapping:Bean;
 				var instance:Object;
@@ -75,13 +75,13 @@ package com.creativebottle.starlingmvc.processors
 				}
 				else
 				{
-					var TempClass:Class = Class(getDefinitionByName(member.type));
+					var TempClass:Class = Class(getDefinitionByName(property.classname));
 					mapping = beans.getBeanByClass(TempClass);
 
 					instance = mapping.instance;
 				}
 
-				bean.instance[member.name] = instance;
+				bean.instance[property.name] = instance;
 			}
 		}
 	}

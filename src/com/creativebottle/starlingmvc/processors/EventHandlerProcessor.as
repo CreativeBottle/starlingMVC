@@ -51,14 +51,14 @@ package com.creativebottle.starlingmvc.processors
 
 			var eventHandlers:Array = metaClass.membersByMetaTag(Tags.EVENT_HANDLER);
 
-			for each(var member:MetaClassMember in eventHandlers)
+			for each(var method:MetaClassMember in eventHandlers)
 			{
-				var metaTag:MetaTag = member.tagByName(Tags.EVENT_HANDLER);
+				var metaTag:MetaTag = method.tagByName(Tags.EVENT_HANDLER);
 				var arg:MetaTagArg = metaTag.argByKey("event");
 
 				var eventName:String = getEventName(arg);
 
-				addToDispatchers(eventName, bean.instance[member.name], metaTag);
+				addToDispatchers(eventName, bean.instance[method.name], metaTag);
 			}
 		}
 
