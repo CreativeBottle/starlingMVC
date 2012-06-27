@@ -148,7 +148,7 @@ class EventHandler
 
 	public function handleEvent(event:Event):void
 	{
-		var handlerArgs:Array = new Array();
+		var handlerArgs:Array = [];
 
 		for each(var arg:String in args)
 		{

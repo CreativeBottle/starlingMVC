@@ -9,7 +9,7 @@ package com.creativebottle.starlingmvc.meta
 		/**
 		 * All arguments on the tag
 		 */
-		public const args:Array = new Array();
+		public const args:Array = [];
 		/**
 		 * The tag name
 		 */

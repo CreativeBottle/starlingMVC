@@ -8,7 +8,7 @@ package com.creativebottle.starlingmvc.meta
 		/**
 		 * All tags on the member
 		 */
-		public const tags:Array = new Array();
+		public const tags:Array = [];
 
 		/**
 		 * The member name.

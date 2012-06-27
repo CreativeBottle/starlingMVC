@@ -2,7 +2,7 @@ package com.creativebottle.starlingmvc.meta
 {
 	public class MetaMethod extends MetaClassMember
 	{
-		public var parameters:Array = new Array();
+		public var parameters:Array = [];
 
 		public function MetaMethod(xml:XML)
 		{

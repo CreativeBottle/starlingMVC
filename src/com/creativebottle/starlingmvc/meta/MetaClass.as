@@ -10,17 +10,17 @@ package com.creativebottle.starlingmvc.meta
 		/**
 		 * All accessors within the meta class
 		 */
-		public const accessors:Array = new Array();
+		public const accessors:Array = [];
 		/**
 		 * All properties within the meta class
 		 */
-		public const properties:Array = new Array();
+		public const properties:Array = [];
 		/**
 		 * All meta tags on the class
 		 */
-		public var tags:Array = new Array();
+		public var tags:Array = [];
 
-		public const methods:Array = new Array();
+		public const methods:Array = [];
 
 		/**
 		 * Constructor
@@ -48,7 +48,7 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function membersByMetaTag(tagName:String):Array
 		{
-			var members:Array = new Array();
+			var members:Array = [];
 
 			var member:MetaClassMember;
 
