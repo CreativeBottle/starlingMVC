@@ -16,7 +16,7 @@
 package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.system.injection.InjectionTag;
+	import com.creativebottle.starlingmvc.constants.InjectionTag;
 
 	public class ViewRemovedProcessor extends BaseMediatorProcessor
 	{
