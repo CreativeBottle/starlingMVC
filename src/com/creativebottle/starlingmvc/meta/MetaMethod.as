@@ -13,10 +13,7 @@ package com.creativebottle.starlingmvc.meta
 		{
 			name = xml.@name;
 
-			for each(var metaDataXml:XML in xml.metadata)
-			{
-				tags.push(new MetaTag(metaDataXml.@name, metaDataXml..arg));
-			}
+			super.parse(xml);
 
 			for each(var parameterXml:XML in xml.parameter)
 			{
