@@ -36,9 +36,9 @@ package com.creativebottle.starlingmvc.meta
 				tags.push(new MetaTag(tag.@name, tag..arg));
 			}
 
-			parse(xml..accessor, MetaItemType.ACCESSOR);
-			parse(xml..variable, MetaItemType.PROPERTY);
-			parse(xml..method, MetaItemType.METHOD);
+			parse(xml..accessor, MemberKind.ACCESSOR);
+			parse(xml..variable, MemberKind.PROPERTY);
+			parse(xml..method, MemberKind.METHOD);
 		}
 
 		/**
@@ -105,21 +105,24 @@ package com.creativebottle.starlingmvc.meta
 			return null;
 		}
 
-		private function parse(xmlList:XMLList, type:MetaItemType):void
+		private function parse(xmlList:XMLList, kind:MemberKind):void
 		{
 			for each(var itemXml:XML in xmlList)
 			{
-				if (type == MetaItemType.ACCESSOR)
+				switch (kind)
 				{
-					accessors.push(new MetaAccessor(itemXml));
-				}
-				else if (type == MetaItemType.METHOD)
-				{
-					methods.push(new MetaMethod(itemXml));
-				}
-				else
-				{
-					properties.push(new MetaProperty(itemXml));
+					case MemberKind.ACCESSOR:
+						accessors.push(new MetaAccessor(itemXml));
+						break;
+					case MemberKind.METHOD:
+						methods.push(new MetaMethod(itemXml));
+						break;
+					case MemberKind.PROPERTY:
+						properties.push(new MetaProperty(itemXml));
+						break;
+					default:
+						throw new Error("MetaClass: cannot parse: undefined member kind: " + kind);
+						break;
 				}
 			}
 		}
