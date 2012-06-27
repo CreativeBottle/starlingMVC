@@ -54,7 +54,7 @@ package com.creativebottle.starlingmvc.processors
 			{
 				var TempClass:Class = Class(getDefinitionByName(member.type));
 
-				var arg:MetaTagArg = member.tagByName(InjectionTag.INJECT).argByName("source");
+				var arg:MetaTagArg = member.tagByName(InjectionTag.INJECT).argByKey("source");
 
 				var mapping:Bean;
 				var instance:Object;

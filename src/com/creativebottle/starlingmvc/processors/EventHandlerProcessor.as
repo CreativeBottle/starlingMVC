@@ -54,7 +54,7 @@ package com.creativebottle.starlingmvc.processors
 			for each(var member:MetaClassMember in eventHandlers)
 			{
 				var metaTag:MetaTag = member.tagByName(InjectionTag.EVENT_HANDLER);
-				var arg:MetaTagArg = metaTag.argByName("event");
+				var arg:MetaTagArg = metaTag.argByKey("event");
 
 				var eventName:String = getEventName(arg);
 
@@ -140,7 +140,7 @@ class EventHandler
 	{
 		this.handler = handler;
 
-		var arg:MetaTagArg = tag.argByName("properties");
+		var arg:MetaTagArg = tag.argByKey("properties");
 
 		if (arg)
 			args = String(arg.value).split(",");

@@ -35,11 +35,11 @@ package com.creativebottle.starlingmvc.meta
 		 *
 		 * @param name The name to search for
 		 */
-		public function argByName(name:String):MetaTagArg
+		public function argByKey(key:String):MetaTagArg
 		{
 			for each(var arg:MetaTagArg in args)
 			{
-				if (arg.name == name)
+				if (arg.key == key)
 					return arg;
 			}
 
