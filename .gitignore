@@ -1,9 +1,12 @@
 # deployment artifacts
-ivy-*.xml
+#ivy-*.xml
 
 # build artifacts
 target/
 lib/
+
+# IDE project files 
+*.geany
 
 # vim
 *~
