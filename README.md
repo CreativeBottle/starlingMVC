@@ -25,10 +25,10 @@ Getting your Starling project configured to work with StarlingMVC requires only 
 ```as3
 package com.mygame.views
 {
-  import com.creativebottle.starlingmvc.StarlingMVC;
+  	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
 	import com.creativebottle.starlingmvc.views.ViewManager;
-  import com.mygame.models.GameModel;
+ 	import com.mygame.models.GameModel;
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
