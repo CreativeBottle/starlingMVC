@@ -33,11 +33,11 @@ package com.mygame.views
 	import starling.core.Starling;
 	import starling.display.Sprite;
 
-	public class PopEmMain extends Sprite
+	public class GameMain extends Sprite
 	{
 		private var starlingMVC:StarlingMVC;
 
-		public function PopEmMain()
+		public function GameMain()
 		{
 			var config:StarlingMVCConfig = new StarlingMVCConfig();
 			config.eventPackages = ["com.mygame.events"];
