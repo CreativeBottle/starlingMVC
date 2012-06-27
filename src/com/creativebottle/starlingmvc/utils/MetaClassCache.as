@@ -23,11 +23,6 @@ package com.creativebottle.starlingmvc.utils
 	{
 		private static const metaClassCache:Dictionary = new Dictionary();
 
-		public function MetaClassCache()
-		{
-
-		}
-
 		public static function getMetaClassForInstance(object:Object):MetaClass
 		{
 			var metaClass:MetaClass;
