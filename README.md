@@ -94,3 +94,10 @@ Once you have your BeanProvider set up, you can pass that as a part of your orig
 ```as3
 var beans:Array = [new Models(), new ViewManager(this), Starling.juggler];
 ```
+
+###Prototypes
+A Prototype bean is a bean that is created at the time of injection. Where normal beans require a class instance, a Protoype requires a class and an id.  
+```as3
+var beans:Array = [new Prototype(Character,"character"), new ViewManager(this)];
+```
+Using a Prototype here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.
