@@ -100,4 +100,40 @@ A Prototype bean is a bean that is created at the time of injection. Where norma
 ```as3
 var beans:Array = [new Prototype(Character,"character"), new ViewManager(this)];
 ```
-Using a Prototype here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.
+Using a Prototype here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.  
+
+Dependency Injection
+------------
+Dependency injection occurs on all beans and all Starling display objects. Injection can be done by type:
+```as3
+package com.popem.models
+{
+	public class GameController
+	{
+		[Inject]
+		public var gameModel:GameModel;
+		
+		public function GameModel():void
+		{
+			bubbleCreated();
+		}
+	}
+}
+```
+or by id, if an id was specified when the bean was created:
+```as3
+package com.popem.models
+{
+	public class GameController
+	{
+		[Inject(source="gameModel")]
+		public var gameModel:GameModel;
+		
+		public function GameModel():void
+		{
+			bubbleCreated();
+		}
+	}
+}
+```
+In the above example, if the GameModel is a normal bean, the framework will set the value to the singleton instance that was created during setup. If it was a prototype, a new instance will be created and injected into the property.  
