@@ -50,5 +50,26 @@ package com.mygame.views
 }
 ```
 
-The StarlingMVCConfig instance above tells StarlingMVC which events it should mediate. 
+The StarlingMVCConfig instance above tells StarlingMVC which events it should mediate.  
 The beans Array is merely a collection of objects. The array can accept an object of any type. The framework will handle it accordingly.
+
+Beans
+------------
+A Bean is an instance of an object that is provided to StarlingMVC to manage. Beans can be injected, receive injections, and handle events. There are several ways that beans can be provided to StarlingMVC during setup:  
+###Object instance
+```as3
+var beans:Array = [new GameModel(), new ViewManager(this), Starling.juggler];
+```
+
+
+###Bean instances
+```as3
+var beans:Array = [new Bean(new GameModel()), new Bean(new ViewManager(this)), new Bean(Starling.juggler)];
+```
+Providing a Bean instance as shown above does not give much benefit. However, there is an option second parameter to thw Bean constructor that allows for an id. If you provide an id then you can use the id during dependency injection. Additionally, beans are stored within the framework by class type unless you provide an id. So if you have two beans of the same type you will need to specify an id or subsequent beans will overwrite the previous beans. For example:  
+```as3
+var beans:Array = [new Bean(new GameModel(),"gameModelEasy"),new Bean(new GameModel(),"gameModelHard"), new ViewManager(this), Starling.juggler];
+```
+
+###BeanProvider instances
+A BeanProvider is a collection of Beans. The beans within the provider, like with a simple array, can be of any type. 
