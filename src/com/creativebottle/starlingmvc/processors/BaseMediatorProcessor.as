@@ -17,9 +17,9 @@ package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
+	import com.creativebottle.starlingmvc.meta.MetaClass;
+	import com.creativebottle.starlingmvc.meta.MetaMethod;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
-	import com.creativebottle.system.meta.MetaClass;
-	import com.creativebottle.system.meta.MetaMethod;
 
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;

@@ -18,12 +18,12 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
+	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.meta.MetaClass;
+	import com.creativebottle.starlingmvc.meta.MetaClassMember;
+	import com.creativebottle.starlingmvc.meta.MetaMethod;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.MetaClassCache;
-	import com.creativebottle.system.injection.InjectionTag;
-	import com.creativebottle.system.meta.MetaClass;
-	import com.creativebottle.system.meta.MetaClassMember;
-	import com.creativebottle.system.meta.MetaMethod;
 
 	public class PostConstructProcessor implements IProcessor
 	{

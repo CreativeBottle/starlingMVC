@@ -15,7 +15,7 @@
  */
 package com.creativebottle.starlingmvc.utils
 {
-	import com.creativebottle.system.meta.MetaClass;
+	import com.creativebottle.starlingmvc.meta.MetaClass;
 
 	import flash.utils.Dictionary;
 
