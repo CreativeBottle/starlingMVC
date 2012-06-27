@@ -37,17 +37,17 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
+			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
 
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
-
-			var dispatchers:Array = metaClass.membersByMetaTag(Tags.DISPATCHER);
+			var dispatchers:Array = classDescriptor.membersByMetaTag(Tags.DISPATCHER);
 
 			for each(var taggedDispatcher:MetaClassMember in dispatchers)
 			{
-				bean.instance[ taggedDispatcher.name ] = this.dispatcher;
+				target[ taggedDispatcher.name ] = this.dispatcher;
 			}
 		}
 	}

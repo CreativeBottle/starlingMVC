@@ -43,13 +43,13 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
+			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
 
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
-
-			var eventHandlers:Array = metaClass.membersByMetaTag(Tags.EVENT_HANDLER);
+			var eventHandlers:Array = classDescriptor.membersByMetaTag(Tags.EVENT_HANDLER);
 
 			for each(var method:MetaClassMember in eventHandlers)
 			{
@@ -58,7 +58,7 @@ package com.creativebottle.starlingmvc.processors
 
 				var eventName:String = getEventName(arg);
 
-				addToDispatchers(eventName, bean.instance[method.name], metaTag);
+				addToDispatchers(eventName, target[method.name], metaTag);
 			}
 		}
 

@@ -34,20 +34,20 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
-
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
 
 			// Handle pre destroys
-			var preDestroys:Array = metaClass.membersByMetaTag(Tags.PRE_DESTROY);
+			var preDestroys:Array = classDescriptor.membersByMetaTag(Tags.PRE_DESTROY);
 
 			for each(var method:MetaClassMember in preDestroys)
 			{
 				if (method is MetaMethod)
 				{
-					bean.instance[ method.name ]();
+					target[ method.name ]();
 				}
 			}
 		}

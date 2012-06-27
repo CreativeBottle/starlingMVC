@@ -42,46 +42,46 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
+			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
 
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
-
-			var injections:Array = metaClass.membersByMetaTag(Tags.INJECT);
+			var injections:Array = classDescriptor.membersByMetaTag(Tags.INJECT);
 
 			for each(var property:MetaClassMember in injections)
 			{
 				var arg:MetaTagArg = property.tagByName(Tags.INJECT).argByKey("source");
 
-				var mapping:Bean;
-				var instance:Object;
+				var sourceBean:Bean;
+				var source:Object;
 
 				if (arg)
 				{
-					mapping = beans.getBeanById(arg.value);
+					sourceBean = beans.getBeanById(arg.value);
 
-					if (mapping is ProtoBean)
+					if (sourceBean is ProtoBean)
 					{
-						var ProtoBean:ProtoBean = ProtoBean(mapping);
-						instance = new ProtoBean.classType();
+						var ProtoBean:ProtoBean = ProtoBean(sourceBean);
+						source = new ProtoBean.classType();
 
-						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, instance));
+						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, source));
 					}
 					else
 					{
-						instance = mapping.instance;
+						source = sourceBean.instance;
 					}
 				}
 				else
 				{
 					var TempClass:Class = Class(getDefinitionByName(property.classname));
-					mapping = beans.getBeanByClass(TempClass);
+					sourceBean = beans.getBeanByClass(TempClass);
 
-					instance = mapping.instance;
+					source = sourceBean.instance;
 				}
 
-				bean.instance[property.name] = instance;
+				target[property.name] = source;
 			}
 		}
 	}
