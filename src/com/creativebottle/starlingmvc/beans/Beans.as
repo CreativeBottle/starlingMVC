@@ -16,8 +16,8 @@
 package com.creativebottle.starlingmvc.beans
 {
 	import com.creativebottle.starlingmvc.constants.Tags;
-	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
-	import com.creativebottle.starlingmvc.meta.ClassMember;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
@@ -121,7 +121,7 @@ package com.creativebottle.starlingmvc.beans
 		public function getBeanById(id:String):Bean
 		{
 			var output:Bean = beans[id];
-                        if (!output)
+			if (!output)
 			{
 				throw new Error("No bean found with id: " + id);
 			}

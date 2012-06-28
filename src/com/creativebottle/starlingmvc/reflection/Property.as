@@ -1,4 +1,4 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	/**
 	 * Class for properties within a meta class

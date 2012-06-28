@@ -1,4 +1,4 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	public class MemberKind
 	{

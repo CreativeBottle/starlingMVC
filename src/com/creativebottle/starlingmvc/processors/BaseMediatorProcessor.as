@@ -17,8 +17,8 @@ package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
-	import com.creativebottle.starlingmvc.meta.Method;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.Method;
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.getDefinitionByName;
@@ -36,7 +36,7 @@ package com.creativebottle.starlingmvc.processors
 				var target:Object = targetBean.instance;
 				if (!target) continue;
 
-				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(bean.instance);
+				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(targetBean.instance);
 
 				var viewAddedMethods:Array = classDescriptor.membersByMetaTag(tag);
 

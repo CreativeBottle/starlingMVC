@@ -21,9 +21,9 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.ProtoBean;
 	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
-	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
-	import com.creativebottle.starlingmvc.meta.ClassMember;
-	import com.creativebottle.starlingmvc.meta.MetaTagArg;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
+	import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
@@ -43,7 +43,7 @@ package com.creativebottle.starlingmvc.processors
 		public function process(object:Object, beans:Beans):void
 		{
 			var targetBean:Bean = BeanUtils.normalizeBean(object);
-			var target = targetBean.instance;
+			var target:Object = targetBean.instance;
 			if (!target) return;
 
 			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
@@ -63,8 +63,8 @@ package com.creativebottle.starlingmvc.processors
 
 					if (sourceBean is ProtoBean)
 					{
-						var ProtoBean:ProtoBean = ProtoBean(sourceBean);
-						source = new ProtoBean.classType();
+						var protoBean:ProtoBean = ProtoBean(sourceBean);
+						source = new protoBean.classType();
 
 						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, source));
 					}

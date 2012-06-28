@@ -1,4 +1,4 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	/**
 	 * Class for accessors within a meta class

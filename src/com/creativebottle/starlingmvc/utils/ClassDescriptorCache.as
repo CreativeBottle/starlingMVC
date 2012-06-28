@@ -15,7 +15,7 @@
  */
 package com.creativebottle.starlingmvc.utils
 {
-	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
 
 	import flash.utils.Dictionary;
 

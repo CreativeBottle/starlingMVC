@@ -1,4 +1,4 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	/**
 	 * Key-value pair belonging to a metadata tag.
