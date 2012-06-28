@@ -60,16 +60,14 @@ package com.creativebottle.starlingmvc.beans
 			assertEquals("Beans should be equal.", beanIn, beanOut);
 		}
 
-		[Test]
-		public function addBean_beanWithNoIdNotRetrievableById_returnsNull():void
+		[Test(expects="com.creativebottle.starlingmvc.errors.BeanNotFoundError")]
+		public function addBean_beanWithNoIdNotRetrievableById_throwsError():void
 		{
 			var beanIn:Bean = new Bean(new TestModel());
 
 			beans.addBean(beanIn);
 
-			var beanOut:Bean = beans.getBeanById("testBean");
-
-			assertNull("Bean should be null.", beanOut);
+			beans.getBeanById("testBean");
 		}
 
 		[Test]
@@ -79,9 +77,9 @@ package com.creativebottle.starlingmvc.beans
 
 			beans.addBean(beanIn);
 
-			var beanOut:Bean = beans.getBeanByClass(TestModel);
+			var bean:Bean = beans.getBeanByClass(TestModel);
 
-			assertNull("Bean should be null.", beanOut);
+			assertNull("bean should be null", bean);
 		}
 
 		[Test]
@@ -108,17 +106,15 @@ package com.creativebottle.starlingmvc.beans
 			assertEquals("beanOut.instance should equal the second object in the array.", b[1], beanOut.instance);
 		}
 
-		[Test]
-		public function removeBean_beanWithId_returnsNull():void
+		[Test(expects="com.creativebottle.starlingmvc.errors.BeanNotFoundError")]
+		public function removeBean_beanWithId_throwsError():void
 		{
 			var beanIn:Bean = new Bean(new TestModel(), "testBean");
 
 			beans.addBean(beanIn);
 			beans.removeBean(beanIn);
 
-			var beanOut:Bean = beans.getBeanById("testBean");
-
-			assertNull("Bean should be null.", beanOut);
+			beans.getBeanById("testBean");
 		}
 
 		[Test]
@@ -129,9 +125,9 @@ package com.creativebottle.starlingmvc.beans
 			beans.addBean(beanIn);
 			beans.removeBean(beanIn);
 
-			var beanOut:Bean = beans.getBeanByClass(TestModel);
+			var bean:Bean = beans.getBeanByClass(TestModel);
 
-			assertNull("Bean should be null.", beanOut);
+			assertNull("Bean should be null", bean);
 		}
 
 		[Test]

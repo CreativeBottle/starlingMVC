@@ -1,5 +1,7 @@
 package com.creativebottle.starlingmvc.reflection
 {
+	import com.creativebottle.starlingmvc.errors.UndefinedMemberKindError;
+
 	import flash.utils.describeType;
 
 	/**
@@ -121,7 +123,7 @@ package com.creativebottle.starlingmvc.reflection
 						properties.push(new Property(itemXml));
 						break;
 					default:
-						throw new Error("ClassDescriptor: cannot parse: undefined member kind: " + kind);
+						throw new UndefinedMemberKindError(kind);
 						break;
 				}
 			}

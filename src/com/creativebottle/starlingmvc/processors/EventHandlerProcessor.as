@@ -19,6 +19,9 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.errors.EventClassNotFoundError;
+	import com.creativebottle.starlingmvc.errors.EventTypeNotFoundOnClassError;
+	import com.creativebottle.starlingmvc.errors.InvalidEventTypeError;
 	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
 	import com.creativebottle.starlingmvc.reflection.ClassMember;
 	import com.creativebottle.starlingmvc.reflection.MetaTag;
@@ -75,13 +78,13 @@ package com.creativebottle.starlingmvc.processors
 				var eventClassName:String = arg.value.split(".")[0];
 				var EventClass:Class = getEventClass(eventClassName);
 
-				if (!EventClass) throw new Error("Event type not found: " + eventClassName);
+				if (!EventClass) throw new EventClassNotFoundError(eventClassName);
 
 				var eventName:String = arg.value.split(".")[1];
 
 				if (!eventName || EventClass[eventName] == null)
 				{
-					throw new Error("Event " + eventName + " not found on event class: " + eventClassName);
+					throw new EventTypeNotFoundOnClassError(eventName, eventClassName);
 				}
 				else
 				{
@@ -90,7 +93,7 @@ package com.creativebottle.starlingmvc.processors
 			}
 			else
 			{
-				throw new Error("Invalid event type: " + arg.value);
+				throw new InvalidEventTypeError(arg.value);
 			}
 		}
 
@@ -126,6 +129,7 @@ package com.creativebottle.starlingmvc.processors
 	}
 }
 
+import com.creativebottle.starlingmvc.errors.PropertyNotFoundOnEventError;
 import com.creativebottle.starlingmvc.reflection.MetaTag;
 import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 
@@ -158,7 +162,7 @@ class EventHandler
 			}
 			else
 			{
-				throw new Error("Property " + arg + " doesn't exit on event type " + typeof event);
+				throw new PropertyNotFoundOnEventError(arg, typeof event);
 			}
 		}
 
