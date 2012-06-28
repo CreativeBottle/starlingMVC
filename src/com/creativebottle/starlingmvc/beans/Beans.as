@@ -16,6 +16,7 @@
 package com.creativebottle.starlingmvc.beans
 {
 	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.errors.BeanNotFoundError;
 	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
 	import com.creativebottle.starlingmvc.reflection.ClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
@@ -123,7 +124,7 @@ package com.creativebottle.starlingmvc.beans
 			var output:Bean = beans[id];
 			if (!output)
 			{
-				throw new Error("No bean found with id: " + id);
+				throw new BeanNotFoundError(id);
 			}
 			return output;
 		}
