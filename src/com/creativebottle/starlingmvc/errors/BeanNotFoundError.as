@@ -2,9 +2,9 @@ package com.creativebottle.starlingmvc.errors
 {
 	public class BeanNotFoundError extends Error
 	{
-		public function BeanNotFoundError(id:String)
+		public function BeanNotFoundError(id:String = null)
 		{
-			super("No bean found with id: " + id);
+			super("Bean not found: " + id);
 		}
 	}
 }
