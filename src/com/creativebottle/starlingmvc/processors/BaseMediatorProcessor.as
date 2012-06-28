@@ -36,7 +36,7 @@ package com.creativebottle.starlingmvc.processors
 				var target:Object = targetBean.instance;
 				if (!target) continue;
 
-				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(targetBean.instance);
+				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
 				var viewAddedMethods:Array = classDescriptor.membersByMetaTag(tag);
 
