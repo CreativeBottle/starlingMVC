@@ -15,11 +15,11 @@
  */
 package com.creativebottle.starlingmvc.beans
 {
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
+	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
@@ -33,9 +33,9 @@ package com.creativebottle.starlingmvc.beans
 		{
 			var bean:Bean = BeanUtils.normalizeBean(beanIn);
 
-			if (bean is Prototype)
+			if (bean is ProtoBean)
 			{
-				createMap(Prototype(bean).classType, bean);
+				createMap(ProtoBean(bean).classType, bean);
 			}
 			else
 			{
@@ -54,11 +54,11 @@ package com.creativebottle.starlingmvc.beans
 			{
 				if (!bean.instance) continue;
 
-				var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+				var metaClass:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(bean.instance);
 
-				var injections:Array = metaClass.membersByMetaTag(InjectionTag.INJECT);
+				var injections:Array = metaClass.membersByMetaTag(Tags.INJECT);
 
-				for each(var member:MetaClassMember in injections)
+				for each(var member:ClassMember in injections)
 				{
 					if (bean.instance[member.name] == beanIn.instance)
 						bean.instance[member.name] = null;
@@ -120,7 +120,12 @@ package com.creativebottle.starlingmvc.beans
 
 		public function getBeanById(id:String):Bean
 		{
-			return beans[id];
+			var output:Bean = beans[id];
+			if (!output)
+			{
+				throw new Error("No bean found with id: " + id);
+			}
+			return output;
 		}
 	}
 }

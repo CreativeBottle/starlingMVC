@@ -1,14 +1,14 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	/**
-	 * Class for argume
+	 * Key-value pair belonging to a metadata tag.
 	 */
 	public class MetaTagArg
 	{
 		/**
-		 * The meta tag argument name
+		 * The meta tag argument key
 		 */
-		public var name:String;
+		public var key:String;
 		/**
 		 * The meta tag argument value
 		 */
@@ -17,12 +17,12 @@ package com.creativebottle.starlingmvc.meta
 		/**
 		 * Constructor
 		 *
-		 * @param name The meta tag argument name
+		 * @param key The meta tag argument key
 		 * @param value The meta tag argument value
 		 */
-		public function MetaTagArg(name:String, value:String)
+		public function MetaTagArg(key:String, value:String)
 		{
-			this.name = name;
+			this.key = key;
 			this.value = value;
 		}
 
@@ -31,7 +31,7 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function toString():String
 		{
-			return "MetaTagArg{name=" + String(name) + ",value=" + String(value) + "}";
+			return "MetaTagArg{key=" + key + ",value=" + value + "}";
 		}
 	}
 }

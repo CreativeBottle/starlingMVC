@@ -18,14 +18,14 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.beans.Prototype;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.beans.ProtoBean;
+	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
-	import com.creativebottle.starlingmvc.meta.MetaTagArg;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
+	import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.getDefinitionByName;
 
@@ -42,52 +42,46 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target:Object = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+			var injections:Array = classDescriptor.membersByMetaTag(Tags.INJECT);
 
-			var injections:Array = metaClass.membersByMetaTag(InjectionTag.INJECT);
-
-			for each(var member:MetaClassMember in injections)
+			for each(var property:ClassMember in injections)
 			{
-				var TempClass:Class = Class(getDefinitionByName(member.type));
+				var arg:MetaTagArg = property.tagByName(Tags.INJECT).argByKey("source");
 
-				var arg:MetaTagArg = member.tagByName(InjectionTag.INJECT).argByName("source");
-
-				var mapping:Bean;
-				var instance:Object;
+				var sourceBean:Bean;
+				var source:Object;
 
 				if (arg)
 				{
-					mapping = beans.getBeanById(arg.value);
+					sourceBean = beans.getBeanById(arg.value);
 
-					if (!mapping)
+					if (sourceBean is ProtoBean)
 					{
-						throw new Error("No bean found with id: " + arg.value);
-					}
+						var protoBean:ProtoBean = ProtoBean(sourceBean);
+						source = new protoBean.classType();
 
-					if (mapping is Prototype)
-					{
-						var prototype:Prototype = Prototype(mapping);
-						instance = new prototype.classType();
-
-						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, instance));
+						dispatcher.dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, source));
 					}
 					else
 					{
-						instance = mapping.instance;
+						source = sourceBean.instance;
 					}
 				}
 				else
 				{
-					mapping = beans.getBeanByClass(TempClass);
+					var TempClass:Class = Class(getDefinitionByName(property.classname));
+					sourceBean = beans.getBeanByClass(TempClass);
 
-					instance = mapping.instance;
+					source = sourceBean.instance;
 				}
 
-				bean.instance[member.name] = instance;
+				target[property.name] = source;
 			}
 		}
 	}

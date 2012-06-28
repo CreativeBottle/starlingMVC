@@ -1,16 +1,16 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	/**
 	 * Class for accessors within a meta class
 	 */
-	public class MetaAccessor extends MetaClassMember
+	public class Accessor extends ClassMember
 	{
 		/**
 		 * Constructor
 		 *
 		 * @param xml the xml representation of the accessor
 		 */
-		public function MetaAccessor(xml:XML)
+		public function Accessor(xml:XML)
 		{
 			super(xml);
 		}
@@ -20,7 +20,7 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function toString():String
 		{
-			return "MetaAccessor{ name:" + name + ",type:" + type + ",tags:" + tags + " }";
+			return "Accessor{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
 		}
 	}
 }

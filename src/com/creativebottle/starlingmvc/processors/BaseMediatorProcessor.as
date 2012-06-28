@@ -17,9 +17,9 @@ package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaMethod;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.Method;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -31,19 +31,20 @@ package com.creativebottle.starlingmvc.processors
 			var className:String = getQualifiedClassName(view);
 			var ViewClass:Class = Class(getDefinitionByName(className));
 
-			for each(var bean:Bean in beans.beans)
+			for each(var targetBean:Bean in beans.beans)
 			{
-				if (!bean.instance) continue;
+				var target:Object = targetBean.instance;
+				if (!target) continue;
 
-				var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(targetBean.instance);
 
-				var viewAddedMethods:Array = metaClass.membersByMetaTag(tag);
+				var viewAddedMethods:Array = classDescriptor.membersByMetaTag(tag);
 
-				for each(var metaMethod:MetaMethod in viewAddedMethods)
+				for each(var metaMethod:Method in viewAddedMethods)
 				{
 					if (metaMethod.parameters.length == 1 && metaMethod.parameters[0].type == ViewClass)
 					{
-						bean.instance[metaMethod.name](view);
+						target[metaMethod.name](view);
 					}
 				}
 			}

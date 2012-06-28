@@ -1,14 +1,14 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	import flash.utils.getDefinitionByName;
 
-	public class MetaParameter
+	public class Parameter
 	{
 		public var index:int;
 		public var type:Class;
 		public var optional:Boolean;
 
-		public function MetaParameter(xml:XML)
+		public function Parameter(xml:XML)
 		{
 			index = int(xml.@index);
 			type = getDefinitionByName(xml.@type) as Class;

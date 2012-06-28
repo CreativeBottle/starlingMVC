@@ -18,11 +18,11 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
+	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import starling.events.EventDispatcher;
 
@@ -37,17 +37,17 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target:Object = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+			var dispatchers:Array = classDescriptor.membersByMetaTag(Tags.DISPATCHER);
 
-			var injections:Array = metaClass.membersByMetaTag(InjectionTag.DISPATCHER);
-
-			for each(var member:MetaClassMember in injections)
+			for each(var taggedDispatcher:ClassMember in dispatchers)
 			{
-				bean.instance[ member.name ] = dispatcher;
+				target[ taggedDispatcher.name ] = this.dispatcher;
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 
 	/**
@@ -9,7 +9,7 @@ package com.creativebottle.starlingmvc.meta
 		/**
 		 * All arguments on the tag
 		 */
-		public const args:Array = new Array();
+		public const args:Array = [];
 		/**
 		 * The tag name
 		 */
@@ -24,7 +24,10 @@ package com.creativebottle.starlingmvc.meta
 		{
 			this.name = name;
 
-			parseArgs(xml);
+			for each(var argXml:XML in xml)
+			{
+				args.push(new MetaTagArg(argXml.@key, argXml.@value));
+			}
 		}
 
 		/**
@@ -32,23 +35,15 @@ package com.creativebottle.starlingmvc.meta
 		 *
 		 * @param name The name to search for
 		 */
-		public function argByName(name:String):MetaTagArg
+		public function argByKey(key:String):MetaTagArg
 		{
 			for each(var arg:MetaTagArg in args)
 			{
-				if (arg.name == name)
+				if (arg.key == key)
 					return arg;
 			}
 
 			return null;
-		}
-
-		private function parseArgs(xml:XMLList):void
-		{
-			for each(var argXml:XML in xml)
-			{
-				args.push(new MetaTagArg(argXml.@key, argXml.@value));
-			}
 		}
 
 		/**

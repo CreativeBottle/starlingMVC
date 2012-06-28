@@ -18,12 +18,12 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
-	import com.creativebottle.starlingmvc.meta.MetaMethod;
+	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
+	import com.creativebottle.starlingmvc.reflection.Method;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	public class PostConstructProcessor implements IProcessor
 	{
@@ -34,20 +34,20 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target:Object = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
-
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
 			// Handle post constructs
-			var postConstructs:Array = metaClass.membersByMetaTag(InjectionTag.POST_CONSTRUCT);
+			var postConstructs:Array = classDescriptor.membersByMetaTag(Tags.POST_CONSTRUCT);
 
-			for each(var method:MetaClassMember in postConstructs)
+			for each(var method:ClassMember in postConstructs)
 			{
-				if (method is MetaMethod)
+				if (method is Method)
 				{
-					bean.instance[ method.name ]();
+					target[ method.name ]();
 				}
 			}
 		}

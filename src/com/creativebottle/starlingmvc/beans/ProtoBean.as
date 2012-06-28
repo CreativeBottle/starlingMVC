@@ -15,7 +15,7 @@
  */
 package com.creativebottle.starlingmvc.beans
 {
-	public class Prototype extends Bean
+	public class ProtoBean extends Bean
 	{
 		public function get classType():Class
 		{
@@ -24,7 +24,7 @@ package com.creativebottle.starlingmvc.beans
 
 		private var _classType:Class;
 
-		public function Prototype(classType:Class, id:String)
+		public function ProtoBean(classType:Class, id:String)
 		{
 			super(null, id);
 

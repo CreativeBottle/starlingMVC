@@ -18,13 +18,13 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
-	import com.creativebottle.starlingmvc.meta.MetaTag;
-	import com.creativebottle.starlingmvc.meta.MetaTagArg;
+	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
+	import com.creativebottle.starlingmvc.reflection.MetaTag;
+	import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.getDefinitionByName;
 
@@ -43,22 +43,22 @@ package com.creativebottle.starlingmvc.processors
 
 		public function process(object:Object, beans:Beans):void
 		{
-			var bean:Bean = BeanUtils.normalizeBean(object);
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target:Object = targetBean.instance;
+			if (!target) return;
 
-			if (!bean.instance) return;
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
-			var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+			var eventHandlers:Array = classDescriptor.membersByMetaTag(Tags.EVENT_HANDLER);
 
-			var eventHandlers:Array = metaClass.membersByMetaTag(InjectionTag.EVENT_HANDLER);
-
-			for each(var member:MetaClassMember in eventHandlers)
+			for each(var method:ClassMember in eventHandlers)
 			{
-				var metaTag:MetaTag = member.tagByName(InjectionTag.EVENT_HANDLER);
-				var arg:MetaTagArg = metaTag.argByName("event");
+				var metaTag:MetaTag = method.tagByName(Tags.EVENT_HANDLER);
+				var arg:MetaTagArg = metaTag.argByKey("event");
 
 				var eventName:String = getEventName(arg);
 
-				addToDispatchers(eventName, bean.instance[member.name], metaTag);
+				addToDispatchers(eventName, target[method.name], metaTag);
 			}
 		}
 
@@ -126,8 +126,8 @@ package com.creativebottle.starlingmvc.processors
 	}
 }
 
-import com.creativebottle.starlingmvc.meta.MetaTag;
-import com.creativebottle.starlingmvc.meta.MetaTagArg;
+import com.creativebottle.starlingmvc.reflection.MetaTag;
+import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 
 import starling.events.Event;
 
@@ -140,7 +140,7 @@ class EventHandler
 	{
 		this.handler = handler;
 
-		var arg:MetaTagArg = tag.argByName("properties");
+		var arg:MetaTagArg = tag.argByKey("properties");
 
 		if (arg)
 			args = String(arg.value).split(",");
@@ -148,7 +148,7 @@ class EventHandler
 
 	public function handleEvent(event:Event):void
 	{
-		var handlerArgs:Array = new Array();
+		var handlerArgs:Array = [];
 
 		for each(var arg:String in args)
 		{

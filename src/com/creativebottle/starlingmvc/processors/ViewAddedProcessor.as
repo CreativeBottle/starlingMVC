@@ -16,13 +16,13 @@
 package com.creativebottle.starlingmvc.processors
 {
 	import com.creativebottle.starlingmvc.beans.Beans;
-	import com.creativebottle.starlingmvc.constants.InjectionTag;
+	import com.creativebottle.starlingmvc.constants.Tags;
 
 	public class ViewAddedProcessor extends BaseMediatorProcessor
 	{
 		public function process(object:Object, beans:Beans):void
 		{
-			announceToMediators(object, beans, InjectionTag.VIEW_ADDED);
+			announceToMediators(object, beans, Tags.VIEW_ADDED);
 		}
 	}
 }

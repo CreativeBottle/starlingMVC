@@ -1,33 +1,33 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	import flash.utils.describeType;
 
 	/**
 	 * Meta class parsing of a real object
 	 */
-	public class MetaClass
+	public class ClassDescriptor
 	{
 		/**
 		 * All accessors within the meta class
 		 */
-		public const accessors:Array = new Array();
+		public const accessors:Array = [];
 		/**
 		 * All properties within the meta class
 		 */
-		public const properties:Array = new Array();
+		public const properties:Array = [];
 		/**
 		 * All meta tags on the class
 		 */
-		public var tags:Array = new Array();
+		public var tags:Array = [];
 
-		public const methods:Array = new Array();
+		public const methods:Array = [];
 
 		/**
 		 * Constructor
 		 *
 		 * @param object The object to parse
 		 */
-		public function MetaClass(object:Object)
+		public function ClassDescriptor(object:Object)
 		{
 			var xml:XML = describeType(object);
 
@@ -36,9 +36,9 @@ package com.creativebottle.starlingmvc.meta
 				tags.push(new MetaTag(tag.@name, tag..arg));
 			}
 
-			parse(xml..accessor, MetaItemType.ACCESSOR);
-			parse(xml..variable, MetaItemType.PROPERTY);
-			parse(xml..method, MetaItemType.METHOD);
+			parse(xml..accessor, MemberKind.ACCESSOR);
+			parse(xml..variable, MemberKind.PROPERTY);
+			parse(xml..method, MemberKind.METHOD);
 		}
 
 		/**
@@ -48,9 +48,9 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function membersByMetaTag(tagName:String):Array
 		{
-			var members:Array = new Array();
+			var members:Array = [];
 
-			var member:MetaClassMember;
+			var member:ClassMember;
 
 			for each(member in accessors)
 			{
@@ -105,21 +105,24 @@ package com.creativebottle.starlingmvc.meta
 			return null;
 		}
 
-		private function parse(xmlList:XMLList, type:MetaItemType):void
+		private function parse(xmlList:XMLList, kind:MemberKind):void
 		{
 			for each(var itemXml:XML in xmlList)
 			{
-				if (type == MetaItemType.ACCESSOR)
+				switch (kind)
 				{
-					accessors.push(new MetaAccessor(itemXml));
-				}
-				else if (type == MetaItemType.METHOD)
-				{
-					methods.push(new MetaMethod(itemXml));
-				}
-				else
-				{
-					properties.push(new MetaProperty(itemXml));
+					case MemberKind.ACCESSOR:
+						accessors.push(new Accessor(itemXml));
+						break;
+					case MemberKind.METHOD:
+						methods.push(new Method(itemXml));
+						break;
+					case MemberKind.PROPERTY:
+						properties.push(new Property(itemXml));
+						break;
+					default:
+						throw new Error("ClassDescriptor: cannot parse: undefined member kind: " + kind);
+						break;
 				}
 			}
 		}

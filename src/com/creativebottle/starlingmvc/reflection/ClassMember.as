@@ -1,30 +1,30 @@
-package com.creativebottle.starlingmvc.meta
+package com.creativebottle.starlingmvc.reflection
 {
 	/**
 	 * Base class for meta class members
 	 */
-	public class MetaClassMember
+	public class ClassMember
 	{
 		/**
 		 * All tags on the member
 		 */
-		public const tags:Array = new Array();
+		public const tags:Array = [];
 
 		/**
 		 * The member name.
 		 */
 		public var name:String;
 		/**
-		 * The member type.
+		 * The member classname.
 		 */
-		public var type:String;
+		public var classname:String;
 
 		/**
 		 * Constructor
 		 *
 		 * @param xml The xml representation of the member
 		 */
-		public function MetaClassMember(xml:XML)
+		public function ClassMember(xml:XML)
 		{
 			parse(xml);
 		}
@@ -64,7 +64,7 @@ package com.creativebottle.starlingmvc.meta
 		protected function parse(xml:XML):void
 		{
 			name = xml.@name;
-			type = xml.@type;
+			classname = xml.@type;
 
 			for each(var metaDataXml:XML in xml.metadata)
 			{
