@@ -21,11 +21,11 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.ProtoBean;
 	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
+	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
+	import com.creativebottle.starlingmvc.meta.ClassMember;
 	import com.creativebottle.starlingmvc.meta.MetaTagArg;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.getDefinitionByName;
 
@@ -46,11 +46,11 @@ package com.creativebottle.starlingmvc.processors
 			var target = targetBean.instance;
 			if (!target) return;
 
-			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
 			var injections:Array = classDescriptor.membersByMetaTag(Tags.INJECT);
 
-			for each(var property:MetaClassMember in injections)
+			for each(var property:ClassMember in injections)
 			{
 				var arg:MetaTagArg = property.tagByName(Tags.INJECT).argByKey("source");
 

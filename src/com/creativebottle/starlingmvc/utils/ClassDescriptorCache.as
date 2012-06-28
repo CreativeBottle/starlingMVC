@@ -15,17 +15,17 @@
  */
 package com.creativebottle.starlingmvc.utils
 {
-	import com.creativebottle.starlingmvc.meta.MetaClass;
+	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
 
 	import flash.utils.Dictionary;
 
-	public class MetaClassCache
+	public class ClassDescriptorCache
 	{
 		private static const metaClassCache:Dictionary = new Dictionary();
 
-		public static function getMetaClassForInstance(object:Object):MetaClass
+		public static function getClassDescriptorForInstance(object:Object):ClassDescriptor
 		{
-			var metaClass:MetaClass;
+			var metaClass:ClassDescriptor;
 
 			if (metaClassCache[object.constructor])
 			{
@@ -33,7 +33,7 @@ package com.creativebottle.starlingmvc.utils
 			}
 			else
 			{
-				metaClass = new MetaClass(object);
+				metaClass = new ClassDescriptor(object);
 
 				metaClassCache[object.constructor] = metaClass;
 			}

@@ -3,14 +3,14 @@ package com.creativebottle.starlingmvc.meta
 	/**
 	 * Class for properties within a meta class
 	 */
-	public class MetaProperty extends MetaClassMember
+	public class Property extends ClassMember
 	{
 		/**
 		 * Constructor
 		 *
 		 * @param xml The xml representation of the meta property
 		 */
-		public function MetaProperty(xml:XML)
+		public function Property(xml:XML)
 		{
 			super(xml);
 		}
@@ -20,7 +20,7 @@ package com.creativebottle.starlingmvc.meta
 		 */
 		public function toString():String
 		{
-			return "MetaProperty{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
+			return "Property{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
 		}
 	}
 }

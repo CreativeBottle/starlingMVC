@@ -19,11 +19,11 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.constants.Tags;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
-	import com.creativebottle.starlingmvc.meta.MetaMethod;
+	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
+	import com.creativebottle.starlingmvc.meta.ClassMember;
+	import com.creativebottle.starlingmvc.meta.Method;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	public class PreDestroyProcessor implements IProcessor
 	{
@@ -38,14 +38,14 @@ package com.creativebottle.starlingmvc.processors
 			var target = targetBean.instance;
 			if (!target) return;
 
-			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
 			// Handle pre destroys
 			var preDestroys:Array = classDescriptor.membersByMetaTag(Tags.PRE_DESTROY);
 
-			for each(var method:MetaClassMember in preDestroys)
+			for each(var method:ClassMember in preDestroys)
 			{
-				if (method is MetaMethod)
+				if (method is Method)
 				{
 					target[ method.name ]();
 				}

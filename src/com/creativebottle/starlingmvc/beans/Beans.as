@@ -16,10 +16,10 @@
 package com.creativebottle.starlingmvc.beans
 {
 	import com.creativebottle.starlingmvc.constants.Tags;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
+	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
+	import com.creativebottle.starlingmvc.meta.ClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
@@ -54,11 +54,11 @@ package com.creativebottle.starlingmvc.beans
 			{
 				if (!bean.instance) continue;
 
-				var metaClass:MetaClass = MetaClassCache.getMetaClassForInstance(bean.instance);
+				var metaClass:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(bean.instance);
 
 				var injections:Array = metaClass.membersByMetaTag(Tags.INJECT);
 
-				for each(var member:MetaClassMember in injections)
+				for each(var member:ClassMember in injections)
 				{
 					if (bean.instance[member.name] == beanIn.instance)
 						bean.instance[member.name] = null;

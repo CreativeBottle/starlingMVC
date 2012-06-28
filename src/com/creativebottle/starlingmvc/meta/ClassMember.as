@@ -3,7 +3,7 @@ package com.creativebottle.starlingmvc.meta
 	/**
 	 * Base class for meta class members
 	 */
-	public class MetaClassMember
+	public class ClassMember
 	{
 		/**
 		 * All tags on the member
@@ -24,7 +24,7 @@ package com.creativebottle.starlingmvc.meta
 		 *
 		 * @param xml The xml representation of the member
 		 */
-		public function MetaClassMember(xml:XML)
+		public function ClassMember(xml:XML)
 		{
 			parse(xml);
 		}

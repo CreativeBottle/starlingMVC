@@ -5,7 +5,7 @@ package com.creativebottle.starlingmvc.meta
 	/**
 	 * Meta class parsing of a real object
 	 */
-	public class MetaClass
+	public class ClassDescriptor
 	{
 		/**
 		 * All accessors within the meta class
@@ -27,7 +27,7 @@ package com.creativebottle.starlingmvc.meta
 		 *
 		 * @param object The object to parse
 		 */
-		public function MetaClass(object:Object)
+		public function ClassDescriptor(object:Object)
 		{
 			var xml:XML = describeType(object);
 
@@ -50,7 +50,7 @@ package com.creativebottle.starlingmvc.meta
 		{
 			var members:Array = [];
 
-			var member:MetaClassMember;
+			var member:ClassMember;
 
 			for each(member in accessors)
 			{
@@ -112,16 +112,16 @@ package com.creativebottle.starlingmvc.meta
 				switch (kind)
 				{
 					case MemberKind.ACCESSOR:
-						accessors.push(new MetaAccessor(itemXml));
+						accessors.push(new Accessor(itemXml));
 						break;
 					case MemberKind.METHOD:
-						methods.push(new MetaMethod(itemXml));
+						methods.push(new Method(itemXml));
 						break;
 					case MemberKind.PROPERTY:
-						properties.push(new MetaProperty(itemXml));
+						properties.push(new Property(itemXml));
 						break;
 					default:
-						throw new Error("MetaClass: cannot parse: undefined member kind: " + kind);
+						throw new Error("ClassDescriptor: cannot parse: undefined member kind: " + kind);
 						break;
 				}
 			}

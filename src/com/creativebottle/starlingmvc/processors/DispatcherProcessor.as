@@ -19,10 +19,10 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.constants.Tags;
-	import com.creativebottle.starlingmvc.meta.MetaClass;
-	import com.creativebottle.starlingmvc.meta.MetaClassMember;
+	import com.creativebottle.starlingmvc.meta.ClassDescriptor;
+	import com.creativebottle.starlingmvc.meta.ClassMember;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
-	import com.creativebottle.starlingmvc.utils.MetaClassCache;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import starling.events.EventDispatcher;
 
@@ -41,11 +41,11 @@ package com.creativebottle.starlingmvc.processors
 			var target = targetBean.instance;
 			if (!target) return;
 
-			var classDescriptor:MetaClass = MetaClassCache.getMetaClassForInstance(target);
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
 			var dispatchers:Array = classDescriptor.membersByMetaTag(Tags.DISPATCHER);
 
-			for each(var taggedDispatcher:MetaClassMember in dispatchers)
+			for each(var taggedDispatcher:ClassMember in dispatchers)
 			{
 				target[ taggedDispatcher.name ] = this.dispatcher;
 			}

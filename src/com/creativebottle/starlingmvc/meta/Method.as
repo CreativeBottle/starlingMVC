@@ -1,10 +1,10 @@
 package com.creativebottle.starlingmvc.meta
 {
-	public class MetaMethod extends MetaClassMember
+	public class Method extends ClassMember
 	{
 		public var parameters:Array = [];
 
-		public function MetaMethod(xml:XML)
+		public function Method(xml:XML)
 		{
 			super(xml);
 		}
@@ -17,7 +17,7 @@ package com.creativebottle.starlingmvc.meta
 
 			for each(var parameterXml:XML in xml.parameter)
 			{
-				parameters.push(new MetaParameter(parameterXml));
+				parameters.push(new Parameter(parameterXml));
 			}
 
 		}
