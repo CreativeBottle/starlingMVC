@@ -15,7 +15,7 @@ StarlingMVC Framework is provided under the [Apache License 2.0](http://www.apac
 Requirements
 ------------
 * [Flex SDK 4.6](http://www.adobe.com/devnet/flex/flex-sdk-download.html)
-* [Starling 1.1]((http://gamua.com/starling/)
+* [Starling 1.1](http://gamua.com/starling/)
 * [FlexUnit 4.1 (For running the unit tests)](http://www.flexunit.org/)
 
 Contributors
