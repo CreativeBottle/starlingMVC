@@ -341,3 +341,50 @@ package com.mygame.mediators
 	}
 }
 ```
+ViewManager
+------------
+ViewManager is a utility class to facilitate creating views and adding/removing them from the stage. When creating the instance of ViewManager the constructor requires a reference to the root view of the game (i.e. `new ViewManager(this)` from the root DisplayObject. Adding the ViewManager instance to the StarlingMVC beans makes it easy to swap views from anywhere in the Starling application.
+###setView
+Calls to setView will remove existing views and add the new view. ViewManager handles instantiating the view and adding it to the stack. 
+```as3
+package com.mygame.controllers
+{
+	public class NavigationController
+	{
+		[Inject]
+		public var viewManager:ViewManager;
+		
+		[EventHandler(event="com.mygame.events.NavigationEvent.NAVIGATE_TO_VIEW", properties="viewClass")]
+		public function navigateToView(viewClass:Class):void
+		{
+			viewManager.setView(viewClass);
+		}
+	}
+}
+```
+###addView
+Calls to addView will add a new view on top of the existing view. This is handy for popups, HUDs, etc. Whereas setView accepts a parameter of type Class, addView accepts a view instance.
+```as3
+package com.mygame.views
+{
+	public class Game
+	{
+		[Inject]
+		public var viewManager:ViewManager;
+		
+		private var hud:GameHUD;
+		
+		[PostConstruct]
+		public function postConstruct():void
+		{
+			hud = new GameHUD();
+			
+			viewManager.addView(hud);
+		}
+	}
+}
+```
+###removeView
+Calls to removeView will remove the specified view from the stack.
+###removeAll
+Calls to removeAll will remove all views from the stack. This is called automaticall when calling `setView()`
