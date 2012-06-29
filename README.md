@@ -50,12 +50,12 @@ package com.mygame.views
 }
 ```
 
-The StarlingMVCConfig instance above tells StarlingMVC which events it should mediate.  
+The StarlingMVCConfig instance above tells StarlingMVC which events it should mediate.
 The beans Array is merely a collection of objects. The array can accept an object of any type. The framework will handle it accordingly.
 
 Beans
 ------------
-A Bean is an instance of an object that is provided to StarlingMVC to manage. Beans can be injected, receive injections, and handle events. There are several ways that beans can be provided to StarlingMVC during setup:  
+A Bean is an instance of an object that is provided to StarlingMVC to manage. Beans can be injected, receive injections, and handle events. There are several ways that beans can be provided to StarlingMVC during setup:
 ###Object instance
 ```as3
 var beans:Array = [new GameModel(), new ViewManager(this), Starling.juggler];
@@ -66,7 +66,7 @@ var beans:Array = [new GameModel(), new ViewManager(this), Starling.juggler];
 ```as3
 var beans:Array = [new Bean(new GameModel()), new Bean(new ViewManager(this)), new Bean(Starling.juggler)];
 ```
-Providing a Bean instance as shown above does not give much benefit. However, there is an option second parameter to thw Bean constructor that allows for an id. If you provide an id then you can use the id during dependency injection. Additionally, beans are stored within the framework by class type unless you provide an id. So if you have two beans of the same type you will need to specify an id or subsequent beans will overwrite the previous beans. For example:  
+Providing a Bean instance as shown above does not give much benefit. However, there is an option second parameter to thw Bean constructor that allows for an id. If you provide an id then you can use the id during dependency injection. Additionally, beans are stored within the framework by class type unless you provide an id. So if you have two beans of the same type you will need to specify an id or subsequent beans will overwrite the previous beans. For example:
 ```as3
 var beans:Array = [new Bean(new GameModel(),"gameModelEasy"),new Bean(new GameModel(),"gameModelHard"), new ViewManager(this), Starling.juggler];
 ```
@@ -90,17 +90,17 @@ package com.mygame.config
 	}
 }
 ```
-Once you have your BeanProvider set up, you can pass that as a part of your original beans array.  
+Once you have your BeanProvider set up, you can pass that as a part of your original beans array.
 ```as3
 var beans:Array = [new Models(), new ViewManager(this), Starling.juggler];
 ```
 
 ###Prototypes
-A Prototype bean is a bean that is created at the time of injection. Where normal beans require a class instance, a Protoype requires a class and an id.  
+A Prototype bean is a bean that is created at the time of injection. Where normal beans require a class instance, a Protoype requires a class and an id.
 ```as3
 var beans:Array = [new Prototype(Character,"character"), new ViewManager(this)];
 ```
-Using a Prototype here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.  
+Using a Prototype here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.
 
 Dependency Injection
 ------------
@@ -112,10 +112,10 @@ package com.mygame.models
 	{
 		[Inject]
 		public var gameModel:GameModel;
-		
+
 		public function GameModel():void
 		{
-			bubbleCreated();
+
 		}
 	}
 }
@@ -128,16 +128,16 @@ package com.mygame.models
 	{
 		[Inject(source="gameModel")]
 		public var gameModel:GameModel;
-		
+
 		public function GameModel():void
 		{
-			bubbleCreated();
+
 		}
 	}
 }
 ```
-In the above example, if the GameModel is a normal bean, the framework will set the value to the singleton instance that was created during setup. If it was a prototype, a new instance will be created and injected into the property.  
-  
+In the above example, if the GameModel is a normal bean, the framework will set the value to the singleton instance that was created during setup. If it was a prototype, a new instance will be created and injected into the property.
+
 Starling also supports injecting properties of beans. In order to use this functionality, the source Bean must contain an id (i.e. `new Bean(new GameModel(),"gameModel");`). To inject a property of a bean, simply append the property name to the end of the id parameter in your Inject tag:
 ```as3
 package com.mygame.models
@@ -146,15 +146,76 @@ package com.mygame.models
 	{
 		[Inject(source="gameModel")]
 		public var gameModel:GameModel;
-		
+
 		[Inject(source="userModel.currentUser")]
 		public var currentUser:User;
-		
+
 		public function GameModel():void
 		{
-			bubbleCreated();
+
 		}
 	}
 }
 ```
 In the example above, the value of the `currentUser` property on the `userModel` bean would be injected into the currentUser property of our controller. This functionality is also recursive. If you wanted to inject the first name of the currentUser you could potentially use `[Inject(source="userModel.currentUser.firstName")]`.
+
+Events
+------------
+###Dispatching Events
+Events in StarlingMVC are dispatched in one of two ways:
+1) StarlingMVC contains a global instance of `starling.events.EventDispatcher`. The quickest way to dispatch an event into the StarlingMVC framework is to use this dispatcher. This dispatcher can be injected into your bean by using the `[Dispatcher]` metadata tag.
+2) DisplayObjects can dispatchEvents using their own `dispatchEvent()` method. This is only available to DisplayObjects and the events must set `bubbles=true'.
+
+###Handling Events
+Event handlers are denoted by using the `[EventHandler(event="")]` metadata tag on a public method of a bean. The event argument in the tag can contain one of two options: the event type string
+```as3
+package com.mygame.models
+{
+	public class GameController
+	{
+
+	}
+
+	[EventHandler(event="scoreChanged"]
+	public function scoreChanged(event:ScoreEvent):void
+	{
+
+	}
+}
+```
+or the typed event
+```as3
+package com.mygame.models
+{
+	public class GameController
+	{
+
+	}
+
+	[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED"]
+	public function scoreChanged(event:ScoreEvent):void
+	{
+
+	}
+}
+```
+By using the second approach, you will gain the benefit that StarlingMVC will type check any of the events during initialization and throw and error if the event or event type doesn't exist. This protects against typos.
+
+In both examples above, the handler must accept the type of the dispatched event to handle. However, a second optional parameter exists in the EventHandler tag that will allow you to specify specific properties of the event to use as parameters to the event handler. For example:
+```as3
+package com.mygame.models
+{
+	public class GameController
+	{
+
+	}
+
+	[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
+	public function scoreChanged(user:User, newScore:int):void
+	{
+
+	}
+}
+```
+In the above example, instead of passing the entire event into the handler, StarlingMVC will pass only the "user" and "newScore" properties. Note that the types must match or an error will be thrown.
+
