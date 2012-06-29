@@ -104,7 +104,7 @@ Using a Prototype here will allow StarlingMVC to create the instances of this cl
 
 Dependency Injection
 ------------
-Dependency injection occurs on all beans and all Starling display objects. Injection can be done by type:
+Dependency injection occurs on all beans and all Starling display objects. A dependency is denoted with an `Inject` metadata tag over a public property or getter/setter. Injection can be done by type:
 ```as3
 package com.mygame.models
 {
@@ -137,3 +137,24 @@ package com.mygame.models
 }
 ```
 In the above example, if the GameModel is a normal bean, the framework will set the value to the singleton instance that was created during setup. If it was a prototype, a new instance will be created and injected into the property.  
+  
+Starling also supports injecting properties of beans. In order to use this functionality, the source Bean must contain an id (i.e. `new Bean(new GameModel(),"gameModel");`). To inject a property of a bean, simply append the property name to the end of the id parameter in your Inject tag:
+```as3
+package com.mygame.models
+{
+	public class GameController
+	{
+		[Inject(source="gameModel")]
+		public var gameModel:GameModel;
+		
+		[Inject(source="userModel.currentUser")]
+		public var currentUser:User;
+		
+		public function GameModel():void
+		{
+			bubbleCreated();
+		}
+	}
+}
+```
+In the example above, the value of the `currentUser` property on the `userModel` bean would be injected into the currentUser property of our controller. This functionality is also recursive. If you wanted to inject the first name of the currentUser you could potentially use `[Inject(source="userModel.currentUser.firstName")]`.
