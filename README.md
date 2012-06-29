@@ -106,7 +106,7 @@ Dependency Injection
 ------------
 Dependency injection occurs on all beans and all Starling display objects. A dependency is denoted with an `Inject` metadata tag over a public property or getter/setter. Injection can be done by type:
 ```as3
-package com.mygame.models
+package com.mygame.controllers
 {
 	public class GameController
 	{
@@ -122,7 +122,7 @@ package com.mygame.models
 ```
 or by id, if an id was specified when the bean was created:
 ```as3
-package com.mygame.models
+package com.mygame.controllers
 {
 	public class GameController
 	{
@@ -140,7 +140,7 @@ In the above example, if the GameModel is a normal bean, the framework will set 
 
 Starling also supports injecting properties of beans. In order to use this functionality, the source Bean must contain an id (i.e. `new Bean(new GameModel(),"gameModel");`). To inject a property of a bean, simply append the property name to the end of the id parameter in your Inject tag:
 ```as3
-package com.mygame.models
+package com.mygame.controllers
 {
 	public class GameController
 	{
@@ -169,7 +169,7 @@ Events in StarlingMVC are dispatched in one of two ways:
 ###Handling Events
 Event handlers are denoted by using the `[EventHandler(event="")]` metadata tag on a public method of a bean. The event argument in the tag can contain one of two options: the event type string
 ```as3
-package com.mygame.models
+package com.mygame.controllers
 {
 	public class GameController
 	{
@@ -185,7 +185,7 @@ package com.mygame.models
 ```
 or the typed event
 ```as3
-package com.mygame.models
+package com.mygame.controllers
 {
 	public class GameController
 	{
@@ -203,7 +203,7 @@ By using the second approach, you will gain the benefit that StarlingMVC will ty
 
 In both examples above, the handler must accept the type of the dispatched event to handle. However, a second optional parameter exists in the EventHandler tag that will allow you to specify specific properties of the event to use as parameters to the event handler. For example:
 ```as3
-package com.mygame.models
+package com.mygame.controllers
 {
 	public class GameController
 	{
@@ -218,4 +218,32 @@ package com.mygame.models
 }
 ```
 In the above example, instead of passing the entire event into the handler, StarlingMVC will pass only the "user" and "newScore" properties. Note that the types must match or an error will be thrown.
+
+View Mediation
+------------
+View mediators are a great way of keeping your view classes separate from the code that controls them. A view mediator is set up just like any other bean. To link a view to a view mediator a `[ViewAdded]` metadata tag is used on a public method. When a DisplayObject is added to the stack, StarlingMVC will look for instances of the ViewAdded tag. If the parameter of any ViewAdded methods are of the type of the view that was just added, the new DisplayObject will be passed to that method. To unlink a mediator from a view when the view has been removed the `[ViewRemoved]` metadata tag is used.
+```as3
+package com.mygame.mediators
+{
+	private var view:Game;
+
+	public class GameMediator
+	{
+
+	}
+
+	[ViewAdded]
+	public function viewAdded(view:Game):void
+	{
+		this.view = view;
+	}
+
+	[ViewRemoved]
+	public function viewRemoved(view:Game):void
+	{
+		this.view = null;
+	}
+}
+```
+
 
