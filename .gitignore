@@ -4,6 +4,10 @@
 # build artifacts
 target/
 lib/
+bin/
+ivy.xml
+.ivysettings/
+clean*
 
 # IDE project files 
 *.geany
