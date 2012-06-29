@@ -16,7 +16,7 @@
 package com.creativebottle.starlingmvc.reflection
 {
 	/**
-	 * Base class for meta class members
+	 * Base class for class members
 	 */
 	public class ClassMember
 	{

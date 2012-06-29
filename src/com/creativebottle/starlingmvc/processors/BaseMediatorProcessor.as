@@ -40,11 +40,11 @@ package com.creativebottle.starlingmvc.processors
 
 				var viewAddedMethods:Array = classDescriptor.membersByMetaTag(tag);
 
-				for each(var metaMethod:Method in viewAddedMethods)
+				for each(var method:Method in viewAddedMethods)
 				{
-					if (metaMethod.parameters.length == 1 && metaMethod.parameters[0].type == ViewClass)
+					if (method.parameters.length == 1 && method.parameters[0].type == ViewClass)
 					{
-						target[metaMethod.name](view);
+						target[method.name](view);
 					}
 				}
 			}

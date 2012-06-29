@@ -25,18 +25,21 @@ package com.creativebottle.starlingmvc.reflection
 	public class ClassDescriptor
 	{
 		/**
-		 * All accessors within the meta class
+		 * All accessors within the class
 		 */
 		public const accessors:Array = [];
 		/**
-		 * All variables within the meta class
+		 * All variables within the class
 		 */
 		public const variables:Array = [];
 		/**
-		 * All meta tags on the class
+		 * All tags on the class
 		 */
 		public var tags:Array = [];
 
+		/**
+		 * All methods of the class
+		 */
 		public const methods:Array = [];
 
 		/**
@@ -59,7 +62,7 @@ package com.creativebottle.starlingmvc.reflection
 		}
 
 		/**
-		 * Retrieve a member by a meta tag name
+		 * Retrieve a member by a tag name
 		 *
 		 * @param tagName The tag name to search for
 		 */

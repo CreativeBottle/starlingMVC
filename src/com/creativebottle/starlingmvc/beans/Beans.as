@@ -55,9 +55,9 @@ package com.creativebottle.starlingmvc.beans
 			{
 				if (!bean.instance) continue;
 
-				var metaClass:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(bean.instance);
+				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(bean.instance);
 
-				var injections:Array = metaClass.membersByMetaTag(Tags.INJECT);
+				var injections:Array = classDescriptor.membersByMetaTag(Tags.INJECT);
 
 				for each(var member:ClassMember in injections)
 				{

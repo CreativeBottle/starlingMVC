@@ -16,14 +16,14 @@
 package com.creativebottle.starlingmvc.reflection
 {
 	/**
-	 * Class for variables within a meta class
+	 * Class for variables within a class
 	 */
 	public class Variable extends ClassMember
 	{
 		/**
 		 * Constructor
 		 *
-		 * @param xml The xml representation of the meta variable
+		 * @param xml The xml representation of the variable
 		 */
 		public function Variable(xml:XML)
 		{
@@ -31,7 +31,7 @@ package com.creativebottle.starlingmvc.reflection
 		}
 
 		/**
-		 * Returns a string representation of the meta variable
+		 * Returns a string representation of the variable
 		 */
 		public function toString():String
 		{
