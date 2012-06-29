@@ -245,5 +245,36 @@ package com.mygame.mediators
 	}
 }
 ```
+Bean Lifecycle
+------------
+Normal beans are set up on initialization. However, since the dependency injection and event handling happens after creation bean values are not available immediately. To receive notification of when a bean has been fully processed we can add the `[PostConstruct]` tag to a public method. This method will be automatically called when all DI has been completed. Similarly, when a bean is being destroyed we can specify a public method to be called with the `[PreDestroy]` tag. This works in all standard beans and DisplayObjects.
+```as3
+package com.mygame.controllers
+{
+	[Inject]
+	public var gameModel:GameModel;
 
+	public class GameController
+	{
 
+	}
+
+	[PostConstruct]
+	public function postConstruct():void
+	{
+		// set up code here
+	}
+
+	[PreDestroy]
+	public function preDestroy():void
+	{
+		// tear down code here
+	}
+
+	[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
+	public function scoreChanged(user:User, newScore:int):void
+	{
+
+	}
+}
+```
