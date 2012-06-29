@@ -20,8 +20,8 @@ Requirements
 
 Contributors
 ------------
-[Creative Bottle, Inc](http://www.creativebottle.com)
-[Scott Jeppesen](mailto:scott.jeppesen@creativebottle.com)
+[Creative Bottle, Inc](http://www.creativebottle.com)  
+[Scott Jeppesen](mailto:scott.jeppesen@creativebottle.com)  
 [Tom McAvoy](mailto:tom.mcavoy@creativebottle.com)
 
 Setup
