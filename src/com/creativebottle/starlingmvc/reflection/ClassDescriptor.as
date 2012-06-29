@@ -29,9 +29,9 @@ package com.creativebottle.starlingmvc.reflection
 		 */
 		public const accessors:Array = [];
 		/**
-		 * All properties within the meta class
+		 * All variables within the meta class
 		 */
-		public const properties:Array = [];
+		public const variables:Array = [];
 		/**
 		 * All meta tags on the class
 		 */
@@ -54,7 +54,7 @@ package com.creativebottle.starlingmvc.reflection
 			}
 
 			parse(xml..accessor, MemberKind.ACCESSOR);
-			parse(xml..variable, MemberKind.PROPERTY);
+			parse(xml..variable, MemberKind.VARIABLE);
 			parse(xml..method, MemberKind.METHOD);
 		}
 
@@ -75,7 +75,7 @@ package com.creativebottle.starlingmvc.reflection
 					members.push(member);
 			}
 
-			for each(member in properties)
+			for each(member in variables)
 			{
 				if (member.hasTag(tagName))
 					members.push(member);
@@ -134,8 +134,8 @@ package com.creativebottle.starlingmvc.reflection
 					case MemberKind.METHOD:
 						methods.push(new Method(itemXml));
 						break;
-					case MemberKind.PROPERTY:
-						properties.push(new Property(itemXml));
+					case MemberKind.VARIABLE:
+						variables.push(new Variable(itemXml));
 						break;
 					default:
 						throw new UndefinedMemberKindError(kind);
