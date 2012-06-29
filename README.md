@@ -2,7 +2,7 @@ StarlingMVC Framework
 ===========
 
 StarlingMVC is an MVC framework for use in games built using the great Starling framework. Closely modelled after established MVC frameworks like Swiz and RobotLegs, StarlingMVC features:
-* Dependency Injection/Inversion of Control
+* Dependency Injection(DI)/Inversion of Control(IOC)
 * View Mediation
 * Event Handling
 * Stays out of the way of your Starling game code
@@ -278,3 +278,34 @@ package com.mygame.controllers
 	}
 }
 ```
+Manual Bean Creation/Removal
+------------
+Manual bean creation and removal is done through the event system. Dispatching `BeanEvent.ADD_BEAN' will add and process a new bean. Dispatching `BeanEvent.REMOVE_BEAN' will remove the bean from the system.
+```as3
+package com.mygame.view
+{
+	public var gamePresentationModel:GamePresentationModel;
+
+	public class Game
+	{
+
+	}
+
+	[PostConstruct]
+	public function postConstruct():void
+	{
+		gamePresentationModel = new GamePresentationModel();
+
+		dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, gamePresentationModel));
+	}
+
+	[PreDestroy]
+	public function preDestroy():void
+	{
+		dispatchEvent(new BeanEvent(BeanEvent.REMOVE_BEAN, gamePresentationModel));
+
+		gamePresentationModel = null;
+	}
+}
+```
+In the example above, we create a presentation model for our view and add it to StarlingMVC as a bean. In doing this, the PM will be processed as a bean and gain all of the benefits of DI and EventHandling.
