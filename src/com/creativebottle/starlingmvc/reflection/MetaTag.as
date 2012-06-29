@@ -17,7 +17,7 @@ package com.creativebottle.starlingmvc.reflection
 {
 
 	/**
-	 * Class for tags on a meta class member
+	 * Class for metadata tags on a class member
 	 */
 	public class MetaTag
 	{

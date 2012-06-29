@@ -16,26 +16,26 @@
 package com.creativebottle.starlingmvc.reflection
 {
 	/**
-	 * Class for properties within a meta class
+	 * Class for variables within a class
 	 */
-	public class Property extends ClassMember
+	public class Variable extends ClassMember
 	{
 		/**
 		 * Constructor
 		 *
-		 * @param xml The xml representation of the meta property
+		 * @param xml The xml representation of the variable
 		 */
-		public function Property(xml:XML)
+		public function Variable(xml:XML)
 		{
 			super(xml);
 		}
 
 		/**
-		 * Returns a string representation of the meta property
+		 * Returns a string representation of the variable
 		 */
 		public function toString():String
 		{
-			return "Property{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
+			return "Variable{ name:" + name + ",classname:" + classname + ",tags:" + tags + " }";
 		}
 	}
 }

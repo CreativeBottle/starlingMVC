@@ -21,23 +21,23 @@ package com.creativebottle.starlingmvc.utils
 
 	public class ClassDescriptorCache
 	{
-		private static const metaClassCache:Dictionary = new Dictionary();
+		private static const classDescriptorCache:Dictionary = new Dictionary();
 
 		public static function getClassDescriptorForInstance(object:Object):ClassDescriptor
 		{
-			var metaClass:ClassDescriptor;
+			var classDescriptor:ClassDescriptor;
 
-			if (metaClassCache[object.constructor])
+			if (classDescriptorCache[object.constructor])
 			{
-				metaClass = metaClassCache[object.constructor];
+				classDescriptor = classDescriptorCache[object.constructor];
 			}
 			else
 			{
-				metaClass = new ClassDescriptor(object);
+				classDescriptor = new ClassDescriptor(object);
 
-				metaClassCache[object.constructor] = metaClass;
+				classDescriptorCache[object.constructor] = classDescriptor;
 			}
-			return metaClass;
+			return classDescriptor;
 		}
 	}
 }

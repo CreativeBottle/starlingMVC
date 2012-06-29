@@ -16,7 +16,7 @@
 package com.creativebottle.starlingmvc.reflection
 {
 	/**
-	 * Class for accessors within a meta class
+	 * Class for accessors within a class
 	 */
 	public class Accessor extends ClassMember
 	{
