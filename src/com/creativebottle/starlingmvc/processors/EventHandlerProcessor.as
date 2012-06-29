@@ -129,7 +129,7 @@ package com.creativebottle.starlingmvc.processors
 	}
 }
 
-import com.creativebottle.starlingmvc.errors.PropertyNotFoundOnEventError;
+import com.creativebottle.starlingmvc.errors.PropertyNotFoundError;
 import com.creativebottle.starlingmvc.reflection.MetaTag;
 import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 
@@ -162,7 +162,7 @@ class EventHandler
 			}
 			else
 			{
-				throw new PropertyNotFoundOnEventError(arg, typeof event);
+				throw new PropertyNotFoundError(arg, typeof event);
 			}
 		}
 

@@ -20,6 +20,8 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.beans.ProtoBean;
 	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.errors.BeanNotFoundError;
+	import com.creativebottle.starlingmvc.errors.PropertyNotFoundError;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
 	import com.creativebottle.starlingmvc.reflection.ClassMember;
@@ -28,6 +30,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 
 	import starling.events.EventDispatcher;
 
@@ -59,7 +62,10 @@ package com.creativebottle.starlingmvc.processors
 
 				if (arg)
 				{
-					sourceBean = beans.getBeanById(arg.value);
+					var splitArg:Array = arg.value.split(".");
+					var beanId:String = splitArg.shift();
+
+					sourceBean = beans.getBeanById(beanId);
 
 					if (sourceBean is ProtoBean)
 					{
@@ -71,6 +77,20 @@ package com.creativebottle.starlingmvc.processors
 					else
 					{
 						source = sourceBean.instance;
+
+						var propName:String;
+
+						while (propName = splitArg.shift())
+						{
+							if (source.hasOwnProperty(propName))
+							{
+								source = source[propName];
+							}
+							else
+							{
+								throw new PropertyNotFoundError(propName, getQualifiedClassName(source));
+							}
+						}
 					}
 				}
 				else
@@ -78,7 +98,14 @@ package com.creativebottle.starlingmvc.processors
 					var TempClass:Class = Class(getDefinitionByName(property.classname));
 					sourceBean = beans.getBeanByClass(TempClass);
 
-					source = sourceBean.instance;
+					if (sourceBean)
+					{
+						source = sourceBean.instance;
+					}
+					else
+					{
+						throw new BeanNotFoundError(property.classname);
+					}
 				}
 
 				target[property.name] = source;
