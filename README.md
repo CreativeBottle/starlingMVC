@@ -286,7 +286,7 @@ package com.mygame.controllers
 ```
 Manual Bean Creation/Removal
 ------------
-Manual bean creation and removal is done through the event system. Dispatching `BeanEvent.ADD_BEAN' will add and process a new bean. Dispatching `BeanEvent.REMOVE_BEAN' will remove the bean from the system.
+Manual bean creation and removal is done through the event system. Dispatching `BeanEvent.ADD_BEAN` will add and process a new bean. Dispatching `BeanEvent.REMOVE_BEAN` will remove the bean from the system.
 ```as3
 package com.mygame.view
 {
