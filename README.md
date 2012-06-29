@@ -387,4 +387,4 @@ package com.mygame.views
 ###removeView
 Calls to removeView will remove the specified view from the stack.
 ###removeAll
-Calls to removeAll will remove all views from the stack. This is called automaticall when calling `setView()`
+Calls to removeAll will remove all views from the stack. This is called automatically when calling `setView()`
