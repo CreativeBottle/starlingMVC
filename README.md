@@ -1,7 +1,7 @@
 StarlingMVC Framework
 ===========
 
-StarlingMVC is an MVC framework for use in games built using the great Starling framework. Closely modelled after established MVC frameworks like Swiz and RobotLegs, StarlingMVC features:
+StarlingMVC is an MVC framework for use in games built using the great [Starling framework](http://gamua.com/starling/). Closely modelled after established MVC frameworks like [Swiz](http://swizframework.org/) and [RobotLegs](http://www.robotlegs.org/), StarlingMVC features:
 * Dependency Injection(DI)/Inversion of Control(IOC)
 * View Mediation
 * Event Handling
@@ -14,9 +14,15 @@ StarlingMVC Framework is provided under the [Apache License 2.0](http://www.apac
 
 Requirements
 ------------
-* flex framework ~> 4.6
-* starling ~> 1.1
-* flexunit ~> 4.1 (For running the unit tests)
+* [Flex SDK 4.6](http://www.adobe.com/devnet/flex/flex-sdk-download.html)
+* [Starling 1.1]((http://gamua.com/starling/)
+* [FlexUnit 4.1 (For running the unit tests)](http://www.flexunit.org/)
+
+Contributors
+------------
+[Creative Bottle, Inc](http://www.creativebottle.com)
+[Scott Jeppesen](mailto:scott.jeppesen@creativebottle.com)
+[Tom McAvoy](mailto:tom.mcavoy@creativebottle.com)
 
 Setup
 ------------
