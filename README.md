@@ -10,7 +10,7 @@ StarlingMVC is an MVC framework for use in games built using the great [Starling
 * Easily extended
 * More utilities to help with your game code
 
-StarlingMVC Framework is provided under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+StarlingMVC Framework is provided under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 Requirements
 ------------
@@ -343,7 +343,7 @@ package com.mygame.mediators
 ```
 ViewManager
 ------------
-ViewManager is a utility class to facilitate creating views and adding/removing them from the stage. When creating the instance of ViewManager the constructor requires a reference to the root view of the game (i.e. `new ViewManager(this)` from the root DisplayObject. Adding the ViewManager instance to the StarlingMVC beans makes it easy to swap views from anywhere in the Starling application.
+ViewManager is a utility class to facilitate creating views and adding/removing them from the stage. When creating the instance of ViewManager the constructor requires a reference to the root view of the game (i.e. `new ViewManager(this)`) from the root DisplayObject. Adding the ViewManager instance to the StarlingMVC beans makes it easy to swap views from anywhere in the Starling application.
 ###setView
 Calls to setView will remove existing views and add the new view. ViewManager handles instantiating the view and adding it to the stack. 
 ```as3
@@ -387,4 +387,4 @@ package com.mygame.views
 ###removeView
 Calls to removeView will remove the specified view from the stack.
 ###removeAll
-Calls to removeAll will remove all views from the stack. This is called automatically when calling `setView()`
+Calls to removeAll will remove all views from the stack. This is called automatically when calling `setView()`.
