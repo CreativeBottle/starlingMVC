@@ -101,12 +101,12 @@ Once you have your BeanProvider set up, you can pass that as a part of your orig
 var beans:Array = [new Models(), new ViewManager(this), Starling.juggler];
 ```
 
-###Prototypes
-A Prototype bean is a bean that is created at the time of injection. Where normal beans require a class instance, a Protoype requires a class and an id.
+###ProtoBeans
+A ProtoBean is a bean that is created at the time of injection. Where normal beans require a class instance, a ProtoBean requires a class and an id.
 ```as3
-var beans:Array = [new Prototype(Character,"character"), new ViewManager(this)];
+var beans:Array = [new ProtoBean(Character,"character"), new ViewManager(this)];
 ```
-Using a Prototype here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.
+Using a ProtoBean here will allow StarlingMVC to create the instances of this class for you. Each time it is injected, it will be a new instance of the, in this case, "Character" class instead of using a singleton like a normal Bean. The advantage to allowing the framework to create the class over just using "new Character()" is that when StarlingMVC creates the instance it will run injection and all processing on the created instance.
 
 Dependency Injection
 ------------
@@ -142,7 +142,7 @@ package com.mygame.controllers
 	}
 }
 ```
-In the above example, if the GameModel is a normal bean, the framework will set the value to the singleton instance that was created during setup. If it was a prototype, a new instance will be created and injected into the property.
+In the above example, if the GameModel is a normal bean, the framework will set the value to the singleton instance that was created during setup. If it was a protobean, a new instance will be created and injected into the property.
 
 Starling also supports injecting properties of beans. In order to use this functionality, the source Bean must contain an id (i.e. `new Bean(new GameModel(),"gameModel");`). To inject a property of a bean, simply append the property name to the end of the id parameter in your Inject tag:
 ```as3
