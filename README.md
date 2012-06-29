@@ -179,13 +179,11 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-
-	}
-
-	[EventHandler(event="scoreChanged"]
-	public function scoreChanged(event:ScoreEvent):void
-	{
-
+		[EventHandler(event="scoreChanged"]
+		public function scoreChanged(event:ScoreEvent):void
+		{
+	
+		}
 	}
 }
 ```
@@ -195,13 +193,11 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-
-	}
-
-	[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED"]
-	public function scoreChanged(event:ScoreEvent):void
-	{
-
+		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED"]
+		public function scoreChanged(event:ScoreEvent):void
+		{
+	
+		}
 	}
 }
 ```
@@ -213,13 +209,11 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-
-	}
-
-	[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
-	public function scoreChanged(user:User, newScore:int):void
-	{
-
+		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
+		public function scoreChanged(user:User, newScore:int):void
+		{
+	
+		}
 	}
 }
 ```
@@ -231,23 +225,21 @@ View mediators are a great way of keeping your view classes separate from the co
 ```as3
 package com.mygame.mediators
 {
-	private var view:Game;
-
 	public class GameMediator
 	{
-
-	}
-
-	[ViewAdded]
-	public function viewAdded(view:Game):void
-	{
-		this.view = view;
-	}
-
-	[ViewRemoved]
-	public function viewRemoved(view:Game):void
-	{
-		this.view = null;
+		private var view:Game;
+		
+		[ViewAdded]
+		public function viewAdded(view:Game):void
+		{
+			this.view = view;
+		}
+	
+		[ViewRemoved]
+		public function viewRemoved(view:Game):void
+		{
+			this.view = null;
+		}
 	}
 }
 ```
@@ -257,30 +249,28 @@ Normal beans are set up on initialization. However, since the dependency injecti
 ```as3
 package com.mygame.controllers
 {
-	[Inject]
-	public var gameModel:GameModel;
-
 	public class GameController
 	{
-
-	}
-
-	[PostConstruct]
-	public function postConstruct():void
-	{
-		// set up code here
-	}
-
-	[PreDestroy]
-	public function preDestroy():void
-	{
-		// tear down code here
-	}
-
-	[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
-	public function scoreChanged(user:User, newScore:int):void
-	{
-
+		[Inject]
+		public var gameModel:GameModel;
+		
+		[PostConstruct]
+		public function postConstruct():void
+		{
+			// set up code here
+		}
+	
+		[PreDestroy]
+		public function preDestroy():void
+		{
+			// tear down code here
+		}
+	
+		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
+		public function scoreChanged(user:User, newScore:int):void
+		{
+	
+		}
 	}
 }
 ```
@@ -290,28 +280,64 @@ Manual bean creation and removal is done through the event system. Dispatching `
 ```as3
 package com.mygame.view
 {
-	public var gamePresentationModel:GamePresentationModel;
-
 	public class Game
 	{
-
-	}
-
-	[PostConstruct]
-	public function postConstruct():void
-	{
-		gamePresentationModel = new GamePresentationModel();
-
-		dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, gamePresentationModel));
-	}
-
-	[PreDestroy]
-	public function preDestroy():void
-	{
-		dispatchEvent(new BeanEvent(BeanEvent.REMOVE_BEAN, gamePresentationModel));
-
-		gamePresentationModel = null;
+		public var gamePresentationModel:GamePresentationModel;
+		
+		[PostConstruct]
+		public function postConstruct():void
+		{
+			gamePresentationModel = new GamePresentationModel();
+	
+			dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, gamePresentationModel));
+		}
+	
+		[PreDestroy]
+		public function preDestroy():void
+		{
+			dispatchEvent(new BeanEvent(BeanEvent.REMOVE_BEAN, gamePresentationModel));
+	
+			gamePresentationModel = null;
+		}
 	}
 }
 ```
 In the example above, we create a presentation model for our view and add it to StarlingMVC as a bean. In doing this, the PM will be processed as a bean and gain all of the benefits of DI and EventHandling.
+
+EventMap
+------------
+EventMap is a utility class for creating and managing event listeners. Using EventMap exclusively to create listeners within your class makes cleanup very easy.
+```as3
+package com.mygame.mediators
+{
+	import com.creativebottle.starlingmvc.events.EventMap;
+	
+	public class GameMediator
+	{
+		private var eventMap:EventMap = new EventMap();		
+		
+		[ViewAdded]
+		public function viewAdded(view:Game):void
+		{
+			eventMap.addMap(view.playButton,TouchEvent.TOUCH, playButtonTouched);
+			eventMap.addMap(view.instructionsButton,TouchEvent.TOUCH, instructionsTouched);
+		}
+	
+		[ViewRemoved]
+		public function viewRemoved(view:Game):void
+		{
+			event.removeAllMappedEvents();
+		}
+		
+		private function playButtonTouched(event:TouchEvent):void
+		{
+		
+		}
+		
+		private function instructionsButtonTouched(event:TouchEvent):void
+		{
+		
+		}
+	}
+}
+```
