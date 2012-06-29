@@ -179,7 +179,7 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-		[EventHandler(event="scoreChanged"]
+		[EventHandler(event="scoreChanged")]
 		public function scoreChanged(event:ScoreEvent):void
 		{
 	
@@ -193,7 +193,7 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED"]
+		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED")]
 		public function scoreChanged(event:ScoreEvent):void
 		{
 	
@@ -209,7 +209,7 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
+		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
 		public function scoreChanged(user:User, newScore:int):void
 		{
 	
@@ -266,7 +266,7 @@ package com.mygame.controllers
 			// tear down code here
 		}
 	
-		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore"]
+		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
 		public function scoreChanged(user:User, newScore:int):void
 		{
 	
