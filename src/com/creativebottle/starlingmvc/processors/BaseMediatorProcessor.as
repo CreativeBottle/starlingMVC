@@ -38,9 +38,9 @@ package com.creativebottle.starlingmvc.processors
 
 				var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
-				var viewAddedMethods:Array = classDescriptor.membersByMetaTag(tag);
+				var taggedMethods:Array = classDescriptor.membersByMetaTag(tag);
 
-				for each(var method:Method in viewAddedMethods)
+				for each(var method:Method in taggedMethods)
 				{
 					if (method.parameters.length == 1 && method.parameters[0].type == ViewClass)
 					{
