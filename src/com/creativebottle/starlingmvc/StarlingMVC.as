@@ -68,7 +68,7 @@ package com.creativebottle.starlingmvc
 			processors.processAll();
 		}
 
-		public function StarlingMVC(rootLayer:DisplayObjectContainer, config:StarlingMVCConfig, beanProviders:Array = null, customProcessors:Array = null)
+		public function StarlingMVC(rootLayer:DisplayObjectContainer = null, config:StarlingMVCConfig = null, beanProviders:Array = null, customProcessors:Array = null)
 		{
 			_rootLayer = rootLayer;
 			_config = config;

@@ -31,11 +31,11 @@ package com.creativebottle.starlingmvc.beans
 
 		private var _id:String;
 
-                /**
-                 * Register a <code>Bean</code> by its <code>Class</code> or id.
-                 *
-                 * For lazy instantiation, see <code>ProtoBean</code>.
-                 */
+		/**
+		 * Register a <code>Bean</code> by its <code>Class</code> or id.
+		 *
+		 * For lazy instantiation, see <code>ProtoBean</code>.
+		 */
 		public function Bean(instance:Object, id:String = null)
 		{
 			_instance = instance;

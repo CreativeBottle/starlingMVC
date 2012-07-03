@@ -20,7 +20,7 @@ package com.creativebottle.starlingmvc.mock.model
 	public class TestModel2
 	{
 		[Dispatcher]
-		public var foo:EventDispatcher;
+		public var dispatcher:EventDispatcher;
 
 		public function TestModel2()
 		{

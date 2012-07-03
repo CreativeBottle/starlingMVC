@@ -47,7 +47,8 @@ package com.creativebottle.starlingmvc.beans
 			dispatcher = starlingMVC.dispatcher;
 			processors = starlingMVC.processors;
 
-			setUpEventHandlers();
+			if (rootLayer)
+				setUpEventHandlers();
 		}
 
 		private function displayObjectAdded(event:Event):void

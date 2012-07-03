@@ -20,6 +20,9 @@ package com.creativebottle.starlingmvc.mock.model
 		[Inject(source="testModel2")]
 		public var testModel2:TestModel2;
 
+		[Inject]
+		public var testModel3:TestModel3;
+
 		public function TestModel()
 		{
 

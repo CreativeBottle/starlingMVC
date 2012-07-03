@@ -16,6 +16,9 @@
 package
 {
 	import com.creativebottle.starlingmvc.beans.BeansTest;
+	import com.creativebottle.starlingmvc.processors.DispatcherProcessorTest;
+	import com.creativebottle.starlingmvc.processors.InjectProcessorTest;
+	import com.creativebottle.starlingmvc.utils.BeanUtilsTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -25,5 +28,8 @@ package
 	public class StarlingMVCTests
 	{
 		public var beansTest:BeansTest;
+		public var beanUtilsTest:BeanUtilsTest;
+		public var injectProcessorTest:InjectProcessorTest;
+		public var dispatcherProcessorTest:DispatcherProcessorTest;
 	}
 }
