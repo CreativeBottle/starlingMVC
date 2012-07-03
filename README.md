@@ -20,8 +20,8 @@ Requirements
 
 Contributors
 ------------
-* [Creative Bottle, Inc](http://www.creativebottle.com)  
-* [Scott Jeppesen](mailto:scott.jeppesen@creativebottle.com)  
+* [Creative Bottle, Inc](http://www.creativebottle.com)
+* [Scott Jeppesen](mailto:scott.jeppesen@creativebottle.com)
 * [Tom McAvoy](mailto:tom.mcavoy@creativebottle.com)
 
 Setup
@@ -47,6 +47,7 @@ package com.mygame.views
 		{
 			var config:StarlingMVCConfig = new StarlingMVCConfig();
 			config.eventPackages = ["com.mygame.events"];
+			config.viewPackages = ["com.mygame.views"];
 
 			var beans:Array = [new GameModel(), new ViewManager(this), Starling.juggler];
 
@@ -56,7 +57,7 @@ package com.mygame.views
 }
 ```
 
-The StarlingMVCConfig instance above tells StarlingMVC which events it should mediate.
+The StarlingMVCConfig instance above tells StarlingMVC which event packages and view packages it should mediate.
 The beans Array is merely a collection of objects. The array can accept an object of any type. The framework will handle it accordingly.
 
 Beans
@@ -182,7 +183,7 @@ package com.mygame.controllers
 		[EventHandler(event="scoreChanged")]
 		public function scoreChanged(event:ScoreEvent):void
 		{
-	
+
 		}
 	}
 }
@@ -196,7 +197,7 @@ package com.mygame.controllers
 		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED")]
 		public function scoreChanged(event:ScoreEvent):void
 		{
-	
+
 		}
 	}
 }
@@ -212,7 +213,7 @@ package com.mygame.controllers
 		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
 		public function scoreChanged(user:User, newScore:int):void
 		{
-	
+
 		}
 	}
 }
@@ -228,13 +229,13 @@ package com.mygame.mediators
 	public class GameMediator
 	{
 		private var view:Game;
-		
+
 		[ViewAdded]
 		public function viewAdded(view:Game):void
 		{
 			this.view = view;
 		}
-	
+
 		[ViewRemoved]
 		public function viewRemoved(view:Game):void
 		{
@@ -253,23 +254,23 @@ package com.mygame.controllers
 	{
 		[Inject]
 		public var gameModel:GameModel;
-		
+
 		[PostConstruct]
 		public function postConstruct():void
 		{
 			// set up code here
 		}
-	
+
 		[PreDestroy]
 		public function preDestroy():void
 		{
 			// tear down code here
 		}
-	
+
 		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
 		public function scoreChanged(user:User, newScore:int):void
 		{
-	
+
 		}
 	}
 }
@@ -283,20 +284,20 @@ package com.mygame.view
 	public class Game
 	{
 		public var gamePresentationModel:GamePresentationModel;
-		
+
 		[PostConstruct]
 		public function postConstruct():void
 		{
 			gamePresentationModel = new GamePresentationModel();
-	
+
 			dispatchEvent(new BeanEvent(BeanEvent.ADD_BEAN, gamePresentationModel));
 		}
-	
+
 		[PreDestroy]
 		public function preDestroy():void
 		{
 			dispatchEvent(new BeanEvent(BeanEvent.REMOVE_BEAN, gamePresentationModel));
-	
+
 			gamePresentationModel = null;
 		}
 	}
@@ -311,32 +312,32 @@ EventMap is a utility class for creating and managing event listeners. Using Eve
 package com.mygame.mediators
 {
 	import com.creativebottle.starlingmvc.events.EventMap;
-	
+
 	public class GameMediator
 	{
-		private var eventMap:EventMap = new EventMap();		
-		
+		private var eventMap:EventMap = new EventMap();
+
 		[ViewAdded]
 		public function viewAdded(view:Game):void
 		{
 			eventMap.addMap(view.playButton,TouchEvent.TOUCH, playButtonTouched);
 			eventMap.addMap(view.instructionsButton,TouchEvent.TOUCH, instructionsTouched);
 		}
-	
+
 		[ViewRemoved]
 		public function viewRemoved(view:Game):void
 		{
 			event.removeAllMappedEvents();
 		}
-		
+
 		private function playButtonTouched(event:TouchEvent):void
 		{
-		
+
 		}
-		
+
 		private function instructionsButtonTouched(event:TouchEvent):void
 		{
-		
+
 		}
 	}
 }
@@ -345,7 +346,7 @@ ViewManager
 ------------
 ViewManager is a utility class to facilitate creating views and adding/removing them from the stage. When creating the instance of ViewManager the constructor requires a reference to the root view of the game (i.e. `new ViewManager(this)`) from the root DisplayObject. Adding the ViewManager instance to the StarlingMVC beans makes it easy to swap views from anywhere in the Starling application.
 ###setView
-Calls to setView will remove existing views and add the new view. ViewManager handles instantiating the view and adding it to the stack. 
+Calls to setView will remove existing views and add the new view. ViewManager handles instantiating the view and adding it to the stack.
 ```as3
 package com.mygame.controllers
 {
@@ -353,7 +354,7 @@ package com.mygame.controllers
 	{
 		[Inject]
 		public var viewManager:ViewManager;
-		
+
 		[EventHandler(event="com.mygame.events.NavigationEvent.NAVIGATE_TO_VIEW", properties="viewClass")]
 		public function navigateToView(viewClass:Class):void
 		{
@@ -371,14 +372,14 @@ package com.mygame.views
 	{
 		[Inject]
 		public var viewManager:ViewManager;
-		
+
 		private var hud:GameHUD;
-		
+
 		[PostConstruct]
 		public function postConstruct():void
 		{
 			hud = new GameHUD();
-			
+
 			viewManager.addView(hud);
 		}
 	}
