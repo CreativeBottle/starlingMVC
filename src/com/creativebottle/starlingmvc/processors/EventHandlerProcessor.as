@@ -18,6 +18,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.StarlingMVC;
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
+	import com.creativebottle.starlingmvc.constants.Args;
 	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.errors.EventClassNotFoundError;
 	import com.creativebottle.starlingmvc.errors.EventTypeNotFoundOnClassError;
@@ -57,7 +58,7 @@ package com.creativebottle.starlingmvc.processors
 			for each(var method:ClassMember in eventHandlers)
 			{
 				var metaTag:MetaTag = method.tagByName(Tags.EVENT_HANDLER);
-				var arg:MetaTagArg = metaTag.argByKey("event");
+				var arg:MetaTagArg = metaTag.argByKey(Args.EVENT);
 
 				var eventName:String = getEventName(arg);
 
@@ -129,6 +130,7 @@ package com.creativebottle.starlingmvc.processors
 	}
 }
 
+import com.creativebottle.starlingmvc.constants.Args;
 import com.creativebottle.starlingmvc.errors.PropertyNotFoundError;
 import com.creativebottle.starlingmvc.reflection.MetaTag;
 import com.creativebottle.starlingmvc.reflection.MetaTagArg;
@@ -144,7 +146,7 @@ class EventHandler
 	{
 		this.handler = handler;
 
-		var arg:MetaTagArg = tag.argByKey("properties");
+		var arg:MetaTagArg = tag.argByKey(Args.PROPERTIES);
 
 		if (arg)
 			args = String(arg.value).split(",");

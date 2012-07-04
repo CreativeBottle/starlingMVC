@@ -17,6 +17,7 @@ package com.creativebottle.starlingmvc
 {
 	import com.creativebottle.starlingmvc.beans.BeanFactory;
 	import com.creativebottle.starlingmvc.beans.Beans;
+	import com.creativebottle.starlingmvc.binding.Bindings;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
 	import com.creativebottle.starlingmvc.processors.Processors;
 
@@ -32,6 +33,7 @@ package com.creativebottle.starlingmvc
 		private var _rootLayer:DisplayObjectContainer;
 		private var _processors:Processors;
 		private var beanFactory:BeanFactory;
+		private var _bindings:Bindings = new Bindings();
 
 		public function get config():StarlingMVCConfig
 		{
@@ -46,6 +48,11 @@ package com.creativebottle.starlingmvc
 		public function get processors():Processors
 		{
 			return _processors;
+		}
+
+		public function get bindings():Bindings
+		{
+			return _bindings;
 		}
 
 		public function set beanProviders(value:Array):void

@@ -19,12 +19,16 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.beans.Bean;
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.beans.ProtoBean;
+	import com.creativebottle.starlingmvc.binding.Binding;
+	import com.creativebottle.starlingmvc.binding.Bindings;
+	import com.creativebottle.starlingmvc.constants.Args;
 	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.errors.BeanNotFoundError;
 	import com.creativebottle.starlingmvc.errors.PropertyNotFoundError;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
 	import com.creativebottle.starlingmvc.reflection.ClassMember;
+	import com.creativebottle.starlingmvc.reflection.MetaTag;
 	import com.creativebottle.starlingmvc.reflection.MetaTagArg;
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
@@ -37,10 +41,12 @@ package com.creativebottle.starlingmvc.processors
 	public class InjectProcessor implements IProcessor
 	{
 		private var dispatcher:EventDispatcher;
+		private var bindings:Bindings;
 
 		public function config(starlingMVC:StarlingMVC):void
 		{
 			this.dispatcher = starlingMVC.dispatcher;
+			this.bindings = starlingMVC.bindings;
 		}
 
 		public function process(object:Object, beans:Beans):void
@@ -55,14 +61,16 @@ package com.creativebottle.starlingmvc.processors
 
 			for each(var property:ClassMember in injections)
 			{
-				var arg:MetaTagArg = property.tagByName(Tags.INJECT).argByKey("source");
+				var injectTag:MetaTag = property.tagByName(Tags.INJECT);
+				var sourceArg:MetaTagArg = injectTag.argByKey(Args.SOURCE);
 
 				var sourceBean:Bean;
 				var source:Object;
+				var binding:Binding;
 
-				if (arg)
+				if (sourceArg)
 				{
-					var splitArg:Array = arg.value.split(".");
+					var splitArg:Array = sourceArg.value.split(".");
 					var beanId:String = splitArg.shift();
 
 					sourceBean = beans.getBeanById(beanId);
@@ -76,6 +84,8 @@ package com.creativebottle.starlingmvc.processors
 					}
 					else
 					{
+						var bindArg:MetaTagArg = injectTag.argByKey(Args.BIND);
+
 						source = sourceBean.instance;
 
 						var propName:String;
@@ -84,6 +94,11 @@ package com.creativebottle.starlingmvc.processors
 						{
 							if (source.hasOwnProperty(propName))
 							{
+								if (splitArg.length == 0)
+								{
+									binding = new Binding(source, propName, target, property.name);
+								}
+
 								source = source[propName];
 							}
 							else
@@ -108,7 +123,14 @@ package com.creativebottle.starlingmvc.processors
 					}
 				}
 
-				target[property.name] = source;
+				if (!binding)
+				{
+					target[property.name] = source;
+				}
+				else
+				{
+					bindings.addBinding(binding);
+				}
 			}
 		}
 	}
