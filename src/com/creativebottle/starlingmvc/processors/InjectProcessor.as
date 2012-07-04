@@ -85,6 +85,12 @@ package com.creativebottle.starlingmvc.processors
 					else
 					{
 						var bindArg:MetaTagArg = injectTag.argByKey(Args.BIND);
+						var isBound:Boolean;
+
+						if (bindArg)
+						{
+							isBound = bindArg.value == "true";
+						}
 
 						source = sourceBean.instance;
 
@@ -94,7 +100,7 @@ package com.creativebottle.starlingmvc.processors
 						{
 							if (source.hasOwnProperty(propName))
 							{
-								if (splitArg.length == 0)
+								if (isBound && splitArg.length == 0)
 								{
 									binding = new Binding(source, propName, target, property.name);
 								}

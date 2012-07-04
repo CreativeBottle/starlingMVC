@@ -17,6 +17,7 @@ package com.creativebottle.starlingmvc.binding
 		{
 			bindings.push(binding);
 			determineIfShouldRun();
+			binding.apply();
 		}
 
 		public function removeBinding(binding:Binding):void
