@@ -1,7 +1,7 @@
 StarlingMVC Framework
 ===========
 
-StarlingMVC is an MVC framework for use in games built using the great [Starling framework](http://gamua.com/starling/). Closely modelled after established MVC frameworks like [Swiz](http://swizframework.org/) and [RobotLegs](http://www.robotlegs.org/), StarlingMVC features:
+StarlingMVC is an IOC framework for use in games built using the great [Starling framework](http://gamua.com/starling/). Closely modelled after established IOC frameworks like [Swiz](http://swizframework.org/) and [RobotLegs](http://www.robotlegs.org/), StarlingMVC features:
 * Dependency Injection(DI)/Inversion of Control(IOC)
 * View Mediation
 * Event Handling
@@ -49,7 +49,7 @@ package com.mygame.views
 			config.eventPackages = ["com.mygame.events"];
 			config.viewPackages = ["com.mygame.views"];
 
-			var beans:Array = [new GameModel(), new ViewManager(this), Starling.juggler];
+			var beans:Array = [new GameModel(), new ViewManager(this)];
 
 			starlingMVC = new StarlingMVC(this, config, beans);
 		}
@@ -65,17 +65,17 @@ Beans
 A Bean is an instance of an object that is provided to StarlingMVC to manage. Beans can be injected, receive injections, and handle events. There are several ways that beans can be provided to StarlingMVC during setup:
 ###Object instance
 ```as3
-var beans:Array = [new GameModel(), new ViewManager(this), Starling.juggler];
+var beans:Array = [new GameModel(), new ViewManager(this)];
 ```
 
 
 ###Bean instances
 ```as3
-var beans:Array = [new Bean(new GameModel()), new Bean(new ViewManager(this)), new Bean(Starling.juggler)];
+var beans:Array = [new Bean(new GameModel()), new Bean(new ViewManager(this))];
 ```
 Providing a Bean instance as shown above does not give much benefit. However, there is an option second parameter to thw Bean constructor that allows for an id. If you provide an id then you can use the id during dependency injection. Additionally, beans are stored within the framework by class type unless you provide an id. So if you have two beans of the same type you will need to specify an id or subsequent beans will overwrite the previous beans. For example:
 ```as3
-var beans:Array = [new Bean(new GameModel(),"gameModelEasy"),new Bean(new GameModel(),"gameModelHard"), new ViewManager(this), Starling.juggler];
+var beans:Array = [new Bean(new GameModel(),"gameModelEasy"),new Bean(new GameModel(),"gameModelHard"), new ViewManager(this)];
 ```
 
 ###BeanProvider instances
@@ -99,7 +99,7 @@ package com.mygame.config
 ```
 Once you have your BeanProvider set up, you can pass that as a part of your original beans array.
 ```as3
-var beans:Array = [new Models(), new ViewManager(this), Starling.juggler];
+var beans:Array = [new Models(), new ViewManager(this)];
 ```
 
 ###ProtoBeans
@@ -165,6 +165,58 @@ package com.mygame.controllers
 }
 ```
 In the example above, the value of the `currentUser` property on the `userModel` bean would be injected into the currentUser property of our controller. This functionality is also recursive. If you wanted to inject the first name of the currentUser you could potentially use `[Inject(source="userModel.currentUser.firstName")]`.
+
+###Binding
+The InjectProcessor also supports a very simple binding mechanism that will cause injected properties to be automatically refreshed when they are changed.
+```as3
+package com.mygame.controllers
+{
+	public class GameController
+	{
+		[Inject(source="gameModel")]
+		public var gameModel:GameModel;
+
+		[Inject(source="userModel.currentUser", bind="true")]
+		public var currentUser:User;
+
+		public function GameModel():void
+		{
+
+		}
+	}
+}
+```
+The example above uses the optional `bind="true"` parameter of the `[Inject]` tag to create a binding.  When the currentUser property of the userModel is updated StarlingMVC will automatically update any injections using binding. This will also work with getter/setters methods. Using these will allow code to easily react to changes in the properties.
+```as3
+package com.mygame.controllers
+{
+	public class GameController
+	{
+		[Inject(source="gameModel")]
+		public var gameModel:GameModel;
+
+		[Inject(source="userModel.currentUser", bind="true")]
+		public function set currentUser(value:User):void
+		{
+			_currentUser = value;
+
+			// Do something to update your UI with the new value
+		}
+
+		public function get currentUser():User
+		{
+			return _currentUser;
+		}
+		private var _currentUser:User;
+
+		public function GameModel():void
+		{
+
+		}
+	}
+}
+```
+Binding is connected directly to the Starling juggler instance and will check for changes on each bound property everytime the `advanceTime()` method is called. This does not provide a binding that works as instantaneously as Flex binding, but should offer binding with a lower cost to performance. However, binding should be used sparingly as there is still overhead to check for changes to the bound properties.
 
 Events
 ------------
@@ -342,6 +394,39 @@ package com.mygame.mediators
 	}
 }
 ```
+Juggler
+------------
+The Juggler class in Starling is used to handle all animation within a game. For a class to take advantage of the Juggler instance, it must implement the IAnimatable interface but defining `advanceTime(time:Number)`. The global juggler reference can be accessed as a static property of Starling as `Starling.juggler1. However, this property can also be directly injected into your class instances using the `[Juggler]` tag.
+ ```as3
+ package com.mygame.mediators
+ {
+ 	import com.creativebottle.starlingmvc.events.EventMap;
+
+ 	public class GameMediator implements IAnimatable
+ 	{
+ 		[Juggler]
+        public var juggler:Juggler;
+
+ 		[ViewAdded]
+ 		public function viewAdded(view:Game):void
+ 		{
+ 			juggler.add(this);
+ 		}
+
+ 		[ViewRemoved]
+ 		public function viewRemoved(view:Game):void
+ 		{
+ 		    juggler.remove(this);
+ 		}
+
+ 		public function advanceTime(time:Number):void
+ 		{
+            // do some animation logic
+ 		}
+ 	}
+ }
+ ```
+
 ViewManager
 ------------
 ViewManager is a utility class to facilitate creating views and adding/removing them from the stage. When creating the instance of ViewManager the constructor requires a reference to the root view of the game (i.e. `new ViewManager(this)`) from the root DisplayObject. Adding the ViewManager instance to the StarlingMVC beans makes it easy to swap views from anywhere in the Starling application.
