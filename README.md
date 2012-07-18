@@ -396,7 +396,7 @@ package com.mygame.mediators
 ```
 Juggler
 ------------
-The Juggler class in Starling is used to handle all animation within a game. For a class to take advantage of the Juggler instance, it must implement the IAnimatable interface but defining `advanceTime(time:Number)`. The global juggler reference can be accessed as a static property of Starling as `Starling.juggler1. However, this property can also be directly injected into your class instances using the `[Juggler]` tag.
+The Juggler class in Starling is used to handle all animation within a game. For a class to take advantage of the Juggler instance, it must implement the IAnimatable interface but defining `advanceTime(time:Number)`. The global juggler reference can be accessed as a static property of Starling as `Starling.juggler1`. However, this property can also be directly injected into your class instances using the `[Juggler]` tag.
  ```as3
  package com.mygame.mediators
  {
