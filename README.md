@@ -120,7 +120,7 @@ package com.mygame.controllers
 		[Inject]
 		public var gameModel:GameModel;
 
-		public function GameModel():void
+		public function GameController():void
 		{
 
 		}
@@ -136,7 +136,7 @@ package com.mygame.controllers
 		[Inject(source="gameModel")]
 		public var gameModel:GameModel;
 
-		public function GameModel():void
+		public function GameController():void
 		{
 
 		}
@@ -157,7 +157,7 @@ package com.mygame.controllers
 		[Inject(source="userModel.currentUser")]
 		public var currentUser:User;
 
-		public function GameModel():void
+		public function GameController():void
 		{
 
 		}
@@ -179,7 +179,7 @@ package com.mygame.controllers
 		[Inject(source="userModel.currentUser", bind="true")]
 		public var currentUser:User;
 
-		public function GameModel():void
+		public function GameController():void
 		{
 
 		}
@@ -209,14 +209,45 @@ package com.mygame.controllers
 		}
 		private var _currentUser:User;
 
-		public function GameModel():void
+		public function GameController():void
 		{
 
 		}
 	}
 }
 ```
-Binding is connected directly to the Starling juggler instance and will check for changes on each bound property everytime the `advanceTime()` method is called. This does not provide a binding that works as instantaneously as Flex binding, but should offer binding with a lower cost to performance. However, binding should be used sparingly as there is still overhead to check for changes to the bound properties.
+Binding is connected directly to the Starling juggler instance and will check for changes on each bound property everytime the `advanceTime()` method is called. This does not provide a binding that works as instantaneously as Flex binding. Binding should be used sparingly as there is still overhead to check for changes to the bound properties.
+
+As an alternative to auto bound properties, StarlingMVC supports binding through invalidation. This method is much more efficient than the auto bound properties because it give you much more control over when properties are updated. This is done through an injected `Bindings` class and the optional "auto" parameter.
+```as3
+package com.mygame.controllers
+{
+	public class GameController
+	{
+		[Inject(source="gameModel")]
+		public var gameModel:GameModel;
+
+		[Inject(source="userModel.currentUser", bind="true", auto="false")]
+		public function set currentUser(value:User):void
+		{
+			_currentUser = value;
+
+			// Do something to update your UI with the new value
+		}
+
+		public function get currentUser():User
+		{
+			return _currentUser;
+		}
+		private var _currentUser:User;
+
+		public function GameController():void
+		{
+
+		}
+	}
+}
+```
 
 Events
 ------------
@@ -326,7 +357,34 @@ package com.mygame.controllers
 		}
 	}
 }
+
+package com.mygame.controllers
+{
+	public class GameModel
+	{
+		[Bindings]
+		public var bindings:Bindings;
+
+		public function set score(value:int):void
+		{
+			if(value != _score)
+			{
+				_score = value;
+
+				bindings.invalidate(this, "score");
+			}
+		}
+
+		public function get score():int
+		{
+			return _score;
+		}
+		private var _score:int;
+	}
+}
 ```
+In the above example you can see that in the controller the Inject tag includes "auto='false'". This disables the auto binding so that a check is not done on every iteration of the Juggler. In the GameMode, we are injecting the Bindings instance and then invalidating manually when the property changes. Once the property is invalidated, it will be automatically updated on the next pass of the juggler.
+
 Manual Bean Creation/Removal
 ------------
 Manual bean creation and removal is done through the event system. Dispatching `BeanEvent.ADD_BEAN` will add and process a new bean. Dispatching `BeanEvent.REMOVE_BEAN` will remove the bean from the system.

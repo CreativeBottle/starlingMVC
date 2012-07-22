@@ -23,13 +23,12 @@ package com.creativebottle.starlingmvc.binding
 
 		public function addBinding(binding:Binding, auto:Boolean = true):void
 		{
-			if (auto)
+			if (!bindingExists(binding))
 			{
-				autoBindings.push(binding);
-			}
-			else
-			{
-				bindings.push(binding);
+				if (auto)
+					autoBindings.push(binding);
+				else
+					bindings.push(binding);
 			}
 
 			determineIfShouldRun();
@@ -128,6 +127,33 @@ package com.creativebottle.starlingmvc.binding
 			}
 
 			return null;
+		}
+
+		private function bindingExists(bindingIn:Binding):Boolean
+		{
+			var binding:Binding;
+
+			for each(binding in autoBindings)
+			{
+				if (areEqual(binding, bindingIn))
+					return true;
+			}
+
+			for each(binding in bindings)
+			{
+				if (areEqual(binding, bindingIn))
+					return true;
+			}
+
+			return false;
+		}
+
+		private function areEqual(bindingOne:Binding, bindingTwo:Binding):Boolean
+		{
+			return bindingOne.fromTarget == bindingTwo.fromTarget &&
+					bindingOne.toTarget == bindingTwo.toTarget &&
+					bindingOne.fromPropertyName == bindingTwo.fromPropertyName &&
+					bindingOne.toPropertyName == bindingTwo.toPropertyName;
 		}
 	}
 }
