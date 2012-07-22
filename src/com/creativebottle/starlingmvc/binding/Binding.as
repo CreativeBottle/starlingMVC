@@ -2,10 +2,10 @@ package com.creativebottle.starlingmvc.binding
 {
 	public class Binding
 	{
-		private var fromTarget:Object;
-		private var toTarget:Object;
-		private var fromPropertyName:String;
-		private var toPropertyName:String;
+		internal var fromTarget:Object;
+		internal var toTarget:Object;
+		internal var fromPropertyName:String;
+		internal var toPropertyName:String;
 		private var oldValue:Object;
 
 		public function get changed():Boolean

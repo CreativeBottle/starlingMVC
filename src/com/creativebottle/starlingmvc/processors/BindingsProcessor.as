@@ -1,0 +1,53 @@
+/*
+ * Copyright 2012 StarlingMVC Framework Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.creativebottle.starlingmvc.processors
+{
+	import com.creativebottle.starlingmvc.StarlingMVC;
+	import com.creativebottle.starlingmvc.beans.Bean;
+	import com.creativebottle.starlingmvc.beans.Beans;
+	import com.creativebottle.starlingmvc.binding.Bindings;
+	import com.creativebottle.starlingmvc.constants.Tags;
+	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
+	import com.creativebottle.starlingmvc.reflection.ClassMember;
+	import com.creativebottle.starlingmvc.utils.BeanUtils;
+	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
+
+	public class BindingsProcessor implements IProcessor
+	{
+		private var bindings:Bindings;
+
+		public function config(starlingMVC:StarlingMVC):void
+		{
+			this.bindings = starlingMVC.bindings;
+		}
+
+		public function process(object:Object, beans:Beans):void
+		{
+			var targetBean:Bean = BeanUtils.normalizeBean(object);
+			var target:Object = targetBean.instance;
+			if (!target) return;
+
+			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
+
+			var bindingMembers:Array = classDescriptor.membersByMetaTag(Tags.BINDINGS);
+
+			for each(var taggedBinding:ClassMember in bindingMembers)
+			{
+				target[ taggedBinding.name ] = this.bindings;
+			}
+		}
+	}
+}

@@ -25,5 +25,6 @@ package com.creativebottle.starlingmvc.constants
 		static public const PRE_DESTROY:String = "PreDestroy";
 		static public const VIEW_ADDED:String = "ViewAdded";
 		static public const VIEW_REMOVED:String = "ViewRemoved";
+		static public const BINDINGS:String = "Bindings";
 	}
 }

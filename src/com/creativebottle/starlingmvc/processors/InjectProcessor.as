@@ -53,13 +53,14 @@ package com.creativebottle.starlingmvc.processors
 		{
 			var targetBean:Bean = BeanUtils.normalizeBean(object);
 			var target:Object = targetBean.instance;
-			if (!target) return;
+			if (!target)
+				return;
 
 			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
 
 			var injections:Array = classDescriptor.membersByMetaTag(Tags.INJECT);
 
-			for each(var property:ClassMember in injections)
+			for each (var property:ClassMember in injections)
 			{
 				var injectTag:MetaTag = property.tagByName(Tags.INJECT);
 				var sourceArg:MetaTagArg = injectTag.argByKey(Args.SOURCE);
@@ -67,6 +68,7 @@ package com.creativebottle.starlingmvc.processors
 				var sourceBean:Bean;
 				var source:Object;
 				var binding:Binding;
+				var autoBind:Boolean = true;
 
 				if (sourceArg)
 				{
@@ -85,11 +87,16 @@ package com.creativebottle.starlingmvc.processors
 					else
 					{
 						var bindArg:MetaTagArg = injectTag.argByKey(Args.BIND);
+						var autoArg:MetaTagArg = injectTag.argByKey(Args.AUTO);
+
 						var isBound:Boolean;
 
 						if (bindArg)
 						{
 							isBound = bindArg.value == "true";
+
+							if (autoArg)
+								autoBind = autoArg.value == "true";
 						}
 
 						source = sourceBean.instance;
@@ -103,6 +110,7 @@ package com.creativebottle.starlingmvc.processors
 								if (isBound && splitArg.length == 0)
 								{
 									binding = new Binding(source, propName, target, property.name);
+									bindings.addBinding(binding, autoBind);
 								}
 
 								source = source[propName];
@@ -132,10 +140,6 @@ package com.creativebottle.starlingmvc.processors
 				if (!binding)
 				{
 					target[property.name] = source;
-				}
-				else
-				{
-					bindings.addBinding(binding);
 				}
 			}
 		}

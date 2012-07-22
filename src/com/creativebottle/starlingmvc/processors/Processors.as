@@ -59,6 +59,7 @@ package com.creativebottle.starlingmvc.processors
 		private function setUpDefaultProcessors():void
 		{
 			addProcessor(new DispatcherProcessor());
+			addProcessor(new BindingsProcessor());
 			addProcessor(new JugglerProcessor());
 			addProcessor(new InjectProcessor());
 			addProcessor(new PostConstructProcessor());
