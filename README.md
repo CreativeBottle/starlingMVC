@@ -247,6 +247,31 @@ package com.mygame.controllers
 		}
 	}
 }
+
+package com.mygame.models
+{
+	public class UserModel
+	{
+		[Bindings]
+		public var bindings:Bindings;
+		
+		public function set currentUser(value:User):void
+		{
+			if(value != _currentUser)
+			{
+				_currentUser = value;
+				
+				bindings.invalidate(this, "currentUser");
+			}
+		}
+
+		public function get currentUser():User
+		{
+			return _currentUser;
+		}
+		private var _currentUser:User;
+	}
+}
 ```
 
 Events
