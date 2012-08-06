@@ -134,6 +134,7 @@ import com.creativebottle.starlingmvc.constants.Args;
 import com.creativebottle.starlingmvc.errors.PropertyNotFoundError;
 import com.creativebottle.starlingmvc.reflection.MetaTag;
 import com.creativebottle.starlingmvc.reflection.MetaTagArg;
+import com.creativebottle.starlingmvc.utils.StringUtils;
 
 import starling.events.Event;
 
@@ -158,7 +159,9 @@ class EventHandler
 
 		for each(var arg:String in args)
 		{
-			if (event[arg])
+			arg = StringUtils.removeWhitespace(arg);
+
+			if (event.hasOwnProperty(arg))
 			{
 				handlerArgs.push(event[arg]);
 			}
