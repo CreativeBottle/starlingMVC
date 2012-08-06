@@ -19,8 +19,8 @@ package com.creativebottle.starlingmvc.beans
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.events.EventMap;
+	import com.creativebottle.starlingmvc.events.StarlingMVCEvent;
 	import com.creativebottle.starlingmvc.processors.PreDestroyProcessor;
-	import com.creativebottle.starlingmvc.processors.Processors;
 	import com.creativebottle.starlingmvc.processors.ViewAddedProcessor;
 	import com.creativebottle.starlingmvc.processors.ViewRemovedProcessor;
 
@@ -33,19 +33,24 @@ package com.creativebottle.starlingmvc.beans
 	public class BeanFactory
 	{
 		private const eventMap:EventMap = new EventMap();
+		private var initialized:Boolean;
 		private var beans:Beans;
 		private var config:StarlingMVCConfig;
 		private var rootLayer:DisplayObjectContainer;
 		private var dispatcher:EventDispatcher;
-		private var processors:Processors;
+		private var delayed:Array = new Array();
+		private var starlingMVC:StarlingMVC;
 
 		public function BeanFactory(starlingMVC:StarlingMVC)
 		{
+			this.starlingMVC = starlingMVC;
+			initialized = starlingMVC.initialized;
 			beans = starlingMVC.beans;
 			config = starlingMVC.config;
 			rootLayer = starlingMVC.rootLayer;
 			dispatcher = starlingMVC.dispatcher;
-			processors = starlingMVC.processors;
+
+			eventMap.addMap(dispatcher, StarlingMVCEvent.INITIALIZED, onStarlingMVCInitialized);
 
 			if (rootLayer)
 				setUpEventHandlers();
@@ -55,12 +60,34 @@ package com.creativebottle.starlingmvc.beans
 		{
 			var target:Object = event.target;
 
-			processors.processOn(target, beans);
+			if (initialized)
+			{
+				processDisplayObjectAdded(target);
+			}
+			else
+			{
+				delayed.push(target);
+			}
+		}
+
+		private function processDisplayObjectAdded(target:Object):void
+		{
+			starlingMVC.processors.processOn(target, beans);
 
 			if (filterByPackage(target, config.viewPackages))
 			{
 				var viewAddedProcessor:ViewAddedProcessor = new ViewAddedProcessor();
 				viewAddedProcessor.process(target, beans);
+			}
+		}
+
+		private function processDelayed():void
+		{
+			var target:Object;
+
+			while (target = delayed.pop())
+			{
+				processDisplayObjectAdded(target);
 			}
 		}
 
@@ -94,7 +121,7 @@ package com.creativebottle.starlingmvc.beans
 		{
 			var bean:Bean = event.bean;
 			beans.addBean(bean);
-			processors.processOn(bean, beans);
+			starlingMVC.processors.processOn(bean, beans);
 		}
 
 		private function beanRemoved(event:BeanEvent):void
@@ -110,6 +137,15 @@ package com.creativebottle.starlingmvc.beans
 			var className:String = getQualifiedClassName(object).replace(/::/g, ".");
 			var packageName:String = className.slice(0, className.lastIndexOf("."));
 			return whitelistedPackages.indexOf(packageName) != -1;
+		}
+
+		private function onStarlingMVCInitialized(event:StarlingMVCEvent):void
+		{
+			eventMap.removeMap(event.target, StarlingMVCEvent.INITIALIZED, onStarlingMVCInitialized);
+
+			initialized = true;
+
+			processDelayed();
 		}
 	}
 }

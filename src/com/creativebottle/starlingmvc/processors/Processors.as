@@ -42,18 +42,28 @@ package com.creativebottle.starlingmvc.processors
 
 		public function processAll():void
 		{
-			for each(var bean:Bean in beans.beans)
+			var bean:Bean;
+
+			for each(bean in beans.beans)
 			{
-				processOn(bean, beans);
+				processOn(bean, beans, false);
+			}
+
+			for each(bean in beans.beans)
+			{
+				new PostConstructProcessor().process(bean, beans);
 			}
 		}
 
-		public function processOn(object:Object, beans:Beans):void
+		public function processOn(object:Object, beans:Beans, includePostConstruct:Boolean = true):void
 		{
 			for each(var processor:IProcessor in processors)
 			{
 				processor.process(object, beans);
 			}
+
+			if (includePostConstruct)
+				new PostConstructProcessor().process(object, beans);
 		}
 
 		private function setUpDefaultProcessors():void
@@ -62,7 +72,7 @@ package com.creativebottle.starlingmvc.processors
 			addProcessor(new BindingsProcessor());
 			addProcessor(new JugglerProcessor());
 			addProcessor(new InjectProcessor());
-			addProcessor(new PostConstructProcessor());
+			//addProcessor(new PostConstructProcessor());
 			addProcessor(new EventHandlerProcessor());
 			processAll();
 		}

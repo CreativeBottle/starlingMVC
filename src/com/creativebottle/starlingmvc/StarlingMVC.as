@@ -19,6 +19,7 @@ package com.creativebottle.starlingmvc
 	import com.creativebottle.starlingmvc.beans.Beans;
 	import com.creativebottle.starlingmvc.binding.Bindings;
 	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
+	import com.creativebottle.starlingmvc.events.StarlingMVCEvent;
 	import com.creativebottle.starlingmvc.processors.Processors;
 
 	import starling.display.DisplayObjectContainer;
@@ -28,6 +29,8 @@ package com.creativebottle.starlingmvc
 	{
 		public const dispatcher:EventDispatcher = new EventDispatcher();
 		public const beans:Beans = new Beans();
+
+		public var initialized:Boolean = false;
 
 		private var _config:StarlingMVCConfig;
 		private var _rootLayer:DisplayObjectContainer;
@@ -83,8 +86,11 @@ package com.creativebottle.starlingmvc
 			this.customProcessors = customProcessors;
 			this.beanProviders = beanProviders;
 
-			_processors = new Processors(this);
 			beanFactory = new BeanFactory(this);
+			_processors = new Processors(this);
+
+			initialized = true;
+			dispatcher.dispatchEvent(new StarlingMVCEvent(StarlingMVCEvent.INITIALIZED))
 		}
 	}
 }
