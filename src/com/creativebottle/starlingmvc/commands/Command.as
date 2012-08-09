@@ -31,10 +31,18 @@ package com.creativebottle.starlingmvc.commands
 
 		private var _command:Class;
 
-		public function Command(event:String, command:Class)
+		public function get oneTime():Boolean
+		{
+			return _oneTime;
+		}
+
+		private var _oneTime:Boolean;
+
+		public function Command(event:String, command:Class, oneTime:Boolean = false)
 		{
 			_event = event;
 			_command = command;
+			_oneTime = oneTime;
 		}
 	}
 }

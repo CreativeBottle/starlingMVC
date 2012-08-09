@@ -42,7 +42,7 @@ package com.creativebottle.starlingmvc.commands
 			for each(var command:Command in beans.commands)
 			{
 				dispatcher.addEventListener(command.event, handleCommandEvent);
-				rootLayer.addEventListener(command.event, handleCommandEvent)
+				rootLayer.addEventListener(command.event, handleCommandEvent);
 			}
 		}
 
@@ -67,6 +67,12 @@ package com.creativebottle.starlingmvc.commands
 			executeProcessor.process(commandInstance, beans);
 
 			commandInstance = null;
+
+			if (command.oneTime)
+			{
+				dispatcher.removeEventListener(command.event, handleCommandEvent);
+				rootLayer.removeEventListener(command.event, handleCommandEvent);
+			}
 		}
 	}
 }
