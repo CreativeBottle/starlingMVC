@@ -15,6 +15,7 @@
  */
 package com.creativebottle.starlingmvc.beans
 {
+	import com.creativebottle.starlingmvc.commands.Command;
 	import com.creativebottle.starlingmvc.constants.Tags;
 	import com.creativebottle.starlingmvc.errors.BeanNotFoundError;
 	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
@@ -29,6 +30,7 @@ package com.creativebottle.starlingmvc.beans
 	public class Beans
 	{
 		public const beans:Dictionary = new Dictionary(true);
+		public const commands:Dictionary = new Dictionary(true);
 
 		public function addBean(beanIn:*):void
 		{
@@ -37,6 +39,10 @@ package com.creativebottle.starlingmvc.beans
 			if (bean is ProtoBean)
 			{
 				createMap(ProtoBean(bean).classType, bean);
+			}
+			else if (bean.instance is Command)
+			{
+				mapCommand(bean);
 			}
 			else
 			{
@@ -102,6 +108,11 @@ package com.creativebottle.starlingmvc.beans
 			}
 		}
 
+		public function getCommandForEvent(eventType:String):Command
+		{
+			return commands[eventType];
+		}
+
 		private function createMap(MapClass:Class, bean:Bean):void
 		{
 			if (bean.id)
@@ -111,6 +122,20 @@ package com.creativebottle.starlingmvc.beans
 			else
 			{
 				beans[MapClass] = bean;
+			}
+		}
+
+		private function mapCommand(bean:Bean):void
+		{
+			var command:Command = Command(bean.instance);
+
+			if (commands[command.event])
+			{
+				throw new Error("A command for that event(" + command.event + ") already exists.");
+			}
+			else
+			{
+				commands[command.event] = command;
 			}
 		}
 

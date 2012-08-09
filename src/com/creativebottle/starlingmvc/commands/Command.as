@@ -13,19 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.creativebottle.starlingmvc.constants
+package com.creativebottle.starlingmvc.commands
 {
-	public class Tags
+	public class Command
 	{
-		static public const DISPATCHER:String = "Dispatcher";
-		static public const EVENT_HANDLER:String = "EventHandler";
-		static public const JUGGLER:String = "Juggler";
-		static public const INJECT:String = "Inject";
-		static public const POST_CONSTRUCT:String = "PostConstruct";
-		static public const PRE_DESTROY:String = "PreDestroy";
-		static public const VIEW_ADDED:String = "ViewAdded";
-		static public const VIEW_REMOVED:String = "ViewRemoved";
-		static public const BINDINGS:String = "Bindings";
-		static public const EXECUTE:String = "Execute";
+		public function get event():String
+		{
+			return _event;
+		}
+
+		private var _event:String;
+
+		public function get command():Class
+		{
+			return _command;
+		}
+
+		private var _command:Class;
+
+		public function Command(event:String, command:Class)
+		{
+			_event = event;
+			_command = command;
+		}
 	}
 }
