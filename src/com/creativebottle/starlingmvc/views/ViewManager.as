@@ -41,34 +41,34 @@ package com.creativebottle.starlingmvc.views
 			return view;
 		}
 
-		public function removeView(view:DisplayObject):void
+		public function removeView(view:DisplayObject, dispose:Boolean = false):void
 		{
 			var idx:int = stack.indexOf(view);
 
 			if (idx != -1)
 			{
-				srcClip.removeChild(view);
+				srcClip.removeChild(view, dispose);
 
 				stack.splice(idx, 1);
 			}
 		}
 
-		public function popView():void
+		public function popView(dispose:Boolean = false):void
 		{
-			removeView(stack[stack.length - 1]);
+			removeView(stack[stack.length - 1], dispose);
 		}
 
-		public function removeAll():void
+		public function removeAll(dispose:Boolean = false):void
 		{
 			for each(var s:DisplayObject in stack)
 			{
-				removeView(s);
+				removeView(s, dispose);
 			}
 		}
 
-		public function setView(ViewClass:Class, params:Object = null):DisplayObject
+		public function setView(ViewClass:Class, params:Object = null, disposeOfLast:Boolean = false):DisplayObject
 		{
-			removeExistingView();
+			removeExistingView(disposeOfLast);
 
 			view = DisplayObject(new ViewClass());
 
@@ -79,11 +79,11 @@ package com.creativebottle.starlingmvc.views
 			return view;
 		}
 
-		private function removeExistingView():void
+		private function removeExistingView(dispose:Boolean):void
 		{
 			if (view)
 			{
-				srcClip.removeChild(view);
+				srcClip.removeChild(view, dispose);
 			}
 		}
 	}
