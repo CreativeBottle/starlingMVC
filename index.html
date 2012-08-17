@@ -491,6 +491,96 @@ The beans Array is merely a collection of objects. The array can accept an objec
 
 <p>In the example above, we create a presentation model for our view and add it to StarlingMVC as a bean. In doing this, the PM will be processed as a bean and gain all of the benefits of DI and EventHandling.</p>
 
+<h2>Command Pattern</h2>
+
+<p>StarlingMVC includes support for the command pattern. Commands are essentially beans that are created when a specified event is dispatched, executed, and then disposed of. To add a command to the framework, an instance of the Command class should be added to the beans.</p>
+
+<div class="highlight"><pre><span class="k">package</span> <span class="nn">com.mygame.views</span>
+<span class="o">{</span>
+    <span class="k">import</span> <span class="nn">com.creativebottle.starlingmvc.StarlingMVC</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.creativebottle.starlingmvc.config.StarlingMVCConfig</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.creativebottle.starlingmvc.views.ViewManager</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.mygame.models.GameModel</span><span class="o">;</span>
+
+    <span class="k">import</span> <span class="nn">starling.core.Starling</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">starling.display.Sprite</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">class</span> <span class="n">GameMain</span> <span class="kd">extends</span> <span class="n">Sprite</span>
+    <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">var</span> <span class="n">starlingMVC</span><span class="p">:</span><span class="kt">StarlingMVC</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kd">function </span><span class="nf">GameMain</span><span class="o">()</span>
+        <span class="o">{</span>
+            <span class="kd">var</span> <span class="n">config</span><span class="p">:</span><span class="kt">StarlingMVCConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">StarlingMVCConfig</span><span class="o">();</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">eventPackages</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"com.mygame.events"</span><span class="o">];</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">viewPackages</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"com.mygame.views"</span><span class="o">];</span>
+
+            <span class="kd">var</span> <span class="n">beans</span><span class="p">:</span><span class="kt">Array</span> <span class="o">=</span> <span class="o">[</span><span class="k">new</span> <span class="kt">GameModel</span><span class="o">(),</span> <span class="k">new</span> <span class="kt">ViewManager</span><span class="o">(</span><span class="k">this</span><span class="o">),</span> <span class="k">new</span> <span class="kt">Command</span><span class="o">(</span><span class="n">DoSomethingEvent</span><span class="o">.</span><span class="na">DO_SOMETHING</span><span class="o">,</span> <span class="n">DoSomethingCommand</span><span class="o">)];</span>
+
+            <span class="n">starlingMVC</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">StarlingMVC</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">config</span><span class="o">,</span> <span class="n">beans</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>This will map the event to the command. The command class can receive all of the same injections as any other bean. It cannot handle events, however, since the instance will only exist long enough to execute a single command. The method to execute in the command instance is noted with the <code>[Execute]</code> metadata.</p>
+
+<div class="highlight"><pre><span class="k">package</span> <span class="nn">com.mygame.commands</span>
+<span class="o">{</span>
+    <span class="k">import</span> <span class="nn">com.mygame.events.NavigationEvent</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.mygame.models.BubbleModel</span><span class="o">;</span>
+
+    <span class="k">import</span> <span class="nn">starling.events.EventDispatcher</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">class</span> <span class="n">DoSomethingCommand</span>
+    <span class="o">{</span>
+        <span class="o">[</span><span class="n">Dispatcher</span><span class="o">]</span>
+        <span class="kd">public</span> <span class="kd">var</span> <span class="n">dispatcher</span><span class="p">:</span><span class="kt">EventDispatcher</span><span class="o">;</span>
+
+        <span class="o">[</span><span class="n">Inject</span><span class="o">]</span>
+        <span class="kd">public</span> <span class="kd">var</span> <span class="n">bubbleModel</span><span class="p">:</span><span class="kt">BubbleModel</span><span class="o">;</span>
+
+        <span class="o">[</span><span class="n">Execute</span><span class="o">]</span>
+        <span class="kd">public</span> <span class="kd">function </span><span class="nf">execute</span><span class="o">(</span><span class="n">event</span><span class="o">:</span><span class="kt">DoSomethingEvent</span><span class="o">):</span><span class="kt">void</span>
+        <span class="o">{</span>
+            <span class="nf">trace</span><span class="o">(</span><span class="s2">"did something!"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>In this example, whenever the <code>DoSomethingEvent.DO_SOMETHING</code> is dispatched, StarlingMVC will create an instance of DoSomethingCommand, run the execute method, and then dispose of the instance. The Command class also contains an optional parameter called runOnce.</p>
+
+<div class="highlight"><pre><span class="k">package</span> <span class="nn">com.mygame.views</span>
+<span class="o">{</span>
+    <span class="k">import</span> <span class="nn">com.creativebottle.starlingmvc.StarlingMVC</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.creativebottle.starlingmvc.config.StarlingMVCConfig</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.creativebottle.starlingmvc.views.ViewManager</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">com.mygame.models.GameModel</span><span class="o">;</span>
+
+    <span class="k">import</span> <span class="nn">starling.core.Starling</span><span class="o">;</span>
+    <span class="k">import</span> <span class="nn">starling.display.Sprite</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">class</span> <span class="n">GameMain</span> <span class="kd">extends</span> <span class="n">Sprite</span>
+    <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">var</span> <span class="n">starlingMVC</span><span class="p">:</span><span class="kt">StarlingMVC</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kd">function </span><span class="nf">GameMain</span><span class="o">()</span>
+        <span class="o">{</span>
+            <span class="kd">var</span> <span class="n">config</span><span class="p">:</span><span class="kt">StarlingMVCConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">StarlingMVCConfig</span><span class="o">();</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">eventPackages</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"com.mygame.events"</span><span class="o">];</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">viewPackages</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"com.mygame.views"</span><span class="o">];</span>
+
+            <span class="kd">var</span> <span class="n">beans</span><span class="p">:</span><span class="kt">Array</span> <span class="o">=</span> <span class="o">[</span><span class="k">new</span> <span class="kt">GameModel</span><span class="o">(),</span> <span class="k">new</span> <span class="kt">ViewManager</span><span class="o">(</span><span class="k">this</span><span class="o">),</span> <span class="k">new</span> <span class="kt">Command</span><span class="o">(</span><span class="n">DoSomethingEvent</span><span class="o">.</span><span class="na">DO_SOMETHING</span><span class="o">,</span> <span class="n">DoSomethingCommand</span><span class="o">,</span> <span class="kc">true</span><span class="o">)];</span>
+
+            <span class="n">starlingMVC</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">StarlingMVC</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">config</span><span class="o">,</span> <span class="n">beans</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>In this example, the command bean is added with the following line: <code>new Command(DoSomethingEvent.DO_SOMETHING, DoSomethingCommand, true)</code>. The optional last parameter, <code>true</code>, specifies that this command should be run once. So in this case, when the DO_SOMETHING event is dispatched, the framework would create an instance of DoSomethingCommand, run execute, dispose of the instance, and then remove the mapping. This functionality is very useful for initialization commands.</p>
+
 <h2>EventMap</h2>
 
 <p>EventMap is a utility class for creating and managing event listeners. Using EventMap exclusively to create listeners within your class makes cleanup very easy.</p>
