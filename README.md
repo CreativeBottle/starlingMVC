@@ -254,13 +254,13 @@ package com.mygame.models
 	{
 		[Bindings]
 		public var bindings:Bindings;
-		
+
 		public function set currentUser(value:User):void
 		{
 			if(value != _currentUser)
 			{
 				_currentUser = value;
-				
+
 				bindings.invalidate(this, "currentUser");
 			}
 		}
@@ -439,6 +439,93 @@ package com.mygame.view
 }
 ```
 In the example above, we create a presentation model for our view and add it to StarlingMVC as a bean. In doing this, the PM will be processed as a bean and gain all of the benefits of DI and EventHandling.
+
+Command Pattern
+------------
+StarlingMVC includes support for the command pattern. Commands are essentially beans that are created when a specified event is dispatched, executed, and then disposed of. To add a command to the framework, an instance of the Command class should be added to the beans.
+```as3
+package com.mygame.views
+{
+  	import com.creativebottle.starlingmvc.StarlingMVC;
+	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
+	import com.creativebottle.starlingmvc.views.ViewManager;
+ 	import com.mygame.models.GameModel;
+
+	import starling.core.Starling;
+	import starling.display.Sprite;
+
+	public class GameMain extends Sprite
+	{
+		private var starlingMVC:StarlingMVC;
+
+		public function GameMain()
+		{
+			var config:StarlingMVCConfig = new StarlingMVCConfig();
+			config.eventPackages = ["com.mygame.events"];
+			config.viewPackages = ["com.mygame.views"];
+
+			var beans:Array = [new GameModel(), new ViewManager(this), new Command(DoSomethingEvent.DO_SOMETHING, DoSomethingCommand)];
+
+			starlingMVC = new StarlingMVC(this, config, beans);
+		}
+	}
+}
+```
+This will map the event to the command. The command class can receive all of the same injections as any other bean. It cannot handle events, however, since the instance will only exist long enough to execute a single command. The method to execute in the command instance is noted with the `[Execute]` metadata.
+```as3
+package com.mygame.commands
+{
+	import com.mygame.events.NavigationEvent;
+	import com.mygame.models.BubbleModel;
+
+	import starling.events.EventDispatcher;
+
+	public class DoSomethingCommand
+	{
+		[Dispatcher]
+		public var dispatcher:EventDispatcher;
+
+		[Inject]
+		public var bubbleModel:BubbleModel;
+
+		[Execute]
+		public function execute(event:DoSomethingEvent):void
+		{
+			trace("did something!");
+		}
+	}
+}
+```
+In this example, whenever the `DoSomethingEvent.DO_SOMETHING` is dispatched, StarlingMVC will create an instance of DoSomethingCommand, run the execute method, and then dispose of the instance. The Command class also contains an optional parameter called runOnce.
+```as3
+package com.mygame.views
+{
+  	import com.creativebottle.starlingmvc.StarlingMVC;
+	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
+	import com.creativebottle.starlingmvc.views.ViewManager;
+ 	import com.mygame.models.GameModel;
+
+	import starling.core.Starling;
+	import starling.display.Sprite;
+
+	public class GameMain extends Sprite
+	{
+		private var starlingMVC:StarlingMVC;
+
+		public function GameMain()
+		{
+			var config:StarlingMVCConfig = new StarlingMVCConfig();
+			config.eventPackages = ["com.mygame.events"];
+			config.viewPackages = ["com.mygame.views"];
+
+			var beans:Array = [new GameModel(), new ViewManager(this), new Command(DoSomethingEvent.DO_SOMETHING, DoSomethingCommand, true)];
+
+			starlingMVC = new StarlingMVC(this, config, beans);
+		}
+	}
+}
+```
+In this example, the command bean is added with the following line: `new Command(DoSomethingEvent.DO_SOMETHING, DoSomethingCommand, true)`. The optional last parameter, `true`, specifies that this command should be run once. So in this case, when the DO_SOMETHING event is dispatched, the framework would create an instance of DoSomethingCommand, run execute, dispose of the instance, and then remove the mapping. This functionality is very useful for initialization commands.
 
 EventMap
 ------------
