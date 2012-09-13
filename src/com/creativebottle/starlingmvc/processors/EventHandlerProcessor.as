@@ -85,7 +85,6 @@ package com.creativebottle.starlingmvc.processors
 			{
 				for each(var dispatcher:EventDispatcher in dispatchers)
 				{
-					trace("+++++++++ Removing event handler:", handler.type);
 					dispatcher.removeEventListener(handler.type, handler.handleEvent);
 				}
 			}
@@ -151,7 +150,6 @@ package com.creativebottle.starlingmvc.processors
 
 			for each(var dispatcher:EventDispatcher in dispatchers)
 			{
-				trace("+++++++++ Adding event handler:", event);
 				dispatcher.addEventListener(event, eventHandler.handleEvent);
 			}
 
