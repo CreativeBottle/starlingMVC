@@ -46,7 +46,7 @@ package com.creativebottle.starlingmvc.processors
 		{
 			var injectProcessor:InjectProcessor = new InjectProcessor();
 			injectProcessor.config(starlingMVC);
-			injectProcessor.process(testModel, starlingMVC.beans);
+			injectProcessor.setUp(testModel, starlingMVC.beans);
 
 			assertEquals("TestModel testModel2 property should be equal to testModel2 instance.", testModel2, testModel.testModel2);
 		}
@@ -56,7 +56,7 @@ package com.creativebottle.starlingmvc.processors
 		{
 			var injectProcessor:InjectProcessor = new InjectProcessor();
 			injectProcessor.config(starlingMVC);
-			injectProcessor.process(testModel, starlingMVC.beans);
+			injectProcessor.setUp(testModel, starlingMVC.beans);
 
 			assertEquals("TestModel testModel3 property should be equal to testModel3 instance.", testModel3, testModel.testModel3);
 		}

@@ -32,7 +32,7 @@ package com.creativebottle.starlingmvc.processors
 
 		}
 
-		public function process(object:Object, beans:Beans):void
+		public function setUp(object:Object, beans:Beans):void
 		{
 			var targetBean:Bean = BeanUtils.normalizeBean(object);
 			var target:Object = targetBean.instance;
@@ -50,6 +50,10 @@ package com.creativebottle.starlingmvc.processors
 					target[ method.name ]();
 				}
 			}
+		}
+
+		public function tearDown(bean:Bean):void
+		{
 		}
 	}
 }

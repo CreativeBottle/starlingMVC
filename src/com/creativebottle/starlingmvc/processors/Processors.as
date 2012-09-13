@@ -51,7 +51,7 @@ package com.creativebottle.starlingmvc.processors
 
 			for each(bean in beans.beans)
 			{
-				new PostConstructProcessor().process(bean, beans);
+				new PostConstructProcessor().setUp(bean, beans);
 			}
 		}
 
@@ -59,11 +59,19 @@ package com.creativebottle.starlingmvc.processors
 		{
 			for each(var processor:IProcessor in processors)
 			{
-				processor.process(object, beans);
+				processor.setUp(object, beans);
 			}
 
 			if (includePostConstruct)
-				new PostConstructProcessor().process(object, beans);
+				new PostConstructProcessor().setUp(object, beans);
+		}
+
+		public function tearDown(bean:Bean):void
+		{
+			for each(var processor:IProcessor in processors)
+			{
+				processor.tearDown(bean);
+			}
 		}
 
 		private function setUpDefaultProcessors():void

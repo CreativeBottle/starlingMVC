@@ -35,7 +35,7 @@ package com.creativebottle.starlingmvc.processors
 			this.dispatcher = starlingMVC.dispatcher;
 		}
 
-		public function process(object:Object, beans:Beans):void
+		public function setUp(object:Object, beans:Beans):void
 		{
 			var targetBean:Bean = BeanUtils.normalizeBean(object);
 			var target:Object = targetBean.instance;
@@ -49,6 +49,10 @@ package com.creativebottle.starlingmvc.processors
 			{
 				target[ taggedDispatcher.name ] = this.dispatcher;
 			}
+		}
+
+		public function tearDown(bean:Bean):void
+		{
 		}
 	}
 }

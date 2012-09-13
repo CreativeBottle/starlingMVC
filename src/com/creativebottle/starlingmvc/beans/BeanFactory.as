@@ -102,7 +102,7 @@ package com.creativebottle.starlingmvc.beans
 			}
 
 			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
-			preDestroyProcessor.process(target, beans);
+			preDestroyProcessor.setUp(target, beans);
 		}
 
 		private function setUpEventHandlers():void
@@ -126,10 +126,14 @@ package com.creativebottle.starlingmvc.beans
 
 		private function beanRemoved(event:BeanEvent):void
 		{
-			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
-			preDestroyProcessor.process(event.bean, beans);
+			var bean:Bean = event.bean;
 
-			beans.removeBean(event.bean);
+			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
+			preDestroyProcessor.setUp(bean, beans);
+
+			beans.removeBean(bean);
+
+			starlingMVC.processors.tearDown(bean);
 		}
 
 		private function filterByPackage(object:Object, whitelistedPackages:Array):Boolean

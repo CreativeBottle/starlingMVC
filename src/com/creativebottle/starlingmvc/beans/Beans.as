@@ -70,6 +70,7 @@ package com.creativebottle.starlingmvc.beans
 					if (bean.instance[member.name] == beanIn.instance)
 						bean.instance[member.name] = null;
 				}
+
 			}
 
 			for (var key:Object in beans)

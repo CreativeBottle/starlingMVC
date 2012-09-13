@@ -37,7 +37,7 @@ package com.creativebottle.starlingmvc.processors
 		{
 			var dispatcherProcessor:DispatcherProcessor = new DispatcherProcessor();
 			dispatcherProcessor.config(starlingMVC);
-			dispatcherProcessor.process(testModel2, starlingMVC.beans);
+			dispatcherProcessor.setUp(testModel2, starlingMVC.beans);
 
 			assertEquals("TestModel2 dispatcher property should be equal to testModel3 instance.", starlingMVC.dispatcher, testModel2.dispatcher);
 		}

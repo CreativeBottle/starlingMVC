@@ -30,6 +30,7 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
+	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 
 	import starling.events.EventDispatcher;
@@ -39,13 +40,15 @@ package com.creativebottle.starlingmvc.processors
 		public var dispatchers:Array;
 		public var eventPackages:Array;
 
+		private var handlers:Dictionary = new Dictionary(true);
+
 		public function config(starlingMVC:StarlingMVC):void
 		{
 			this.dispatchers = [starlingMVC.rootLayer, starlingMVC.dispatcher];
 			this.eventPackages = starlingMVC.config.eventPackages;
 		}
 
-		public function process(object:Object, beans:Beans):void
+		public function setUp(object:Object, beans:Beans):void
 		{
 			var targetBean:Bean = BeanUtils.normalizeBean(object);
 			var target:Object = targetBean.instance;
@@ -62,8 +65,32 @@ package com.creativebottle.starlingmvc.processors
 
 				var eventName:String = getEventName(arg);
 
-				addToDispatchers(eventName, target[method.name], metaTag);
+				var eventHandler:EventHandler = addToDispatchers(eventName, target[method.name], metaTag);
+
+				if (handlers[target] == null)
+				{
+					handlers[target] = [];
+				}
+
+				handlers[target].push(eventHandler);
 			}
+		}
+
+		public function tearDown(bean:Bean):void
+		{
+			if (handlers[bean.instance] == null)
+				return;
+
+			for each(var handler:EventHandler in handlers[bean.instance])
+			{
+				for each(var dispatcher:EventDispatcher in dispatchers)
+				{
+					trace("+++++++++ Removing event handler:", handler.type);
+					dispatcher.removeEventListener(handler.type, handler.handleEvent);
+				}
+			}
+
+			handlers[bean] = [];
 		}
 
 		private function getEventName(arg:MetaTagArg):String
@@ -118,14 +145,17 @@ package com.creativebottle.starlingmvc.processors
 			return null;
 		}
 
-		public function addToDispatchers(event:String, handler:Function, tag:MetaTag):void
+		public function addToDispatchers(event:String, handler:Function, tag:MetaTag):EventHandler
 		{
-			var eventHandler:EventHandler = new EventHandler(handler, tag);
+			var eventHandler:EventHandler = new EventHandler(event, handler, tag);
 
 			for each(var dispatcher:EventDispatcher in dispatchers)
 			{
+				trace("+++++++++ Adding event handler:", event);
 				dispatcher.addEventListener(event, eventHandler.handleEvent);
 			}
+
+			return eventHandler;
 		}
 	}
 }
@@ -140,11 +170,14 @@ import starling.events.Event;
 
 class EventHandler
 {
+	public var type:String;
+
 	private var handler:Function;
 	private var args:Array;
 
-	public function EventHandler(handler:Function, tag:MetaTag)
+	public function EventHandler(type:String, handler:Function, tag:MetaTag)
 	{
+		this.type = type;
 		this.handler = handler;
 
 		var arg:MetaTagArg = tag.argByKey(Args.PROPERTIES);

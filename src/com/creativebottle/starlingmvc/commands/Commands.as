@@ -55,16 +55,16 @@ package com.creativebottle.starlingmvc.commands
 
 			var injectProcessor:InjectProcessor = new InjectProcessor();
 			injectProcessor.config(starlingMVC);
-			injectProcessor.process(commandInstance, beans);
+			injectProcessor.setUp(commandInstance, beans);
 
 			var dispatcherProcessor:DispatcherProcessor = new DispatcherProcessor();
 			dispatcherProcessor.config(starlingMVC);
-			dispatcherProcessor.process(commandInstance, beans);
+			dispatcherProcessor.setUp(commandInstance, beans);
 
 			var executeProcessor:ExecuteProcessor = new ExecuteProcessor();
 			executeProcessor.config(starlingMVC);
 			executeProcessor.event = event;
-			executeProcessor.process(commandInstance, beans);
+			executeProcessor.setUp(commandInstance, beans);
 
 			commandInstance = null;
 
