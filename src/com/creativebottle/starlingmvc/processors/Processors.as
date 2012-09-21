@@ -82,6 +82,7 @@ package com.creativebottle.starlingmvc.processors
 			addProcessor(new InjectProcessor());
 			//addProcessor(new PostConstructProcessor());
 			addProcessor(new EventHandlerProcessor());
+			addProcessor(new PreDestroyProcessor());
 			processAll();
 		}
 	}

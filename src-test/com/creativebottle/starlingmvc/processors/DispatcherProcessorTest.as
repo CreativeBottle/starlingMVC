@@ -33,7 +33,7 @@ package com.creativebottle.starlingmvc.processors
 		}
 
 		[Test]
-		public function testProcess_injectDispatcher():void
+		public function testSetUp_injectDispatcher():void
 		{
 			var dispatcherProcessor:DispatcherProcessor = new DispatcherProcessor();
 			dispatcherProcessor.config(starlingMVC);

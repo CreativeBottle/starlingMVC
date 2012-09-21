@@ -23,6 +23,7 @@ package com.creativebottle.starlingmvc.beans
 	import com.creativebottle.starlingmvc.processors.PreDestroyProcessor;
 	import com.creativebottle.starlingmvc.processors.ViewAddedProcessor;
 	import com.creativebottle.starlingmvc.processors.ViewRemovedProcessor;
+	import com.creativebottle.starlingmvc.utils.BeanUtils;
 
 	import flash.utils.getQualifiedClassName;
 
@@ -101,8 +102,7 @@ package com.creativebottle.starlingmvc.beans
 				viewRemovedProcessor.process(target, beans);
 			}
 
-			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
-			preDestroyProcessor.setUp(target, beans);
+			starlingMVC.processors.tearDown(BeanUtils.normalizeBean(target));
 		}
 
 		private function setUpEventHandlers():void
@@ -127,9 +127,6 @@ package com.creativebottle.starlingmvc.beans
 		private function beanRemoved(event:BeanEvent):void
 		{
 			var bean:Bean = event.bean;
-
-			var preDestroyProcessor:PreDestroyProcessor = new PreDestroyProcessor();
-			preDestroyProcessor.setUp(bean, beans);
 
 			beans.removeBean(bean);
 

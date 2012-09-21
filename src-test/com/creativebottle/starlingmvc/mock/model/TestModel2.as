@@ -15,12 +15,16 @@
  */
 package com.creativebottle.starlingmvc.mock.model
 {
+	import starling.animation.Juggler;
 	import starling.events.EventDispatcher;
 
 	public class TestModel2
 	{
 		[Dispatcher]
 		public var dispatcher:EventDispatcher;
+
+		[Juggler]
+		public var juggler:Juggler;
 
 		public function TestModel2()
 		{

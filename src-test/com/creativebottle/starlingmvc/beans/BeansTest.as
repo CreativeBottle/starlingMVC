@@ -49,6 +49,7 @@ package com.creativebottle.starlingmvc.beans
 			assertEquals("Beans should be equal.", beanIn, beanOut);
 		}
 
+		[Test]
 		public function addBean_beanWithIdRetrievableById_returnsBean():void
 		{
 			var beanIn:Bean = new Bean(new TestModel(), "testBean");

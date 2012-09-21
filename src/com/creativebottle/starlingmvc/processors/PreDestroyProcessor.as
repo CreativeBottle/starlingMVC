@@ -22,7 +22,6 @@ package com.creativebottle.starlingmvc.processors
 	import com.creativebottle.starlingmvc.reflection.ClassDescriptor;
 	import com.creativebottle.starlingmvc.reflection.ClassMember;
 	import com.creativebottle.starlingmvc.reflection.Method;
-	import com.creativebottle.starlingmvc.utils.BeanUtils;
 	import com.creativebottle.starlingmvc.utils.ClassDescriptorCache;
 
 	public class PreDestroyProcessor implements IProcessor
@@ -34,8 +33,12 @@ package com.creativebottle.starlingmvc.processors
 
 		public function setUp(object:Object, beans:Beans):void
 		{
-			var targetBean:Bean = BeanUtils.normalizeBean(object);
-			var target:Object = targetBean.instance;
+
+		}
+
+		public function tearDown(bean:Bean):void
+		{
+			var target:Object = bean.instance;
 			if (!target) return;
 
 			var classDescriptor:ClassDescriptor = ClassDescriptorCache.getClassDescriptorForInstance(target);
@@ -50,10 +53,6 @@ package com.creativebottle.starlingmvc.processors
 					target[ method.name ]();
 				}
 			}
-		}
-
-		public function tearDown(bean:Bean):void
-		{
 		}
 	}
 }
