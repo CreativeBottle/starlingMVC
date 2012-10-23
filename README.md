@@ -60,6 +60,23 @@ package com.mygame.views
 The StarlingMVCConfig instance above tells StarlingMVC which event packages and view packages it should mediate.
 The beans Array is merely a collection of objects. The array can accept an object of any type. The framework will handle it accordingly.
 
+###Additional setup steps for Flash Builder
+When exporting release builds using Flash Builder, the ActionScript compiler will strip out non-standard metadata unless it is instructed otherwise. StarlingMVC's custom metadata is required in order for powerful features such as automatic dependency injection (DI) to work correctly and so the removal of the metadata can effectively render your application useless.
+
+Preventing the removal (or "stripping") of StarlingMVC's custom metadata is simple and just requires some additional compiler arguments to be set for your project.
+
+To add the additional compiler arguments, right-click your project and click Properties. Next go to "ActionScript Compiler" and under "Additional compiler arguments" add the following:
+```
+-keep-as3-metadata+=Dispatcher
+-keep-as3-metadata+=EventHandler
+-keep-as3-metadata+=Inject
+-keep-as3-metadata+=Juggler
+-keep-as3-metadata+=PostConstruct
+-keep-as3-metadata+=ViewAdded
+-keep-as3-metadata+=ViewRemoved
+```
+You will now be able to export release builds and StarlingMVC will function as expected.
+
 Beans
 ------------
 A Bean is an instance of an object that is provided to StarlingMVC to manage. Beans can be injected, receive injections, and handle events. There are several ways that beans can be provided to StarlingMVC during setup:
