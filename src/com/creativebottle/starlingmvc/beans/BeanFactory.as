@@ -16,7 +16,9 @@
 package com.creativebottle.starlingmvc.beans
 {
 	import com.creativebottle.starlingmvc.StarlingMVC;
-	import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
+    import com.creativebottle.starlingmvc.commands.Command;
+    import com.creativebottle.starlingmvc.commands.Commands;
+    import com.creativebottle.starlingmvc.config.StarlingMVCConfig;
 	import com.creativebottle.starlingmvc.events.BeanEvent;
 	import com.creativebottle.starlingmvc.events.EventMap;
 	import com.creativebottle.starlingmvc.events.StarlingMVCEvent;
@@ -36,6 +38,7 @@ package com.creativebottle.starlingmvc.beans
 		private const eventMap:EventMap = new EventMap();
 		private var initialized:Boolean;
 		private var beans:Beans;
+        private var commands:Commands;
 		private var config:StarlingMVCConfig;
 		private var rootLayer:DisplayObjectContainer;
 		private var dispatcher:EventDispatcher;
@@ -50,6 +53,7 @@ package com.creativebottle.starlingmvc.beans
 			config = starlingMVC.config;
 			rootLayer = starlingMVC.rootLayer;
 			dispatcher = starlingMVC.dispatcher;
+            commands = starlingMVC.commands;
 
 			eventMap.addMap(dispatcher, StarlingMVCEvent.INITIALIZED, onStarlingMVCInitialized);
 
@@ -120,8 +124,17 @@ package com.creativebottle.starlingmvc.beans
 		private function beanAdded(event:BeanEvent):void
 		{
 			var bean:Bean = event.bean;
-			beans.addBean(bean);
-			starlingMVC.processors.processOn(bean, beans);
+
+            if(bean.instance is Command)
+            {
+                commands.addCommand(bean.instance as Command);
+            }
+            else
+            {
+			    beans.addBean(bean);
+            }
+
+            starlingMVC.processors.processOn(bean, beans);
 		}
 
 		private function beanRemoved(event:BeanEvent):void

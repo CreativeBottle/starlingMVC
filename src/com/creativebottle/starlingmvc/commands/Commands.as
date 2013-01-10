@@ -41,10 +41,21 @@ package com.creativebottle.starlingmvc.commands
 
 			for each(var command:Command in beans.commands)
 			{
-				dispatcher.addEventListener(command.event, handleCommandEvent);
-				rootLayer.addEventListener(command.event, handleCommandEvent);
+				addCommand(command);
 			}
 		}
+
+        public function addCommand(command:Command):void
+        {
+            dispatcher.addEventListener(command.event, handleCommandEvent);
+            rootLayer.addEventListener(command.event, handleCommandEvent);
+        }
+
+        public function removeCommand(command:Command):void
+        {
+            dispatcher.removeEventListener(command.event, handleCommandEvent);
+            rootLayer.removeEventListener(command.event, handleCommandEvent);
+        }
 
 		private function handleCommandEvent(event:Event):void
 		{
@@ -70,8 +81,7 @@ package com.creativebottle.starlingmvc.commands
 
 			if (command.oneTime)
 			{
-				dispatcher.removeEventListener(command.event, handleCommandEvent);
-				rootLayer.removeEventListener(command.event, handleCommandEvent);
+				removeCommand(command);
 			}
 		}
 	}

@@ -38,7 +38,7 @@ package com.creativebottle.starlingmvc
 		private var _processors:Processors;
 		private var beanFactory:BeanFactory;
 		private var _bindings:Bindings = new Bindings();
-		private var commands:Commands;
+		private var _commands:Commands;
 
 		public function get config():StarlingMVCConfig
 		{
@@ -59,6 +59,11 @@ package com.creativebottle.starlingmvc
 		{
 			return _bindings;
 		}
+
+        public function get commands():Commands
+        {
+            return _commands;
+        }
 
 		public function set beanProviders(value:Array):void
 		{
@@ -90,7 +95,7 @@ package com.creativebottle.starlingmvc
 
 			beanFactory = new BeanFactory(this);
 			_processors = new Processors(this);
-			commands = new Commands(this);
+			_commands = new Commands(this);
 
 			initialized = true;
 			dispatcher.dispatchEvent(new StarlingMVCEvent(StarlingMVCEvent.INITIALIZED))
