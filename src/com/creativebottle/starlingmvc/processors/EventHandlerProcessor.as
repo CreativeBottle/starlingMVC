@@ -100,14 +100,14 @@ package com.creativebottle.starlingmvc.processors
 			{
 				return arg.value;
 			}
-			else if (dots.length == 2)
+			else if (dots.length >= 2)
 			{
-				var eventClassName:String = arg.value.split(".")[0];
+				var eventClassName:String = arg.value.split(".")[dots.length-2];
 				var EventClass:Class = getEventClass(eventClassName);
 
 				if (!EventClass) throw new EventClassNotFoundError(eventClassName);
 
-				var eventName:String = arg.value.split(".")[1];
+				var eventName:String = arg.value.split(".")[dots.length-1];
 
 				if (!eventName || EventClass[eventName] == null)
 				{
