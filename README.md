@@ -319,7 +319,7 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED")]
+		[EventHandler(event="ScoreEvent.SCORE_CHANGED")]
 		public function scoreChanged(event:ScoreEvent):void
 		{
 
@@ -335,7 +335,7 @@ package com.mygame.controllers
 {
 	public class GameController
 	{
-		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
+		[EventHandler(event="ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
 		public function scoreChanged(user:User, newScore:int):void
 		{
 
@@ -392,7 +392,7 @@ package com.mygame.controllers
 			// tear down code here
 		}
 
-		[EventHandler(event="com.mygame.events.ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
+		[EventHandler(event="ScoreEvent.SCORE_CHANGED", properties="user, newScore")]
 		public function scoreChanged(user:User, newScore:int):void
 		{
 
@@ -627,7 +627,7 @@ package com.mygame.controllers
 		[Inject]
 		public var viewManager:ViewManager;
 
-		[EventHandler(event="com.mygame.events.NavigationEvent.NAVIGATE_TO_VIEW", properties="viewClass")]
+		[EventHandler(event="NavigationEvent.NAVIGATE_TO_VIEW", properties="viewClass")]
 		public function navigateToView(viewClass:Class):void
 		{
 			viewManager.setView(viewClass);
