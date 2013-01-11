@@ -38,7 +38,6 @@ package com.creativebottle.starlingmvc.beans
 		private const eventMap:EventMap = new EventMap();
 		private var initialized:Boolean;
 		private var beans:Beans;
-        private var commands:Commands;
 		private var config:StarlingMVCConfig;
 		private var rootLayer:DisplayObjectContainer;
 		private var dispatcher:EventDispatcher;
@@ -53,7 +52,6 @@ package com.creativebottle.starlingmvc.beans
 			config = starlingMVC.config;
 			rootLayer = starlingMVC.rootLayer;
 			dispatcher = starlingMVC.dispatcher;
-            commands = starlingMVC.commands;
 
 			eventMap.addMap(dispatcher, StarlingMVCEvent.INITIALIZED, onStarlingMVCInitialized);
 
@@ -127,13 +125,10 @@ package com.creativebottle.starlingmvc.beans
 
             if(bean.instance is Command)
             {
-                commands.addCommand(bean.instance as Command);
-            }
-            else
-            {
-			    beans.addBean(bean);
+                starlingMVC.commands.addCommand(bean.instance as Command);
             }
 
+            beans.addBean(bean);
             starlingMVC.processors.processOn(bean, beans);
 		}
 
