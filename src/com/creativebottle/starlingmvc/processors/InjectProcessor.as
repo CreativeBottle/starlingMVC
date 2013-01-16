@@ -67,7 +67,7 @@ package com.creativebottle.starlingmvc.processors
 
 				var sourceBean:Bean;
 				var source:Object;
-				var binding:Binding;
+				var binding:Binding = null;
 				var autoBind:Boolean = true;
 
 				if (sourceArg)
