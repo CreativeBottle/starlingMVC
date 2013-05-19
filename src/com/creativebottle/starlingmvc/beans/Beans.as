@@ -105,7 +105,10 @@ package com.creativebottle.starlingmvc.beans
 		{
 			for each(var bean:Object in beanProviders.beans)
 			{
-				addBean(bean);
+				if (bean is BeanProvider)
+					addBeanProvider(BeanProvider(bean));
+				else
+					addBean(bean);
 			}
 		}
 
