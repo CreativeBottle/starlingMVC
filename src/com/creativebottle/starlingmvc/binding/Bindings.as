@@ -27,12 +27,16 @@ package com.creativebottle.starlingmvc.binding
 
 		public function invalidate(instance:Object, propertyName:String):void
 		{
-			var binding:Binding = getBinding(instance, propertyName);
-			var alreadyInvalidated:Boolean = invalidated.indexOf(binding) != -1;
-
-			if (binding && !alreadyInvalidated)
+			var applicableBindings:Array = getBindings(instance, propertyName);
+			for (var i:uint = 0; i < applicableBindings.length; i++)
 			{
-				invalidated.push(binding);
+				var binding:Binding = applicableBindings[i];
+				var alreadyInvalidated:Boolean = invalidated.indexOf(binding) != -1;
+				
+				if (binding && !alreadyInvalidated)
+				{
+					invalidated.push(binding);
+				}
 			}
 		}
 
@@ -130,18 +134,19 @@ package com.creativebottle.starlingmvc.binding
 				invalidated.splice(i, 1);
 			}
 		}
-
-		private function getBinding(instance:Object, propertyName:String):Binding
+		
+		private function getBindings(instance:Object, propertyName:String):Array
 		{
+			var applicableBindings:Array = new Array();
 			for each (var binding:Binding in bindings)
 			{
 				if (binding.fromTarget == instance && binding.fromPropertyName == propertyName)
 				{
-					return binding;
+					applicableBindings[applicableBindings.length] = binding;
 				}
 			}
-
-			return null;
+			
+			return bindings;
 		}
 
 		private function bindingExists(bindingIn:Binding):Boolean
