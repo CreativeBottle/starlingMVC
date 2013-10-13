@@ -67,7 +67,9 @@ Preventing the removal (or "stripping") of StarlingMVC's custom metadata is simp
 
 To add the additional compiler arguments, right-click your project and click Properties. Next go to "ActionScript Compiler" and under "Additional compiler arguments" add the following:
 ```
+-keep-as3-metadata+=Bindings
 -keep-as3-metadata+=Dispatcher
+-keep-as3-metadata+=EventDispatcher
 -keep-as3-metadata+=EventHandler
 -keep-as3-metadata+=Inject
 -keep-as3-metadata+=Juggler
