@@ -61,6 +61,20 @@ package com.creativebottle.starlingmvc.events
 				}
 			}
 		}
+		
+		public function removeAllMappedEventsforDispatcher(target:EventDispatcher):void
+		{
+			for (var index:int = map.length - 1; index >= 0; index--)
+			{
+				var mapping:Object = map[index];
+				
+				if (mapping.target == target)
+				{
+					var obj:Object = map.splice(index, 1)[0];
+					obj.target.removeEventListener(obj.event, obj.handler);
+				}
+			}
+		}
 
 		public function removeAllMappedEvents():void
 		{
