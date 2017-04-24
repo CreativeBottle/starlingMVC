@@ -60,7 +60,7 @@ package com.mygame.views
 The StarlingMVCConfig instance above tells StarlingMVC which event packages and view packages it should mediate.
 The beans Array is merely a collection of objects. The array can accept an object of any type. The framework will handle it accordingly.
 
-###Additional setup steps for Flash Builder
+### Additional setup steps for Flash Builder
 When exporting release builds using Flash Builder, the ActionScript compiler will strip out non-standard metadata unless it is instructed otherwise. StarlingMVC's custom metadata is required in order for powerful features such as automatic dependency injection (DI) to work correctly and so the removal of the metadata can effectively render your application useless.
 
 Preventing the removal (or "stripping") of StarlingMVC's custom metadata is simple and just requires some additional compiler arguments to be set for your project.
@@ -80,13 +80,13 @@ You will now be able to export release builds and StarlingMVC will function as e
 Beans
 ------------
 A Bean is an instance of an object that is provided to StarlingMVC to manage. Beans can be injected, receive injections, and handle events. There are several ways that beans can be provided to StarlingMVC during setup:
-###Object instance
+### Object instance
 ```as3
 var beans:Array = [new GameModel(), new ViewManager(this)];
 ```
 
 
-###Bean instances
+### Bean instances
 ```as3
 var beans:Array = [new Bean(new GameModel()), new Bean(new ViewManager(this))];
 ```
@@ -95,7 +95,7 @@ Providing a Bean instance as shown above does not give much benefit. However, th
 var beans:Array = [new Bean(new GameModel(),"gameModelEasy"),new Bean(new GameModel(),"gameModelHard"), new ViewManager(this)];
 ```
 
-###BeanProvider instances
+### BeanProvider instances
 A BeanProvider is a collection of Beans. The beans within the provider, like with a simple array, can be of any type, including BeanProvider.
 ```as3
 package com.mygame.config
@@ -119,7 +119,7 @@ Once you have your BeanProvider set up, you can pass that as a part of your orig
 var beans:Array = [new Models(), new ViewManager(this)];
 ```
 
-###ProtoBeans
+### ProtoBeans
 A ProtoBean is a bean that is created at the time of injection. Where normal beans require a class instance, a ProtoBean requires a class and an id.
 ```as3
 var beans:Array = [new ProtoBean(Character,"character"), new ViewManager(this)];
@@ -183,7 +183,7 @@ package com.mygame.controllers
 ```
 In the example above, the value of the `currentUser` property on the `userModel` bean would be injected into the currentUser property of our controller. This functionality is also recursive. If you wanted to inject the first name of the currentUser you could potentially use `[Inject(source="userModel.currentUser.firstName")]`.
 
-###Binding
+### Binding
 The InjectProcessor also supports a very simple binding mechanism that will cause injected properties to be automatically refreshed when they are changed.
 ```as3
 package com.mygame.controllers
@@ -293,12 +293,12 @@ package com.mygame.models
 
 Events
 ------------
-###Dispatching Events
+### Dispatching Events
 Events in StarlingMVC are dispatched in one of two ways:
 1) StarlingMVC contains a global instance of `starling.events.EventDispatcher`. The quickest way to dispatch an event into the StarlingMVC framework is to use this dispatcher. This dispatcher can be injected into your bean by using the `[Dispatcher]` metadata tag.
 2) DisplayObjects can dispatchEvents using their own `dispatchEvent()` method. This is only available to DisplayObjects and the events must set `bubbles=true'.
 
-###Handling Events
+### Handling Events
 Event handlers are denoted by using the `[EventHandler(event="")]` metadata tag on a public method of a bean. The event argument in the tag can contain one of two options: the event type string
 ```as3
 package com.mygame.controllers
@@ -617,7 +617,7 @@ The Juggler class in Starling is used to handle all animation within a game. For
 ViewManager
 ------------
 ViewManager is a utility class to facilitate creating views and adding/removing them from the stage. When creating the instance of ViewManager the constructor requires a reference to the root view of the game (i.e. `new ViewManager(this)`) from the root DisplayObject. Adding the ViewManager instance to the StarlingMVC beans makes it easy to swap views from anywhere in the Starling application.
-###setView
+### setView
 Calls to setView will remove existing views and add the new view. ViewManager handles instantiating the view and adding it to the stack.
 ```as3
 package com.mygame.controllers
@@ -635,7 +635,7 @@ package com.mygame.controllers
 	}
 }
 ```
-###addView
+### addView
 Calls to addView will add a new view on top of the existing view. This is handy for popups, HUDs, etc. Whereas setView accepts a parameter of type Class, addView accepts a view instance.
 ```as3
 package com.mygame.views
@@ -657,7 +657,7 @@ package com.mygame.views
 	}
 }
 ```
-###removeView
+### removeView
 Calls to removeView will remove the specified view from the stack.
-###removeAll
+### removeAll
 Calls to removeAll will remove all views from the stack. This is called automatically when calling `setView()`.
